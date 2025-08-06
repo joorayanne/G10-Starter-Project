@@ -1,5 +1,5 @@
-import Navbar from '@/app/components/admin_Navbar';
-import CreateCycleForm from '@/app/components/CreateCycleForm';
+import Navbar from '@/app/admin/components/admin_Navbar';
+import CreateCycleForm from '@/app/admin/components/CreateCycleForm';
 
 export default function AdminCreateCyclesPage() {
   return (
