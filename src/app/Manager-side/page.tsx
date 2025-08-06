@@ -1,11 +1,11 @@
-import React from 'react';
-import Display from '../Components/Display';
-import PageTitle from '../Components/PageTitle';
-import AllApplications from '../Components/AllApplications';
-import TeamPerformance from '../Components/TeamPerformance';
+import React from "react";
+import Display from "./Components/Display";
+import PageTitle from "./Components/PageTitle";
+import AllApplications from "./Components/AllApplications";
+import TeamPerformance from "./Components/TeamPerformance";
 
 const data = [
-  ["Total Applications", 1,204],
+  ["Total Applications", 1, 204],
   ["Under Review", 750],
   ["Interview Stage", 250],
   ["Accepted", 82],
@@ -13,21 +13,18 @@ const data = [
 
 const ManagerDashboard = () => {
   return (
-    <div className=' p-10 flex flex-col gap-5'>
-      <PageTitle title="Manager Dashboard" subtitle="07 November"  />
-      
+    <div className=" p-10 flex flex-col gap-5">
+      <PageTitle title="Manager Dashboard" subtitle="07 November" />
+
       <div className="  flex gap-4 mt-4 flex-wrap py-5">
         {data.map(([title, amount], index) => (
           <Display key={index} title={title} amount={amount} />
         ))}
       </div>
-      <div className='flex justify-between mt-4 flex-wrap'>
-
-        <AllApplications/>
-        <TeamPerformance/>
+      <div className="flex justify-between mt-4 flex-wrap">
+        <AllApplications />
+        <TeamPerformance />
       </div>
-
-      
     </div>
   );
 };
