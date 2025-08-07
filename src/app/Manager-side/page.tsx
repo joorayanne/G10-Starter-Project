@@ -13,7 +13,7 @@ const data = [
 
 const ManagerDashboard = () => {
   return (
-    <div className=" p-10 flex flex-col gap-5">
+    <div className=" py-10 pl-20 pr-10 flex flex-col gap-5">
       <PageTitle title="Manager Dashboard" subtitle="07 November" />
 
       <div className="  flex gap-4 mt-4 flex-wrap py-5">
@@ -21,7 +21,7 @@ const ManagerDashboard = () => {
           <Display key={index} title={title} amount={amount} />
         ))}
       </div>
-      <div className="flex justify-between mt-4 flex-wrap">
+      <div className="flex justify-between  mt-4 flex-wrap">
         <AllApplications />
         <TeamPerformance />
       </div>

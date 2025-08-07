@@ -20,14 +20,14 @@ export default function ForgotPassword() {
 
   const onSubmit = (data: ResetData) => {
     console.log('📧 Reset request:', data);
-    // TODO: Send reset request to API
+
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
         <div className="flex justify-center mb-4">
-          <Image src="/logo.png" alt="Logo" width={80} height={80} />
+          <Image src="public\logo.png" alt="Logo" width={80} height={80} />
         </div>
 
         <h2 className="text-2xl font-bold text-center mb-2">Forgot your password?</h2>
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
         </form>
 
         <div className="text-sm text-center mt-4">
-          <a href="/login" className="text-indigo-600 hover:underline">Back to login</a>
+          <a href="/auth/signin" className="text-indigo-600 hover:underline">Back to login</a>
         </div>
       </div>
     </div>

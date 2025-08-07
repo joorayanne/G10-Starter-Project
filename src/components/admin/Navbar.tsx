@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/images/logo.png";
 interface NavbarProps {
   currentPage: "applications" | "users" | "cycles" | "analytics";
 }
@@ -9,6 +9,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
   return (
     <nav className="bg-white shadow-md px-32 py-3 flex justify-between items-center">
       <Image src={logo} width={120} height={24} alt="A2SV Logo" />
+  
 
       <ul className="flex space-x-12">
         {["applications", "users", "cycles", "analytics"].map((page) => (

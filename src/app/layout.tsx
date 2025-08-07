@@ -1,6 +1,7 @@
 import { AuthProvider } from "./auth/AuthContext";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/admin/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,10 @@ export default function RootLayout({
           backgroundColor: "#F3F4F6",
         }}
       >
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <Navbar currentPage=""/>
+          {children}
+          </AuthProvider>
       </body>
     </html>
   );

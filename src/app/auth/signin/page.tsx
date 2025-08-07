@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from "../AuthContext";
-import logo from '../../../../public/logo.png';
+import logo from '../../../../public/images/logo.png'; 
 
 export default function SignInPage() {
   const { login } = useAuth();
