@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import logo from "../../../../public/images/logo.png";
+import logo from "../../../public/images/logo.png";
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
   { name: "Users", href: "/admin/users" },

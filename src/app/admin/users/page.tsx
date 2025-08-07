@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
 import logo from "../../../../public/images/logo.png";
 import Image from "next/image";
+import { getAccessToken } from "../../auth/authHelpers";
 
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -44,7 +45,7 @@ const UserManagement = () => {
 
       const response = await fetch(url.toString(), {
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
       });
@@ -69,14 +70,10 @@ const UserManagement = () => {
 
       setUsers(result.data.users);
       setTotalCount(result.data.total_count || 0);
-    } catch (err: unknown) {
-      setUsers([]); 
+    } catch (err: any) {
+      setUsers([]); // reset state to prevent map errors
       setTotalCount(0);
-      setError(
-        err instanceof Error
-          ? err.message
-          : "An error occurred while fetching users"
-      );
+      setError(err.message || "An error occurred while fetching users");
     } finally {
       setLoading(false);
     }
@@ -231,7 +228,6 @@ const UserManagement = () => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };
