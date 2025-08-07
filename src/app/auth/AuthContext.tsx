@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     initializeAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<void> => {
     try {
       const res = await fetch('https://a2sv-application-platform-backend-team10.onrender.com/auth/token', {
         method: 'POST',
@@ -62,7 +62,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const result = await res.json();
 
-      if (!res.ok || !result.success) throw new Error(result.message || 'Login failed');
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || 'Login failed');
+      }
 
       const { access, refresh, role } = result.data;
       setTokens(access, refresh);
@@ -74,9 +76,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         router.push('/test');
       }
-    } catch (err: any) {
-      console.error('Login error:', err.message);
-      throw err;
+
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Login error:', err.message);
+        throw err;
+      } else {
+        console.error('Login error:', err);
+        throw new Error('An unknown error occurred');
+      }
     }
   };
 

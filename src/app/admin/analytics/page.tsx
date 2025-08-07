@@ -101,7 +101,7 @@ const AnalyticsPage: React.FC = () => {
                   nameKey="name"
                   outerRadius={80}
                   label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(1)}%`
+                    `${name}: ${((percent ?? 0) * 100).toFixed(1)}%`
                   }
                 >
                   {universityData.map((entry, index) => (
