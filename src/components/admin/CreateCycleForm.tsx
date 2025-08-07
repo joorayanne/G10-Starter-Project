@@ -5,7 +5,7 @@ import {
   getAccessToken,
   isAccessTokenExpired,
   refreshAccessToken,
-} from '../../auth/authHelpers'
+} from '../../app/auth/authHelpers'
 export default function CreateCycleForm() {
   const initialForm = {
     name: '',
