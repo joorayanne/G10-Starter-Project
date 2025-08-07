@@ -1,6 +1,7 @@
 import { AuthProvider } from "./auth/AuthContext";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "./landing_page/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,14 @@ export default function RootLayout({
           backgroundColor: "#F3F4F6",
         }}
       >
-        <AuthProvider>{children}</AuthProvider>
+
+      
+
+        <AuthProvider>
+          {children}
+          <Footer />
+        </AuthProvider>
+
       </body>
     </html>
   );
