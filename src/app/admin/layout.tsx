@@ -1,3 +1,4 @@
+import UserFooter from "@/components/common/user-footer";
 import AdminNavbar from "../../components/admin/Admin_Navbar";
 
 export default function AdminLayout({
@@ -9,6 +10,7 @@ export default function AdminLayout({
     <div>
       <AdminNavbar />
       <main className="p-8 bg-gray-50 min-h-screen">{children}</main>
+      <UserFooter />
     </div>
   );
 }
