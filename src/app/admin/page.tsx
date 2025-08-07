@@ -2,21 +2,21 @@ import Link from 'next/link';
 import { Cycle } from '@/types/cycle';
 
 export default async function AdminDashboardPage() {
-  // Fetch cycles
+ 
   const cyclesRes = await fetch('https://a2sv-application-platform-backend-team10.onrender.com/cycles/', {
     cache: 'no-store',
   });
   const cyclesData = await cyclesRes.json();
   const cycles: Cycle[] = cyclesData.data?.cycles || [];
 
-  // Fetch users
+  
   const usersRes = await fetch('https://a2sv-application-platform-backend-team10.onrender.com/admin/users/', {
     cache: 'no-store',
   });
   const usersData = await usersRes.json();
   const users = usersData.data?.users || [];
 
-  // Calculate active cycles
+  
   const activeCycles = cycles.filter(cycle => cycle.is_active).length;
 
   return (
