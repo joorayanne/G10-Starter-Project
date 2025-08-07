@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/images/logo.png";
 interface NavbarProps {
   currentPage: "applications" | "users" | "cycles" | "analytics";
 }
@@ -14,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
         {["applications", "users", "cycles", "analytics"].map((page) => (
           <li
             key={page}
-            className={`capitalize text-gray-600 hover:text-gray-900 cursor-pointer hover:underline underline-offset-8 ${
+            className={`capitalize text-gray-600 hover:text-gray-500 cursor-pointer hover:bg-gray-300 ${
               currentPage === page
                 ? "underline underline-offset-8 text-black font-semibold"
                 : ""
