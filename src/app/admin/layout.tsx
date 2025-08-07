@@ -1,6 +1,10 @@
-import AdminNavbar from './components/admin_Navbar'
+import AdminNavbar from "../../components/admin/Admin_Navbar";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <AdminNavbar />

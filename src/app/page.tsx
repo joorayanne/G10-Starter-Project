@@ -1,9 +1,12 @@
-// app/page.tsx
+import Image from "next/image";
+import UsersPage from "./admin/users/page";
+import Createuser from "./admin/Create-user/page";
+import AnalyticsPage from "./admin/analytics/page";
+
 export default function Home() {
   return (
-    <main className="p-10">
-      <h1 className="text-4xl font-bold mb-4">Welcome to the App</h1>
-      <p className="text-gray-600">This is the public home page.</p>
-    </main>
+    <div>
+      <UsersPage />
+    </div>
   );
 }
