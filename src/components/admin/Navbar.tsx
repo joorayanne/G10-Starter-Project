@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/images/logo.png";
 interface NavbarProps {
   currentPage: "applications" | "users" | "cycles" | "analytics";
 }

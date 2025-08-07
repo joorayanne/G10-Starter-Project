@@ -101,7 +101,7 @@ const AnalyticsPage: React.FC = () => {
                   nameKey="name"
                   outerRadius={80}
                   label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(1)}%`
+                    `${name}: ${((percent ?? 0) * 100).toFixed(1)}%`
                   }
                 >
                   {universityData.map((entry, index) => (
@@ -135,10 +135,7 @@ const AnalyticsPage: React.FC = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#1F2937] text-white text-center py-6 text-sm mt-10">
-        © 2023 A2SV. All rights reserved.
-      </footer>
+    
     </div>
   );
 };
