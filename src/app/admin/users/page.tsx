@@ -1,5 +1,5 @@
 "use client";
-import Footer from "@/components/admin/Footer";
+
 import Navbar from "../../../components/admin/Navbar";
 import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
@@ -231,7 +231,7 @@ const UserManagement = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

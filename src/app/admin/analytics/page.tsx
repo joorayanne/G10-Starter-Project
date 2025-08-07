@@ -135,10 +135,7 @@ const AnalyticsPage: React.FC = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#1F2937] text-white text-center py-6 text-sm mt-10">
-        © 2023 A2SV. All rights reserved.
-      </footer>
+    
     </div>
   );
 };

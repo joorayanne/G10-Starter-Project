@@ -30,7 +30,7 @@ export default function CyclesPage() {
           <h1 className="text-2xl font-bold text-gray-800">
             Application Cycles
           </h1>
-          <Link href="/admin/CreateCycles">
+          <Link href="/admin/create-cycles">
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
               Create New Cycle
             </button>
