@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
 import logo from "../../../../public/images/logo.png";
 import Image from "next/image";
+import { getAccessToken } from "@/app/auth/authHelpers";
 
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -33,9 +34,7 @@ const UserManagement = () => {
     setError(null);
 
     try {
-      const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL ||
-        "https://a2sv-application-platform-backend-team10.onrender.com";
+      const apiUrl ="https://a2sv-application-platform-backend-team10.onrender.com";
       const url = new URL("/admin/users", apiUrl);
       url.searchParams.append("page", currentPage.toString());
       url.searchParams.append("limit", limit.toString());
@@ -44,7 +43,7 @@ const UserManagement = () => {
 
       const response = await fetch(url.toString(), {
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
       });
@@ -92,7 +91,7 @@ const UserManagement = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar currentPage="users" />
+      
       <div className="p-6 px-30">
         <div className="flex justify-between items-center">
           <div>

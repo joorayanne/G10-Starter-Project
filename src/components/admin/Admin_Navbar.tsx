@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import logo from "../../../../public/images/logo.png";
+import logo from "../../../public/images/logo.png";
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
   { name: "Users", href: "/admin/users" },
@@ -40,11 +40,9 @@ export default function AdminNavbar() {
 
       {/* Profile Menu */}
       <div className="flex items-center space-x-4 text-sm text-gray-700">
-        <Link href="/admin/profile" className="hover:underline text-indigo-600">
+        <Link href="/profile" className="hover:underline text-indigo-600">
           Your Profile
         </Link>
-        <span className="text-gray-400">|</span>
-        <span>Admin User</span>
         <span className="text-gray-400">|</span>
         <Link href="/logout" className="hover:underline text-gray-700">
           Logout
