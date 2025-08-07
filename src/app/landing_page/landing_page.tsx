@@ -1,38 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import Footer from "../../components/common/footer";
+import NavBar from "../../components/common/NavBar";
 
 export default function LandingPage() {
   return (
     <div className="bg-[#F3F4F6]">
       {/* Header */}
-      <header className="w-full py-2 md:py-3 px-6 md:px-20 flex items-center justify-between bg-[#F3F4F6]">
-        <div className="h-10 w-auto flex items-center">
-          <Image
-            src="/image/logo.png"
-            alt="A2SV Logo"
-            layout="intrinsic"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="h-full w-auto"
-          />
-        </div>
-
-        <nav className="space-x-6">
-          <Link href="#" className="text-gray-700 hover:text-blue-600">
-            The Journey
-          </Link>
-          <Link href="#" className="text-gray-700 hover:text-blue-600">
-            About
-          </Link>
-          <Link href="#" className="text-gray-700 hover:text-blue-600">
-            Testimonials
-          </Link>
-          <button className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-            Login
-          </button>
-        </nav>
-      </header>
+      <NavBar />
 
       {/* Main Content */}
       <main>
@@ -290,6 +265,7 @@ export default function LandingPage() {
 </div>
 </section>
       </main>
+      <Footer />
     </div>
   );
 }
