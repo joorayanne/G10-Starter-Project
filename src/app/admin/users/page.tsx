@@ -1,5 +1,5 @@
 "use client";
-import Footer from "@/components/admin/Footer";
+import { getAccessToken } from "../../../auth/authHelpers";
 import Navbar from "../../../components/admin/Navbar";
 import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
@@ -44,7 +44,7 @@ const UserManagement = () => {
 
       const response = await fetch(url.toString(), {
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
       });
@@ -69,10 +69,14 @@ const UserManagement = () => {
 
       setUsers(result.data.users);
       setTotalCount(result.data.total_count || 0);
-    } catch (err: any) {
-      setUsers([]); // reset state to prevent map errors
+    } catch (err: unknown) {
+      setUsers([]);
       setTotalCount(0);
-      setError(err.message || "An error occurred while fetching users");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while fetching users"
+      );
     } finally {
       setLoading(false);
     }
@@ -227,7 +231,6 @@ const UserManagement = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Navbar from "../../../components/admin/Navbar";
+import { getAccessToken } from "../../auth/authHelpers";
 
 interface FormData {
   fullName: string;
@@ -57,7 +58,7 @@ const CreateUser: React.FC = () => {
       const response = await fetch(`${apiUrl}/admin/users`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -83,8 +84,12 @@ const CreateUser: React.FC = () => {
       });
 
       alert("User created successfully!");
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      if (err && typeof err === "object" && "message" in err) {
+        setError((err as { message: string }).message || "Something went wrong");
+      } else {
+        setError("Something went wrong");
+      }
     } finally {
       setLoading(false);
     }
