@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@/components/admin/Navbar";
 
 interface FormData {
   fullName: string;

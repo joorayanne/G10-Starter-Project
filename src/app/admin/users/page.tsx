@@ -1,9 +1,9 @@
 "use client";
-import Footer from "@/app/components/Footer";
-import Navbar from "../../components/Navbar";
+import Footer from "@/components/admin/Footer";
+import Navbar from "../../../components/admin/Navbar";
 import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
-import logo from "../../../../public/logo.png";
+import logo from "../../../../public/images/logo.png";
 import Image from "next/image";
 
 const UserManagement = () => {

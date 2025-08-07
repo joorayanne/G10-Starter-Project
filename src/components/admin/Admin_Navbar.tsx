@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
-import logo from "../../../../public/logo.png"
+import logo from "../../../../public/logo.png";
 const navLinks = [
-  { name: 'Dashboard', href: '/admin' },
-  { name: 'Users', href: '/admin/users' },
-  { name: 'Cycles', href: '/admin/Cycles' },
-  { name: 'Analytics', href: '/admin/analytics' },
+  { name: "Dashboard", href: "/admin" },
+  { name: "Users", href: "/admin/users" },
+  { name: "Cycles", href: "/admin/Cycles" },
+  { name: "Analytics", href: "/admin/analytics" },
 ];
 
 export default function AdminNavbar() {
@@ -16,8 +16,7 @@ export default function AdminNavbar() {
 
   return (
     <nav className="flex items-center justify-around w-full px-8 py-4 bg-white border-b border-gray-200">
-      
-        {/* Logo */}
+      {/* Logo */}
       <Link href="/admin" className="flex items-center space-x-2">
         <Image src={logo} width={120} height={24} alt="A2SV Logo" />
       </Link>
@@ -30,8 +29,8 @@ export default function AdminNavbar() {
             href={link.href}
             className={`text-sm font-medium ${
               pathname === link.href
-                ? 'text-black border-b-2 border-black pb-1'
-                : 'text-gray-600 hover:text-black'
+                ? "text-black border-b-2 border-black pb-1"
+                : "text-gray-600 hover:text-black"
             }`}
           >
             {link.name}
@@ -51,7 +50,6 @@ export default function AdminNavbar() {
           Logout
         </Link>
       </div>
-      
     </nav>
   );
 }
