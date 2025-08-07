@@ -1,5 +1,5 @@
 "use client";
-
+import { getAccessToken } from "../../../auth/authHelpers";
 import Navbar from "../../../components/admin/Navbar";
 import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
@@ -44,7 +44,7 @@ const UserManagement = () => {
 
       const response = await fetch(url.toString(), {
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
       });
@@ -70,7 +70,7 @@ const UserManagement = () => {
       setUsers(result.data.users);
       setTotalCount(result.data.total_count || 0);
     } catch (err: unknown) {
-      setUsers([]); 
+      setUsers([]);
       setTotalCount(0);
       setError(
         err instanceof Error
@@ -231,7 +231,6 @@ const UserManagement = () => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };
