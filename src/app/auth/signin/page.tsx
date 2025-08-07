@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from "../AuthContext";
-import logo from '../../../../public/logo.png';
+import logo from '../../../../public/images/logo.png'
 
 export default function SignInPage() {
   const { login } = useAuth();
@@ -33,11 +33,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   try {
   await login(email, password);
-} catch (err: any) {
-  setError(err.message || 'Login failed');
+} catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError('Login failed');
+  }
 }
 
-  setLoading(false);
 };
 
   return (
@@ -57,7 +60,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       <main className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-6">
-            <img src="/logo.png" alt="A2SV Logo" className="mx-auto h-10 mb-4" />
+            <Image src={logo} width={120} height={24} alt="A2SV Logo" />
             <h2 className="text-2xl font-semibold text-gray-800">Sign in to your account</h2>
           </div>
 

@@ -69,10 +69,14 @@ const UserManagement = () => {
 
       setUsers(result.data.users);
       setTotalCount(result.data.total_count || 0);
-    } catch (err: any) {
-      setUsers([]); // reset state to prevent map errors
+    } catch (err: unknown) {
+      setUsers([]); 
       setTotalCount(0);
-      setError(err.message || "An error occurred while fetching users");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while fetching users"
+      );
     } finally {
       setLoading(false);
     }

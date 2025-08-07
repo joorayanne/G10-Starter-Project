@@ -51,8 +51,8 @@ const Page: React.FC = () => {
           password: "**************",
           role: user.role || "",
         });
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -98,8 +98,8 @@ const Page: React.FC = () => {
       }
 
       alert("User updated successfully");
-    } catch (err: any) {
-      alert("Update failed: " + err.message);
+    } catch (err: unknown) {
+      alert("Update failed: " + (err instanceof Error ? err.message : "An error occurred"));
     }
   };
 
