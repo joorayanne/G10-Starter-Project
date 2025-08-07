@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from "../AuthContext";
 import logo from '../../../../public/images/logo.png'
+import NavBar from "@/components/common/NavBar";
 
 export default function SignInPage() {
   const { login } = useAuth();
@@ -45,23 +46,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      {/* Top Nav */}
-      <div className="w-full flex justify-around items-center px-6 md:px-16 py-4 border-b border-gray-200">
-        <Image src={logo} width={120} height={24} alt="A2SV Logo" />
-        <div className="space-x-6 text-sm md:text-base text-gray-700">
-          <Link href="#">The Journey</Link>
-          <Link href="#">About</Link>
-          <Link href="#">Testimonials</Link>
-          <Link href="#" className="text-indigo-600 font-semibold">Login</Link>
-        </div>
-      </div>
+      <NavBar />
 
       {/* Main Form */}
       <main className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <div className="text-center mb-6">
+          <div className="flex flex-col items-center text-center mb-6">
             <Image src={logo} width={120} height={24} alt="A2SV Logo" />
-            <h2 className="text-2xl font-semibold text-gray-800">Sign in to your account</h2>
+            <h2 className="mt-3 text-2xl font-semibold text-gray-800">Sign in to your account</h2>
           </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -101,10 +93,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-6 px-4 md:px-16 text-sm">
-        {/* ... */}
-      </footer>
+      
     </div>
   );
 }
