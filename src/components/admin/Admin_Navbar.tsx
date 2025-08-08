@@ -23,6 +23,7 @@ export default function AdminNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
 
+
   return (
     <nav className="w-full bg-white border-b border-gray-200 px-4 md:px-10 py-2">
       <div className="flex items-center justify-between">
@@ -104,6 +105,6 @@ export default function AdminNavbar() {
           </div>
         </div>
       )}
-    </nav>
+   </nav>
   );
 }
