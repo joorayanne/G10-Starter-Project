@@ -4,22 +4,30 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import logo from "../../../public/images/logo.png";
+
+interface ProfileNavbarProps {
+  userData?: {
+    full_name: string;
+    email: string;
+    role: string;
+  } | null;
+}
+
 const navLinks = [
   { name: "Dashboard", href: "" },
 ];
 
-export default function ProfileNavbar() {
+export default function ProfileNavbar({ userData }: ProfileNavbarProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-around w-full px-8 py-4 bg-white border-b border-gray-200">
+    <nav className="flex items-center justify-between w-full px-4 sm:px-8 py-4 bg-white border-b border-gray-200">
       {/* Logo */}
-      <Link href="/admin" className="flex items-center space-x-2">
-        <Image src={logo} width={120} height={24} alt="A2SV Logo" />
+      <Link href="/profile" className="flex items-center space-x-2">
+        <Image src={logo} width={100} height={20} className="sm:w-[120px] sm:h-[24px]" alt="A2SV Logo" />
       </Link>
 
-      {/* Navigation Links */}
-      <div className="flex items-center space-x-6">
+      <div className="hidden sm:flex items-center space-x-6">
         {navLinks.map((link) => (
           <Link
             key={link.name}
@@ -36,13 +44,13 @@ export default function ProfileNavbar() {
       </div>
 
       {/* Profile Menu */}
-      <div className="flex items-center space-x-4 text-sm text-gray-700">
-        <Link href="" className="hover:underline text-indigo-600">
+      <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm text-gray-700">
+        <Link href="/profile" className="hover:underline text-indigo-600 hidden sm:inline">
           Your Profile
         </Link>
-        <span className="text-gray-400">|</span>
-        <span>User name</span>
-        <span className="text-gray-400">|</span>
+        <span className="text-gray-400 hidden sm:inline">|</span>
+        <span className="truncate max-w-[80px] sm:max-w-none">{userData?.full_name || 'User name'}</span>
+        <span className="text-gray-400 hidden sm:inline">|</span>
         <Link href="/logout" className="hover:underline text-gray-700">
           Logout
         </Link>
