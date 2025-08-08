@@ -50,7 +50,7 @@ export default function Navbar() {
   const isDashboard = pathname === "/Manager-side";
 
   return (
-    <nav className="w-full py-2  flex items-center justify-between px-10 border border-gray-200 shadow-lg bg-[#F3F4F6]">
+    <nav className="w-full py-2  flex items-center justify-evenly px-10 border border-gray-200 shadow-lg bg-[#F3F4F6]">
       
       <div className="h-10 w-auto flex items-center">
         <Image

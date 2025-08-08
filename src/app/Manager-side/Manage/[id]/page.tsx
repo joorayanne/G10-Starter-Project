@@ -12,8 +12,8 @@ import { Application_id, Feedback } from "@/types/Manger";
 
 interface APIResponse {
   data: {
-    application: Application_id;
-    review: Feedback;
+    application: Application_id | null;
+    review: Feedback | null;
   };
 }
 

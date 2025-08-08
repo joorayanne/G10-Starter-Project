@@ -154,7 +154,7 @@ const AllApplications = () => {
             </p>
             <Tags label={app.status} color="5" />
             <select
-              className="text-sm rounded px-3 py-1 text-blue-500 bg-transparent"
+              className="text-sm rounded px-3 py-1 border-0 text-blue-500 bg-transparent"
               onChange={(e) => handleSelectChange(e, app.id)}
               defaultValue=""
             >
