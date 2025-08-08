@@ -36,9 +36,7 @@ const UserManagement = () => {
     setError(null);
 
     try {
-      const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL ||
-        "https://a2sv-application-platform-backend-team10.onrender.com";
+      const apiUrl ="https://a2sv-application-platform-backend-team10.onrender.com";
       const url = new URL("/admin/users", apiUrl);
       url.searchParams.append("page", currentPage.toString());
       url.searchParams.append("limit", limit.toString());
@@ -122,8 +120,8 @@ const UserManagement = () => {
       // Remove the deleted user from the UI
       setUsers((prev) => prev.filter((user) => user.id !== userId));
       setTotalCount((prev) => prev - 1);
-    } catch (err: any) {
-      alert(err.message || "Error deleting user");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Error deleting user");
     }
   };
  
