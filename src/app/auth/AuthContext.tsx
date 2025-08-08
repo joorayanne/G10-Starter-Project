@@ -72,13 +72,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (role === 'admin') {
         router.push('/admin');
-      } else {
-        router.push('/test');
+      } 
+      else if (role === 'applicant') {
+        router.push('/applicant-routes/login');      
+      } 
+      else if (role === 'manager') {
+        router.push('/Manager-side');
+      }
+      else if (role === 'reviewer') {
+        router.push('/Reviewee');
       }
 
-      if (role === 'applicant') {
-        router.push('/applicant-routes/login');
-      } else {
+        else {
         router.push('/test');
       }
 

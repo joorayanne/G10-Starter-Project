@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Navbar from "@/components/admin/Navbar";
 import {
   BarChart,
   Bar,
