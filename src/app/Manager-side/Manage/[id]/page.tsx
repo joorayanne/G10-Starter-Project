@@ -21,8 +21,8 @@ const Manage = () => {
   const params = useParams();
   const id = params?.id;
 
-  const [application, setApplication] = useState<Application_id>();
-  const [feedback, setFeedback] = useState<Feedback>();
+  const [application, setApplication] = useState<Application_id|null>(null);
+  const [feedback, setFeedback] = useState<Feedback |null>(null);
 
   useEffect(() => {
     if (!id || typeof id !== "string") return;

@@ -14,40 +14,41 @@ const AllApplications = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      const token = getAccessToken();
+  const fetchApplications = async () => {
+    const token = getAccessToken();
 
-      if (!token) {
-        router.push("/auth/signin");
-        return;
-      }
+    if (!token) {
+      router.push("/auth/signin");
+      return;
+    }
 
-      try {
-        const res = await fetch(
-          "https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const json = await res.json();
-
-        if (json.success) {
-          setApplications(json.data.applications);
-        } else {
-          console.error("Failed to fetch applications:", json.message);
+    try {
+      const res = await fetch(
+        "https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      } catch (err) {
-        console.error("Error fetching applications:", err);
-      } finally {
-        setLoading(false);
+      );
+
+      const json = await res.json();
+
+      if (json.success) {
+        setApplications(json.data.applications);
+        console.log("Fetched applications:", json.data.applications); // ✅ log inside here
+      } else {
+        console.error("Failed to fetch applications:", json.message);
       }
-    };
-    console.log("Fetching applications", applications);
-    fetchApplications();
-  }, [router]);
+    } catch (err) {
+      console.error("Error fetching applications:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchApplications();
+}, [router]);
 
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -152,7 +153,7 @@ const AllApplications = () => {
             <p className="text-gray-800 font-semibold text-sm pl-2 pt-2 bg-gray-100">
               {app.assigned_reviewer_name ?? "Not Assigned"}
             </p>
-            <Tags label={app.status} color="5" />
+            <Tags label={app.status} color={app.status} />
             <select
               className="text-sm rounded px-3 py-1 border-0 text-blue-500 bg-transparent"
               onChange={(e) => handleSelectChange(e, app.id)}

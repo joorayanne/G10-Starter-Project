@@ -3,13 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getAccessToken } from "@/app/auth/authHelpers";
+
 import logo from "../../../public/images/logo.png"
 
-type Manager = {
-  full_name: string;
-};
+
 
 export default function Navbar() {
   const pathname = usePathname();
