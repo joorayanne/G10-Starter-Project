@@ -155,7 +155,7 @@ const ManagerActions = ({ applicantId }: Props) => {
 
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md w-full max-w-sm">
+    <div className="p-6 bg-white rounded-xl shadow-lg w-full max-w-sm">
       <h2 className="font-bold text-lg mb-4">Manager Actions</h2>
 
       <label className="block mb-2 text-sm font-medium">Assign Reviewer</label>

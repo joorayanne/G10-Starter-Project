@@ -8,7 +8,7 @@ interface Props {
 
 const ApplicantProfile = ({ applicant }: Props) => {
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md min-w-[65vw]">
+    <div className="p-6 bg-white rounded-xl shadow-lg min-w-[55vw]">
       <h2 className="font-bold text-lg mb-4">Applicant Profile</h2>
 
       <div className="grid grid-cols-2 gap-y-3 mb-4">

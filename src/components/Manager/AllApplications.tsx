@@ -36,7 +36,7 @@ const AllApplications = () => {
 
       if (json.success) {
         setApplications(json.data.applications);
-        console.log("Fetched applications:", json.data.applications); // ✅ log inside here
+        console.log("Fetched applications:", json.data.applications); 
       } else {
         console.error("Failed to fetch applications:", json.message);
       }
@@ -128,7 +128,7 @@ const AllApplications = () => {
     <div className="bg-white min-w-[40vw] md:max-w-[60vw] border border-gray-100 shadow-lg rounded-md p-5">
       <div className="md:flex py-2 justify-between">
         <p className="text-2xl font-bold mb-4">All Applications</p>
-        <select className="border border-gray-300 bg-gray-200 rounded-md md:mr-8">
+        <select className="border border-gray-300 bg-gray-200 rounded-md h-7 md:mr-8">
           <option value="all">Filter by Status</option>
         </select>
       </div>

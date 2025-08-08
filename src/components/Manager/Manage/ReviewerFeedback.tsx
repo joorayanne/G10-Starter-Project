@@ -1,5 +1,5 @@
 import React from 'react';
-import  Feedback  from '@/types/Manger';
+import  {Feedback}  from '@/types/Manger';
 
 
 
@@ -9,7 +9,7 @@ interface FeedbackProps {
 
 const ReviewerFeedback = ({ feedback }: FeedbackProps) => {
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md mt-4 max-w-[65vw]">
+    <div className="p-6 bg-white rounded-xl shadow-lg mt-4 max-w-[65vw]">
       <h2 className="font-bold text-lg mb-4">Reviewer Feedback</h2>
 
       <div className="grid grid-cols-2 gap-4 mb-4">

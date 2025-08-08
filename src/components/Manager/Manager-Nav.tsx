@@ -49,7 +49,18 @@ export default function Navbar() {
   return (
     <nav className="w-full py-2  flex items-center justify-evenly px-10 border border-gray-200 shadow-lg bg-[#F3F4F6]">
       
-      <div className="h-10 w-auto flex items-center">
+      <div className="h-10 w-auto flex  items-center">
+        
+
+        { !(isDashboard) ? (
+          <button
+            className="flex items-center text-gray-700 hover:text-blue-500 ml-4 text-sm md:text-base"
+            onClick={() => router.push("/Manager-side")}
+          >
+            ← Back to Dashboard
+          </button>
+        ):
+        (
         <Image
           src={logo}
           alt="A2SV Logo"
@@ -57,14 +68,6 @@ export default function Navbar() {
           width={120}
           height={24}
         />
-
-        { !(isDashboard) && (
-          <button
-            className="flex items-center text-gray-700 hover:text-blue-500 ml-4 text-sm md:text-base"
-            onClick={() => router.push("/Manager-side")}
-          >
-            ← Back to Dashboard
-          </button>
         )}
       </div>
 
