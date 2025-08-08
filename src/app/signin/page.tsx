@@ -69,10 +69,7 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <NavBar />
-
-      {/* Main Form */}
-      <main className="flex-1 flex items-center justify-center px-4">
+      <main className="flex-1 flex justify-center pt-24">
         <div className="w-full max-w-md">
           <div className="flex flex-col items-center text-center mb-2">
             <Image src={logo} width={120} height={24} alt="A2SV Logo" />
