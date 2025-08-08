@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/admin/Navbar";
-
+import { getAccessToken } from "../../../auth/authHelpers";
 interface FormData {
   fullName: string;
   email: string;
@@ -34,7 +34,7 @@ const Page: React.FC = () => {
 
         const response = await fetch(`${apiUrl}/admin/users/${id}`, {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+            Authorization: `Bearer ${getAccessToken()}`,
             "Content-Type": "application/json",
           },
         });

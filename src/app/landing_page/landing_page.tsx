@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import Footer from "../../components/common/footer";
 import NavBar from "../../components/common/NavBar";
+import Image from "next/image";
 
 export default function LandingPage() {
   return (
@@ -14,7 +14,7 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section
           className="relative h-[55vh] flex items-center bg-cover bg-center"
-          style={{ backgroundImage: "url('/image/student_background.png')" }}
+          style={{ backgroundImage: "url('/images/student_background.png')" }}
         >
           <div className="absolute inset-0 bg-black/40"></div>
 
@@ -36,14 +36,14 @@ export default function LandingPage() {
         {/* Trusted By Logos */}
         <section className="flex justify-center items-center gap-10 py-6 bg-[#F3F4F6]">
           <Image
-            src="/image/google.svg"
+            src="/images/google.svg"
             alt="Google"
             width={180}
             height={70}
             className="object-contain"
           />
           <Image
-            src="/image/amazon.svg"
+            src="/images/amazon.svg"
             alt="Amazon"
             width={180}
             height={70}
@@ -65,7 +65,7 @@ export default function LandingPage() {
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <div className="flex items-center mb-2">
                 <Image
-                  src="/image/phase1.svg"
+                  src="/images/phase1.svg"
                   alt="Screening Icon"
                   width={24}
                   height={24}
@@ -83,7 +83,7 @@ export default function LandingPage() {
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <div className="flex items-center mb-2">
                 <Image
-                  src="/image/phase2.svg"
+                  src="/images/phase2.svg"
                   alt="Bootcamp Icon"
                   width={24}
                   height={24}
@@ -103,7 +103,7 @@ export default function LandingPage() {
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <div className="flex items-center mb-2">
                 <Image
-                  src="/image/phase3.svg"
+                  src="/images/phase3.svg"
                   alt="Mentorship Icon"
                   width={24}
                   height={24}
@@ -123,7 +123,7 @@ export default function LandingPage() {
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <div className="flex items-center mb-2">
                 <Image
-                  src="/image/phase4.svg"
+                  src="/images/phase4.svg"
                   alt="Employment Icon"
                   width={24}
                   height={24}
@@ -159,7 +159,7 @@ export default function LandingPage() {
             {/* Right Image */}
             <div className="flex justify-center">
               <Image
-                src="/image/team_meeting.svg"
+                src="/images/team_meeting.svg"
                 alt="Engineers Illustration"
                 width={500}
                 height={400}
@@ -184,7 +184,7 @@ export default function LandingPage() {
       <div className="flex items-center justify-between">
         {/* Profile Image */}
         <Image
-          src="/image/mosh.png"
+          src="/images/mosh.png"
           alt="Sara Kebede"
           width={50}
           height={50}
@@ -211,7 +211,7 @@ export default function LandingPage() {
       <div className="flex items-center justify-between">
         {/* Profile Image */}
         <Image
-          src="/image/angela.svg"
+          src="/images/angela.svg"
           alt="Sara Kebede"
           width={50}
           height={50}
@@ -236,7 +236,7 @@ export default function LandingPage() {
       <div className="flex items-center justify-between">
         {/* Profile Image */}
         <Image
-          src="/image/angela2.svg"
+          src="/images/angela2.svg"
           alt="Sara Kebede"
           width={50}
           height={50}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import logo from '../../../public/images/logo.png'
+
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
   { name: "Users", href: "/admin/users" },
@@ -15,21 +15,22 @@ export default function AdminNavbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-around w-full px-8 py-4 bg-white border-b border-gray-200">
+    <nav className="flex items-center justify-around w-full px-10 py-2 bg-white border-b border-gray-200">
       {/* Logo */}
       <Link href="/admin" className="flex items-center space-x-2">
-        <Image src={logo} width={120} height={24} alt="A2SV Logo" />
+
+        <Image src='/images/logo.png' width={120} height={24} alt="A2SV Logo" />
       </Link>
 
       {/* Navigation Links */}
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-7">
         {navLinks.map((link) => (
           <Link
             key={link.name}
             href={link.href}
-            className={`text-sm font-medium ${
+            className={`text-[16px] font-medium ${
               pathname === link.href
-                ? "text-black border-b-2 border-black pb-1"
+                ? "text-black underline underline-offset-8"
                 : "text-gray-600 hover:text-black"
             }`}
           >

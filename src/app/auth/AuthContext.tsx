@@ -77,6 +77,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         router.push('/test');
       }
 
+      if (role === 'applicant') {
+        router.push('/applicant-routes/login');
+      } else {
+        router.push('/test');
+      }
+
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Login error:', err.message);
