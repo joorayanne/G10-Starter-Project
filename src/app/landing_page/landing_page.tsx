@@ -23,8 +23,8 @@ export default function LandingPage() {
               Forge Your Future in Tech
             </h1>
             <p className="text-lg mb-6">
-              Join an elite community of Africa’s brightest minds, and get
-              fast-tracked to a software engineering career at the world’s
+              Join an elite community of Africa&apos;’s brightest minds, and get
+              fast-tracked to a software engineering career at the world&apos;’s
               leading tech companies.
             </p>
             <button className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
@@ -149,9 +149,9 @@ export default function LandingPage() {
                 Built by Engineers, for Engineers
               </h2>
               <p className="text-gray-600 mb-6">
-                A2SV is not just a program; it's a community. We're on a mission
-                to identify Africa's most brilliant minds and provide them with
-                resources, mentorship, and opportunities to solve humanity's
+                A2SV is not just a program; it&apos;’s a community. We&apos;’re on a mission
+                to identify Africa&apos;’s most brilliant minds and provide them with
+                resources, mentorship, and opportunities to solve humanity&apos;’s
                 greatest challenges.
               </p>
             </div>
@@ -170,100 +170,106 @@ export default function LandingPage() {
         </section>
 
         <section className="py-16 px-6 md:px-20 bg-gray-50">
-  <h2 className="text-3xl font-bold text-center mb-10">Meet Our Alumni</h2>
+          <h2 className="text-3xl font-bold text-center mb-10">Meet Our Alumni</h2>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-    {/* Alumni Card Example */}
-    <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
-      {/* Testimonial Text */}
-      <p className="text-gray-600 mb-6">
-        "A2SV completely changed the trajectory of my career. The training is intense, but of the community and the opportunities are unparalleled. I'm now at my dream company, and I owe it all to A2SV."
-      </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Alumni Card Example */}
+            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
+              {/* Testimonial Text */}
+              <p className="text-gray-600 mb-6">
+                &quot;A2SV completely changed the trajectory of my career. The training is intense, but the community and the opportunities are unparalleled. I&apos;’m now at my dream company, and I owe it all to A2SV.&quot;
+              </p>
 
-      {/* Bottom Row: Image & Info */}
-      <div className="flex items-center justify-between">
-        {/* Profile Image */}
-        <Image
-          src="/images/mosh.png"
-          alt="Sara Kebede"
-          width={50}
-          height={50}
-          className="rounded-full object-cover"
-        />
+              {/* Bottom Row: Image & Info */}
+              <div className="flex items-center justify-between">
+                {/* Profile Image */}
+                <Image
+                  src="/images/mosh.png"
+                  alt="Sara Kebede"
+                  width={50}
+                  height={50}
+                  className="rounded-full object-cover"
+                />
 
-        {/* Name & Role */}
-        <div className="text-right">
-          <h3 className="font-semibold text-lg">Abel Tadesse</h3>
-          <span className="text-sm text-gray-500">Software Engineer @ Google</span>
-        </div>
-      </div>
-    </div>
+                {/* Name & Role */}
+                <div className="text-right">
+                  <h3 className="font-semibold text-lg">Abel Tadesse</h3>
+                  <span className="text-sm text-gray-500">Software Engineer @ Google</span>
+                </div>
+              </div>
+            </div>
 
-    {/* Repeat Cards for Other Alumni... */}
+            {/* Repeat Cards for Other Alumni... */}
+            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
+              {/* Testimonial Text */}
+              <p className="text-gray-600 mb-6">
+                &quot;The problem-solving skills I learned at A2SV are invaluable. The mentors push you to be your best and you&apos;’re surrounded by people who are just as passionate as you are.&quot;
+              </p>
 
-     <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
-      {/* Testimonial Text */}
-      <p className="text-gray-600 mb-6">
-        "The problem-solving skills I learned at A2SV are invaluable. The mentors push you to be your best and you're surrounded by people who are just as passionate as you are."
-      </p>
+              {/* Bottom Row: Image & Info */}
+              <div className="flex items-center justify-between">
+                {/* Profile Image */}
+                <Image
+                  src="/images/angela.svg"
+                  alt="Sara Kebede"
+                  width={50}
+                  height={50}
+                  className="rounded-full object-cover"
+                />
 
-      {/* Bottom Row: Image & Info */}
-      <div className="flex items-center justify-between">
-        {/* Profile Image */}
-        <Image
-          src="/images/angela.svg"
-          alt="Sara Kebede"
-          width={50}
-          height={50}
-          className="rounded-full object-cover"
-        />
+                {/* Name & Role */}
+                <div className="text-right">
+                  <h3 className="font-semibold text-lg">Bethlehem Tadesse</h3>
+                  <span className="text-sm text-gray-500">Software Engineer, Amazon</span>
+                </div>
+              </div>
+            </div>
 
-        {/* Name & Role */}
-        <div className="text-right">
-          <h3 className="font-semibold text-lg">Bethlehem Tadesse</h3>
-          <span className="text-sm text-gray-500">Software Engineer, Amazon</span>
-        </div>
-      </div>
-    </div>
+            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
+              {/* Testimonial Text */}
+              <p className="text-gray-600 mb-6">
+                &quot;A2SV is more than a bootcamp. It&apos;’s a family that supports you long after you&apos;’ve graduated. The network you build here is for life.&quot;
+              </p>
 
-     <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
-      {/* Testimonial Text */}
-      <p className="text-gray-600 mb-6">
-        "A2SV is more than a bootcamp. It's a family that supports you long after you've graduated. The network you build here is for life."
-      </p>
+              {/* Bottom Row: Image & Info */}
+              <div className="flex items-center justify-between">
+                {/* Profile Image */}
+                <Image
+                  src="/images/angela2.svg"
+                  alt="Sara Kebede"
+                  width={50}
+                  height={50}
+                  className="rounded-full object-cover"
+                />
 
-      {/* Bottom Row: Image & Info */}
-      <div className="flex items-center justify-between">
-        {/* Profile Image */}
-        <Image
-          src="/images/angela2.svg"
-          alt="Sara Kebede"
-          width={50}
-          height={50}
-          className="rounded-full object-cover"
-        />
+                {/* Name & Role */}
+                <div className="text-right">
+                  <h3 className="font-semibold text-lg">Caleb Alemayehu</h3>
+                  <span className="text-sm text-gray-500">Software Engineer, Palantir</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        {/* Name & Role */}
-        <div className="text-right">
-          <h3 className="font-semibold text-lg">Caleb Alemayehu</h3>
-          <span className="text-sm text-gray-500">Software Engineer, Palantir</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section className="bg-[#4338CA] h-64">
-  <div className="p-10">
-  <h3 className="font-semibold text-white text-lg text-center pt-7 ">Ready to Change your life</h3>
-  <p className="text-sm text-white text-center">The next application cycle now open. Take the first step towards your dream career</p>
-  <div className="flex justify-center mt-6">
-    <Link href="#" className="px-6 py-3 bg-white text-blue-500 rounded-md  transition">
-      Apply Now
-    </Link> 
-    </div>
-</div>
-</section>
+        <section className="bg-[#4338CA] h-64">
+          <div className="p-10">
+            <h3 className="font-semibold text-white text-lg text-center pt-7">
+              Ready to Change your life
+            </h3>
+            <p className="text-sm text-white text-center">
+              The next application cycle now open. Take the first step towards your dream career
+            </p>
+            <div className="flex justify-center mt-6">
+              <Link
+                href="#"
+                className="px-6 py-3 bg-white text-blue-500 rounded-md transition"
+              >
+                Apply Now
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

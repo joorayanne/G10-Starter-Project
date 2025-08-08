@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Navbar from "@/components/admin/Navbar";
+import Navbar from "@/components/admin/Admin_Navbar";
 import { getAccessToken } from "../../../auth/authHelpers";
 interface FormData {
   fullName: string;

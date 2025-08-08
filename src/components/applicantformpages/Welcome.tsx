@@ -21,6 +21,8 @@ const Welcome = () => {
   const [activeCycle, setActiveCycle] = useState<Cycle | null>(null);
 
   useEffect(() => {
+    let isMounted = true; // Flag to prevent state updates after unmount
+
     const fetchAndSetActiveCycle = async () => {
       const token = localStorage.getItem("token");
       console.log("Token available:", !!token);
@@ -60,7 +62,7 @@ const Welcome = () => {
           if (cycleRes.ok) {
             const cycleData = await cycleRes.json();
             console.log("Fetch response data (detailed cycle):", JSON.stringify(cycleData, null, 2));
-            if (cycleData.success && cycleData.data) {
+            if (cycleData.success && cycleData.data && isMounted) {
               setActiveCycle(cycleData.data);
             } else {
               console.log("No valid detailed cycle data:", cycleData.message);
@@ -82,7 +84,7 @@ const Welcome = () => {
 
       // Fallback to stored cycleId if no active cycle was set and it exists
       const savedCycleId = localStorage.getItem("activeCycleId");
-      if (savedCycleId && !activeCycle) {
+      if (savedCycleId && !activeCycle && isMounted) {
         console.log("Falling back to saved cycleId:", savedCycleId);
         try {
           const res = await fetch(
@@ -100,7 +102,7 @@ const Welcome = () => {
           }
           const data = await res.json();
           console.log("Fetch response data (saved cycle):", JSON.stringify(data, null, 2));
-          if (data.success && data.data) {
+          if (data.success && data.data && isMounted) {
             setActiveCycle(data.data);
           }
         } catch (error: unknown) {
@@ -114,7 +116,11 @@ const Welcome = () => {
     };
 
     fetchAndSetActiveCycle();
-  }, []);
+
+    return () => {
+      isMounted = false; // Cleanup to prevent state updates after unmount
+    };
+  }, [activeCycle]); // Added activeCycle to dependency array with safeguard
 
   return (
     <>

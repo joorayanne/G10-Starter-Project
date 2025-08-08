@@ -1,6 +1,6 @@
 import { AuthProvider } from "./auth/AuthContext";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SessionProvider } from "next-auth/react"; 
+// import { SessionProvider } from "next-auth/react"; 
 import "./globals.css";
 import Footer from "../components/common/footer";
 
@@ -32,6 +32,7 @@ export default function RootLayout({
 
           <AuthProvider>
             {children}
+            <Footer/>
           </AuthProvider>
 
       </body>

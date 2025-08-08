@@ -11,15 +11,21 @@ const navLinks = [
   { name: "Analytics", href: "/admin/analytics" },
 ];
 
-export default function AdminNavbar() {
+interface NavbarProps {
+  currentPage?: string; // Optional prop to override the active page
+}
+
+export default function AdminNavbar({ currentPage }: NavbarProps) {
   const pathname = usePathname();
+
+  // Use currentPage if provided, otherwise fall back to pathname
+  const activePath = currentPage || pathname || "/admin";
 
   return (
     <nav className="flex items-center justify-around w-full px-10 py-2 bg-white border-b border-gray-200">
       {/* Logo */}
       <Link href="/admin" className="flex items-center space-x-2">
-
-        <Image src='/images/logo.png' width={120} height={24} alt="A2SV Logo" />
+        <Image src="/images/logo.png" width={120} height={24} alt="A2SV Logo" />
       </Link>
 
       {/* Navigation Links */}
@@ -29,7 +35,7 @@ export default function AdminNavbar() {
             key={link.name}
             href={link.href}
             className={`text-[16px] font-medium ${
-              pathname === link.href
+              activePath === link.href
                 ? "text-black underline underline-offset-8"
                 : "text-gray-600 hover:text-black"
             }`}

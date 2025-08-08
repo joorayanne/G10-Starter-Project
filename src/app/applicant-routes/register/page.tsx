@@ -36,8 +36,12 @@ const Register: React.FC = () => {
       } else {
         throw new Error(result.detail || 'Registration failed');
       }
-    } catch (error: any) {
-      alert(`Registration failed: ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(`Registration failed: ${error.message}`);
+      } else {
+        alert('Registration failed: An unknown error occurred.');
+      }
     }
   };
 

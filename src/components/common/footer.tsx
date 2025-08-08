@@ -17,7 +17,7 @@ const Footer = () => {
         
             </div>
             <p className="text-gray-400 text-base max-w-xs">
-              Preparing Africa's top tech talent for global opportunities.
+              Preparing Africa &apos;s top tech talent for global opportunities.
             </p>
           </div>
 
