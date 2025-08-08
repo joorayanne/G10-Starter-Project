@@ -18,7 +18,8 @@ export default function AdminNavbar() {
     <nav className="flex items-center justify-around w-full px-10 py-2 bg-white border-b border-gray-200">
       {/* Logo */}
       <Link href="/admin" className="flex items-center space-x-2">
-        <Image src="/images/logo.png" width={120} height={24} alt="A2SV Logo" />
+
+        <Image src='/images/logo.png' width={120} height={24} alt="A2SV Logo" />
       </Link>
 
       {/* Navigation Links */}
