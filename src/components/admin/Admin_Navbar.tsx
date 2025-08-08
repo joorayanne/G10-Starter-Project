@@ -62,14 +62,6 @@ export default function AdminNavbar() {
             Logout
           </Link>
         </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden p-2 text-gray-700"
-        >
-          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
       </div>
 
       {/* Mobile Dropdown Menu */}
