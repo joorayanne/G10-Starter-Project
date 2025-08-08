@@ -1,4 +1,5 @@
 import React from 'react'
+
 interface DisplayProps {
     title: string;
     amount: number;

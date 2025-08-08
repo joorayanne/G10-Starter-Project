@@ -81,6 +81,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (role === 'applicant') {
         router.push('/applicant-routes/login');
+      } else if (role === 'manager'){
+        router.push('/Manager-side');
       } else {
         router.push('/test');
       }

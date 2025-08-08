@@ -1,14 +1,63 @@
 "use client";
-import React, { useState } from "react";
-import { getAccessToken } from "@/app/auth/authHelpers"; 
+
+import React, { useEffect, useState } from "react";
+import { getAccessToken } from "@/app/auth/authHelpers";
 
 interface Props {
   applicantId: string;
 }
 
+interface Reviewer {
+  id: string;
+  full_name: string;
+  email: string;
+}
+
+interface ReviewersResponse {
+  data: {
+    reviewers: Reviewer[];
+  };
+}
+
 const ManagerActions = ({ applicantId }: Props) => {
-  const [reviewer, setReviewer] = useState("Jane R.");
+  const [reviewers, setReviewers] = useState<Reviewer[]>([]);
+  const [selectedReviewer, setSelectedReviewer] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchReviewers = async () => {
+      const token = getAccessToken();
+      if (!token) return;
+
+      try {
+        const res = await fetch(
+          "https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/available-reviewers/?page=1&limit=10",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch reviewers.");
+        }
+
+        const datas: ReviewersResponse = await res.json();
+        const reviewerList = datas.data.reviewers;
+
+        setReviewers(reviewerList);
+
+        if (reviewerList.length > 0) {
+          setSelectedReviewer(reviewerList[0].full_name);
+        }
+      } catch (error) {
+        console.error("Error fetching reviewers:", error);
+      }
+    };
+
+    fetchReviewers();
+  }, []);
 
   const handleAssignReviewer = async () => {
     const token = getAccessToken();
@@ -16,6 +65,12 @@ const ManagerActions = ({ applicantId }: Props) => {
       alert("No access token found. Please log in again.");
       return;
     }
+
+    if (!selectedReviewer) {
+      alert("Please select a reviewer.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(
@@ -28,14 +83,15 @@ const ManagerActions = ({ applicantId }: Props) => {
           },
           body: JSON.stringify({
             applicantId,
-            reviewer,
+            reviewer: selectedReviewer,
           }),
         }
       );
 
       const result = await res.json();
+
       if (res.ok) {
-        alert(`✅ Reviewer "${reviewer}" assigned successfully!`);
+        alert(`✅ Reviewer "${selectedReviewer}" assigned successfully!`);
       } else {
         alert(`❌ Failed to assign reviewer: ${result.message}`);
       }
@@ -53,9 +109,11 @@ const ManagerActions = ({ applicantId }: Props) => {
       alert("No access token found. Please log in again.");
       return;
     }
+
     if (!window.confirm(`Are you sure you want to ${decision} this application?`)) {
       return;
     }
+
     setLoading(true);
     try {
       const res = await fetch(
@@ -74,6 +132,7 @@ const ManagerActions = ({ applicantId }: Props) => {
       );
 
       const result = await res.json();
+
       if (res.ok) {
         alert(`✅ Application ${decision}ed successfully.`);
       } else {
@@ -90,21 +149,29 @@ const ManagerActions = ({ applicantId }: Props) => {
   return (
     <div className="p-6 bg-white rounded-xl shadow-md w-full max-w-sm">
       <h2 className="font-bold text-lg mb-4">Manager Actions</h2>
+
       <label className="block mb-2 text-sm font-medium">Assign Reviewer</label>
-      <input
-        value={reviewer}
-        onChange={(e) => setReviewer(e.target.value)}
+      <select
+        value={selectedReviewer}
+        onChange={(e) => setSelectedReviewer(e.target.value)}
         className="w-full px-3 py-2 border rounded-md mb-4"
-        placeholder="Enter reviewer name"
-        disabled={loading}
-      />
+        disabled={loading || reviewers.length === 0}
+      >
+        {reviewers.map((rev) => (
+          <option key={rev.id} value={rev.full_name}>
+            {rev.full_name}
+          </option>
+        ))}
+      </select>
+
       <button
         onClick={handleAssignReviewer}
         className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700 disabled:opacity-50"
-        disabled={loading}
+        disabled={loading || !selectedReviewer}
       >
         {loading ? "Processing..." : "Confirm"}
       </button>
+
       <div className="border-t pt-4">
         <h3 className="font-semibold mb-2">Final Decision</h3>
         <p className="text-sm mb-4 text-gray-600">
