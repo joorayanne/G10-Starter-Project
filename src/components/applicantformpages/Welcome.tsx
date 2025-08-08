@@ -5,202 +5,116 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Cycle } from "@/types/cycle";
 
-interface ApplicationStatus {
-  id: string;
-  status: string;
-  school: string;
-  country: string;
-  degree: string;
-  submitted_at: string;
-}
-
-interface ApiResponse {
+interface ActiveCycleResponse {
   success: boolean;
-  data: ApplicationStatus | null;
-  message: string;
-}
-
-interface CycleListResponse {
-  success: boolean;
-  data: Cycle[];
+  data: {
+    cycles: Cycle[];
+    total_count: number;
+    page: number;
+    limit: number;
+  };
   message: string;
 }
 
 const Welcome = () => {
   const router = useRouter();
   const [activeCycle, setActiveCycle] = useState<Cycle | null>(null);
-  const [applicationStatus, setApplicationStatus] = useState<ApplicationStatus | null>(null);
-  const [noApplicationMessage, setNoApplicationMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchActiveCycle = async () => {
-      const cycleId = localStorage.getItem("activeCycleId");
-      console.log("Fetched cycleId from localStorage:", cycleId);
-      if (cycleId) {
-        try {
-          const token = localStorage.getItem("token");
-          const res = await fetch(
-            `https://a2sv-application-platform-backend-team10.onrender.com/cycles/${cycleId}/`,
-            {
-              cache: "no-store",
-              headers: token ? { Authorization: `Bearer ${token}` } : {},
-            }
-          );
-          console.log("Fetch response status (cycle):", res.status);
-          if (!res.ok) {
-            const errorText = await res.text();
-            console.error("Cycle fetch error details:", errorText);
-            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-          }
-          const data = await res.json();
-          console.log("Fetch response data (cycle):", JSON.stringify(data, null, 2));
-          if (data.success && data.data) {
-            setActiveCycle(data.data);
-          } else {
-            console.log("No valid cycle data:", data.message);
-            // Try to set a default active cycle if the current one fails
-            await setDefaultActiveCycle();
-          }
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error("Fetch error (cycle):", error.message);
-          } else {
-            console.error("Unexpected error (cycle):", error);
-          }
-          // Fallback to default active cycle on error
-          await setDefaultActiveCycle();
-        }
-      } else {
-        console.log("No cycleId found in localStorage, setting default...");
-        await setDefaultActiveCycle();
-      }
-    };
-
-    const fetchApplicationStatus = async () => {
+    const fetchAndSetActiveCycle = async () => {
       const token = localStorage.getItem("token");
-      console.log("Fetched token from localStorage:", token);
-      if (token) {
-        try {
-          const res = await fetch(
-            "https://a2sv-application-platform-backend-team10.onrender.com/applications/my-status/",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              cache: "no-store",
-            }
-          );
-          console.log("Fetch response status (status):", res.status);
-          if (!res.ok) {
-            const errorText = await res.text();
-            console.error("Status fetch error details:", errorText);
-            if (res.status === 404) {
-              console.log("No application status found, defaulting to 0% complete");
-              setNoApplicationMessage("No application submitted yet.");
-            }
-            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-          }
-          const data: ApiResponse = await res.json();
-          console.log("Fetch response data (status):", data);
-          if (data.success && data.data) {
-            setApplicationStatus(data.data);
-            setNoApplicationMessage(null);
-          } else {
-            console.log("No valid application status:", data.message);
-            setApplicationStatus(null);
-            setNoApplicationMessage("Application data unavailable.");
-          }
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error("Fetch error (status):", error.message);
-          } else {
-            console.error("Unexpected error (status):", error);
-          }
-          setApplicationStatus(null);
-          setNoApplicationMessage("Failed to fetch application status.");
-        }
-      } else {
-        console.log("No token found in localStorage");
-        setApplicationStatus(null);
-        setNoApplicationMessage("Please log in to view your status.");
-      }
-    };
+      console.log("Token available:", !!token);
 
-    const setDefaultActiveCycle = async () => {
-      const token = localStorage.getItem("token");
       try {
+        // Fetch active cycles
         const res = await fetch(
-          "https://a2sv-application-platform-backend-team10.onrender.com/cycles/", // Adjust endpoint if needed
+          "https://a2sv-application-platform-backend-team10.onrender.com/cycles/active/",
           {
             cache: "no-store",
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }
         );
-        console.log("Fetch response status (cycle list):", res.status);
+        console.log("Fetch response status (active cycles):", res.status);
         if (!res.ok) {
           const errorText = await res.text();
-          console.error("Cycle list fetch error details:", errorText);
+          console.error("Active cycles fetch error details:", errorText);
           throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
         }
-        const data: CycleListResponse = await res.json();
-        console.log("Fetch response data (cycle list):", JSON.stringify(data, null, 2));
-        if (data.success && data.data && data.data.length > 0) {
-          const activeCycle = data.data.find((cycle) => cycle.is_active);
-          if (activeCycle) {
-            localStorage.setItem("activeCycleId", activeCycle.id.toString());
-            console.log("Default active cycle set:", activeCycle.id);
-            // Re-fetch the active cycle with the new ID
-            const cycleRes = await fetch(
-              `https://a2sv-application-platform-backend-team10.onrender.com/cycles/${activeCycle.id}/`,
-              {
-                cache: "no-store",
-                headers: token ? { Authorization: `Bearer ${token}` } : {},
-              }
-            );
-            if (cycleRes.ok) {
-              const cycleData = await cycleRes.json();
-              if (cycleData.success && cycleData.data) {
-                setActiveCycle(cycleData.data);
-              }
+        const data: ActiveCycleResponse = await res.json();
+        console.log("Fetch response data (active cycles):", JSON.stringify(data, null, 2));
+
+        if (data.success && Array.isArray(data.data.cycles) && data.data.cycles.length > 0) {
+          const activeCycleFromList = data.data.cycles[0]; // Use the first active cycle
+          const cycleId = activeCycleFromList.id.toString();
+          localStorage.setItem("activeCycleId", cycleId);
+          console.log("Default active cycle set:", cycleId);
+
+          // Fetch detailed cycle data
+          const cycleRes = await fetch(
+            `https://a2sv-application-platform-backend-team10.onrender.com/cycles/${activeCycleFromList.id}/`,
+            {
+              cache: "no-store",
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+            }
+          );
+          if (cycleRes.ok) {
+            const cycleData = await cycleRes.json();
+            console.log("Fetch response data (detailed cycle):", JSON.stringify(cycleData, null, 2));
+            if (cycleData.success && cycleData.data) {
+              setActiveCycle(cycleData.data);
+            } else {
+              console.log("No valid detailed cycle data:", cycleData.message);
             }
           } else {
-            console.log("No active cycle found in the list");
+            const errorText = await cycleRes.text();
+            console.error("Detailed cycle fetch error:", errorText);
           }
         } else {
-          console.log("No cycle data available:", data.message);
+          console.log("No active cycles available:", data.message);
         }
       } catch (error: unknown) {
         if (error instanceof Error) {
-          console.error("Fetch error (cycle list):", error.message);
+          console.error("Fetch error (active cycles):", error.message);
         } else {
-          console.error("Unexpected error (cycle list):", error);
+          console.error("Unexpected error (active cycles):", error);
+        }
+      }
+
+      // Fallback to stored cycleId if no active cycle was set and it exists
+      const savedCycleId = localStorage.getItem("activeCycleId");
+      if (savedCycleId && !activeCycle) {
+        console.log("Falling back to saved cycleId:", savedCycleId);
+        try {
+          const res = await fetch(
+            `https://a2sv-application-platform-backend-team10.onrender.com/cycles/${savedCycleId}/`,
+            {
+              cache: "no-store",
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+            }
+          );
+          console.log("Fetch response status (saved cycle):", res.status);
+          if (!res.ok) {
+            const errorText = await res.text();
+            console.error("Saved cycle fetch error details:", errorText);
+            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+          }
+          const data = await res.json();
+          console.log("Fetch response data (saved cycle):", JSON.stringify(data, null, 2));
+          if (data.success && data.data) {
+            setActiveCycle(data.data);
+          }
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error("Fetch error (saved cycle):", error.message);
+          } else {
+            console.error("Unexpected error (saved cycle):", error);
+          }
         }
       }
     };
 
-    fetchActiveCycle();
-    fetchApplicationStatus();
+    fetchAndSetActiveCycle();
   }, []);
-
-  // Calculate completion percentage based on status
-  const getCompletionPercentage = (status: string | undefined) => {
-    switch (status?.toLowerCase()) {
-      case "accepted":
-        return 100;
-      case "interview":
-        return 75;
-      case "under review":
-        return 50;
-      case "applied":
-        return 25;
-      default:
-        return 0;
-    }
-  };
-
-  const completionPercentage = applicationStatus
-    ? getCompletionPercentage(applicationStatus.status)
-    : 0;
 
   return (
     <>
@@ -261,33 +175,28 @@ const Welcome = () => {
               </>
             ) : (
               <p className="text-white ml-5 mt-5 flex items-center justify-center">
-                No active cycle selected. Please select one from the Cycles
-                page.
+                No active cycle available. Please contact an administrator to create or activate a
+                cycle.
               </p>
             )}
           </div>
 
           <div className="flex-col">
-            <div className="bg-white shadow-neutral-600 rounded-md w-72 mb-3 h-34">
-              <h2 className="ml-5 mt-5 mb-3 font-bold">Complete Your Profile</h2>
-              <p
-                className="bg-blue-200 rounded-lg w-32 text-blue-600 font-bold ml-5 mb-2 relative"
-                style={{ padding: "2px 4px" }}
-              >
-                {completionPercentage}% COMPLETE
-                {noApplicationMessage && (
-                  <span className="absolute top-full left-0 text-xs text-red-500 bg-white p-1 rounded">
-                    {noApplicationMessage}
-                  </span>
-                )}
-              </p>
-              <Link href="/" className="text-blue-400 font-bold ml-5 mt-7">
-                Go to Profile
-              </Link>
+            <div className="bg-white shadow-neutral-600 rounded-md w-72">
+              <h2 className="font-bold ml-7 mt-5 mb-2">Complete Your Profile</h2>
+              <p className="text-blue-600 font-bold rounded-full w-32 text-center bg-blue-300 ml-7 mb-2">75% Complete</p>
+              <Image
+                src="/images/Background1.png"
+                alt="bar"
+                width={250}
+                height={300}
+                className="mx-5"
+              />
+              <Link href="/profile" className="mx-10 text-blue-500 font-bold">Go to Profile</Link>
             </div>
 
-            <div className="bg-white shadow-neutral-600 rounded-md w-72">
-              <h2 className="font-bold ml-7 mt-5">Application CheckList</h2>
+            <div className="bg-white shadow-neutral-600 rounded-md w-72 mb-3 ">
+              <h2 className="ml-5 mt-5 mb-3 font-bold">Application CheckList</h2>
               <ul className="ml-7 font-extralight">
                 <li className="flex m-3">
                   <Image
@@ -353,4 +262,5 @@ const Welcome = () => {
     </>
   );
 };
-  export default Welcome;
+
+export default Welcome;
