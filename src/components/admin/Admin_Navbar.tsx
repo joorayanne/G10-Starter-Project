@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-
+import logo from '../../../public/images/logo.png'
+import { useProfile } from "@/contexts/ProfileContext";
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
   { name: "Users", href: "/admin/users" },
@@ -13,6 +14,7 @@ const navLinks = [
 
 export default function AdminNavbar() {
   const pathname = usePathname();
+  const { profileData } = useProfile();
 
   return (
     <nav className="flex items-center justify-around w-full px-10 py-2 bg-white border-b border-gray-200">
@@ -45,7 +47,7 @@ export default function AdminNavbar() {
           Your Profile
         </Link>
         <span className="text-gray-400">|</span>
-        <span>Admin User</span>
+        <span>{profileData?.full_name || 'Admin User'}</span>
         <span className="text-gray-400">|</span>
         <Link href="/logout" className="hover:underline text-gray-700">
           Logout
