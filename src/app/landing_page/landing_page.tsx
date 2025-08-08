@@ -27,7 +27,7 @@ export default function LandingPage() {
               fast-tracked to a software engineering career at the world&apos;’s
               leading tech companies.
             </p>
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+            <button className="px-6 py-3 bg-[#4F46E5] text-white rounded-md hover:bg-[#4338CA] transition">
               Start Your Application
             </button>
           </div>
@@ -52,91 +52,92 @@ export default function LandingPage() {
         </section>
 
         {/* Journey Section */}
-        <section className="py-12 px-6 md:px-20 bg-white">
+        <section className="py-12 px-5 md:px-20 bg-white">
           <h2 className="text-3xl font-bold text-center">
             Your Journey to Silicon Valley{" "}
           </h2>
           <p className="text-center text-gray-600 mb-5">
             A proven path from learning to leadership
           </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition flex items-start">
+              <Image
+                src="/images/phase1.svg"
+                alt="Screening Icon"
+                width={48}
+                height={48}
+                className="mr-1.5"
+              />
+              <div>
+                <h3 className="text-[16.5px] font-semibold mb-4">
+                  Phase 1: Foundations
+                </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Card 1: Screening */}
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
-              <div className="flex items-center mb-2">
-                <Image
-                  src="/images/phase1.svg"
-                  alt="Screening Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                <h3 className="text-xl font-semibold">Phase 1: Foundations</h3>
+                <p className="text-gray-600 text-[15px]">
+                  Master data structures, algorithms,and problem-solving
+                  techniques in intensive 3-month bootcamp.
+                </p>
               </div>
-              <p className="text-gray-600">
-                Master data structures, algorithms, and problem-solving
-                techniques in an intensive 3-month bootcamp.
-              </p>
             </div>
-
             {/* Card 2: Bootcamp */}
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
-              <div className="flex items-center mb-2">
-                <Image
-                  src="/images/phase2.svg"
-                  alt="Bootcamp Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                <h3 className="text-xl font-semibold">
+            <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition flex items-start">
+              <Image
+                src="/images/phase2.svg"
+                alt="Bootcamp Icon"
+                width={48}
+                height={48}
+                className="mr-2"
+              />
+              <div>
+                <h3 className="text-[16.5px] font-semibold mb-2">
                   Phase 2: Real-world Projects
                 </h3>
+
+                <p className="text-gray-600 text-[15px]">
+                  Apply your skills to build complex projects, collaborate in
+                  teams, and prepare for technical interviews.
+                </p>
               </div>
-              <p className="text-gray-600">
-                Apply your skills to build complex projects, collaborate in
-                teams, and prepare for technical interviews.
-              </p>
             </div>
 
             {/* Card 3: Mentorship */}
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
-              <div className="flex items-center mb-2">
-                <Image
-                  src="/images/phase3.svg"
-                  alt="Mentorship Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                <h3 className="text-xl font-semibold">
+            <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition flex items-start">
+              <Image
+                src="/images/phase3.svg"
+                alt="Mentorship Icon"
+                width={48}
+                height={48}
+                className="mr-4"
+              />
+              <div>
+                <h3 className="text-[16.5px] font-semibold mb-2">
                   Phase 3: Internship Placement
                 </h3>
+                <p className="text-gray-600 text-[15px]">
+                  We help you secure internships at top global tech companies to
+                  gain invaluable experience.
+                </p>
               </div>
-              <p className="text-gray-600">
-                We help you secure internships at top global tech companies to
-                gain invaluable experience.
-              </p>
             </div>
 
             {/* Card 4: Employment */}
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
-              <div className="flex items-center mb-2">
-                <Image
-                  src="/images/phase4.svg"
-                  alt="Employment Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                <h3 className="text-xl font-semibold">
+            <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition flex items-start">
+              <Image
+                src="/images/phase4.svg"
+                alt="Employment Icon"
+                width={48}
+                height={48}
+                className="mr-4"
+              />
+              <div>
+                <h3 className="text-[16.5px] font-semibold mb-2">
                   Phase 4: Full-Time Conversion
                 </h3>
+                <p className="text-gray-600 text-[15px]">
+                  Excel in your internship and convert it into a full-time
+                  offer, launching your global career.
+                </p>
               </div>
-              <p className="text-gray-600">
-                Excel in your internship and convert it into a full-time offer,
-                launching your global career.
-              </p>
             </div>
           </div>
         </section>
@@ -145,13 +146,15 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mx-50 my-20">
             {/* Left Text Content */}
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className="text-[28px] md:text-4xl font-bold mb-4">
                 Built by Engineers, for Engineers
               </h2>
               <p className="text-gray-600 mb-6">
-                A2SV is not just a program; it&apos;’s a community. We&apos;’re on a mission
-                to identify Africa&apos;’s most brilliant minds and provide them with
-                resources, mentorship, and opportunities to solve humanity&apos;’s
+
+                A2SV is not just a program; it is a community. We are on a mission
+                to identify Africa&apos;s most brilliant minds and provide them with
+                resources, mentorship, and opportunities to solve humanity&apos;s
+
                 greatest challenges.
               </p>
             </div>
@@ -170,6 +173,7 @@ export default function LandingPage() {
         </section>
 
         <section className="py-16 px-6 md:px-20 bg-gray-50">
+
           <h2 className="text-3xl font-bold text-center mb-10">Meet Our Alumni</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -183,6 +187,7 @@ export default function LandingPage() {
               {/* Bottom Row: Image & Info */}
               <div className="flex items-center justify-between">
                 {/* Profile Image */}
+
                 <Image
                   src="/images/mosh.png"
                   alt="Sara Kebede"
@@ -192,14 +197,17 @@ export default function LandingPage() {
                 />
 
                 {/* Name & Role */}
+
                 <div className="text-right">
                   <h3 className="font-semibold text-lg">Abel Tadesse</h3>
                   <span className="text-sm text-gray-500">Software Engineer @ Google</span>
+
                 </div>
               </div>
             </div>
 
             {/* Repeat Cards for Other Alumni... */}
+
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
               {/* Testimonial Text */}
               <p className="text-gray-600 mb-6">
