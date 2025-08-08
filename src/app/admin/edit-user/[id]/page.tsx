@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Navbar from "@/components/admin/Navbar";
 import { getAccessToken } from "../../../auth/authHelpers";
 interface FormData {
   fullName: string;
@@ -108,7 +107,6 @@ const Page: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="users" />
       <main className="px-30">
         <h1 className="font-bold text-3xl pt-7">Edit User</h1>
         <p className="pb-5 text-gray-400">Update user information and role.</p>

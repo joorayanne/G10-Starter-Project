@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Navbar from "../../../components/admin/Navbar";
 import { getAccessToken } from "../../auth/authHelpers";
 
 interface FormData {
@@ -97,7 +96,6 @@ const CreateUser: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="users" />
       <main className="px-30">
         <h1 className="font-bold text-3xl pt-7">Create New User</h1>
         <p className="pb-5 text-gray-400">

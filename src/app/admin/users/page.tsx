@@ -120,8 +120,8 @@ const UserManagement = () => {
       // Remove the deleted user from the UI
       setUsers((prev) => prev.filter((user) => user.id !== userId));
       setTotalCount((prev) => prev - 1);
-    } catch (err: any) {
-      alert(err.message || "Error deleting user");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Error deleting user");
     }
   };
  
