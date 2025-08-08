@@ -40,8 +40,8 @@ export default function AdminNavbar() {
       </div>
 
       {/* Profile Menu */}
-      <div className="flex items-center space-x-4 text-[16px] text-gray-700">
-        <Link href="/admin/profile" className="hover:underline text-indigo-600">
+      <div className="flex items-center space-x-4 text-sm text-gray-700">
+        <Link href="/profile" className="hover:underline text-indigo-600">
           Your Profile
         </Link>
         <span className="text-gray-400">|</span>
