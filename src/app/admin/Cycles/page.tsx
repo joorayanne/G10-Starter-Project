@@ -8,10 +8,14 @@ import { Cycle } from "@/types/cycle";
 export default function CyclesPage() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [selectedCycleId, setSelectedCycleId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const cyclesPerPage = 6;
 
   useEffect(() => {
-    // Safely access localStorage on the client side
-    const savedCycleId = typeof window !== "undefined" ? localStorage.getItem("activeCycleId") : null;
+    const savedCycleId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("activeCycleId")
+        : null;
     if (savedCycleId) {
       setSelectedCycleId(savedCycleId);
     }
@@ -19,9 +23,7 @@ export default function CyclesPage() {
     async function fetchCycles() {
       const res = await fetch(
         "https://a2sv-application-platform-backend-team10.onrender.com/cycles/",
-        {
-          cache: "no-store",
-        }
+        { cache: "no-store" }
       );
       const data = await res.json();
       setCycles(data.data?.cycles || []);
@@ -34,7 +36,18 @@ export default function CyclesPage() {
     const cycleIdString = cycleId.toString();
     setSelectedCycleId(cycleIdString);
     localStorage.setItem("activeCycleId", cycleIdString);
-    console.log("Selected cycle ID:", cycleIdString);
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil(cycles.length / cyclesPerPage);
+  const indexOfLastCycle = currentPage * cyclesPerPage;
+  const indexOfFirstCycle = indexOfLastCycle - cyclesPerPage;
+  const currentCycles = cycles.slice(indexOfFirstCycle, indexOfLastCycle);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   return (
@@ -50,8 +63,8 @@ export default function CyclesPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {cycles.length > 0 ? (
-            cycles.map((cycle) => (
+          {currentCycles.length > 0 ? (
+            currentCycles.map((cycle) => (
               <CycleCard
                 key={cycle.id}
                 cycle={cycle}
@@ -64,16 +77,40 @@ export default function CyclesPage() {
           )}
         </div>
 
+        {/* Pagination */}
         <div className="flex justify-between items-center text-sm text-gray-600">
-          <p>Showing 1 to {cycles.length} of {cycles.length} results</p>
+          <p>
+            Showing {indexOfFirstCycle + 1} to{" "}
+            {Math.min(indexOfLastCycle, cycles.length)} of {cycles.length} results
+          </p>
           <div className="flex items-center gap-2">
-            <button className="border rounded px-2 py-1">&lt;</button>
-            <button className="border rounded px-3 py-1 bg-indigo-50 text-indigo-600">
-              1
+            <button
+              className="border rounded px-2 py-1"
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              &lt;
             </button>
-            <button className="border rounded px-3 py-1">2</button>
-            <button className="border rounded px-3 py-1">3</button>
-            <button className="border rounded px-2 py-1">&gt;</button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                className={`border rounded px-3 py-1 ${
+                  currentPage === i + 1
+                    ? "bg-indigo-50 text-indigo-600"
+                    : ""
+                }`}
+                onClick={() => goToPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              className="border rounded px-2 py-1"
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              &gt;
+            </button>
           </div>
         </div>
       </div>

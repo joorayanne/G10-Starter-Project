@@ -66,7 +66,7 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="mt-10 w-1/2 mx-auto bg-white rounded-xl p-6 shadow">
+      <div className="mt-10 w-full md:w-1/2 mx-auto bg-white rounded-xl p-6 shadow">
         <h3 className="text-lg font-semibold mb-4">View Analytics</h3>
         <p className="mb-4 text-sm text-gray-600">Explore application data and platform insights.</p>
         <Link href="/admin/analytics">
