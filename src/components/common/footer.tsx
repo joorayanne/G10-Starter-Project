@@ -1,23 +1,25 @@
 import Image from "next/image";
+import logo from "../../../public/images/logo.png"
 
 const Footer = () => {
   return (
     <footer className="bg-[#1D2B3A] text-white border-t-4 border-blue-500">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-2 md:py-3
+ px-4 sm:px-6 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           {/* Logo and Tagline Section */}
           <div className="space-y-8 xl:col-span-1">
             <div className="flex items-center">
                 <Image
-                  src="./image/aastu-footer-logo.svg"
-                    alt="A2SV Logo"
+                  src={logo}
+                  alt="a2sv logo"
                     width={50}
                     height={50} 
                 />
         
             </div>
             <p className="text-gray-400 text-base max-w-xs">
-              Preparing Africa's top tech talent for global opportunities.
+              Preparing Africa&apos;s top tech talent for global opportunities.
             </p>
           </div>
 

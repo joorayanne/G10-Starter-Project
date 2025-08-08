@@ -149,9 +149,9 @@ export default function LandingPage() {
                 Built by Engineers, for Engineers
               </h2>
               <p className="text-gray-600 mb-6">
-                A2SV is not just a program; it's a community. We're on a mission
-                to identify Africa's most brilliant minds and provide them with
-                resources, mentorship, and opportunities to solve humanity's
+                A2SV is not just a program; it is a community. We are on a mission
+                to identify Africa&apos;s most brilliant minds and provide them with
+                resources, mentorship, and opportunities to solve humanity&apos;s
                 greatest challenges.
               </p>
             </div>
@@ -177,7 +177,7 @@ export default function LandingPage() {
     <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
       {/* Testimonial Text */}
       <p className="text-gray-600 mb-6">
-        "A2SV completely changed the trajectory of my career. The training is intense, but of the community and the opportunities are unparalleled. I'm now at my dream company, and I owe it all to A2SV."
+        &quot;A2SV completely changed the trajectory of my career. The training is intense, but of the community and the opportunities are unparalleled. I am now at my dream company, and I owe it all to A2SV.&quot;
       </p>
 
       {/* Bottom Row: Image & Info */}
@@ -204,7 +204,7 @@ export default function LandingPage() {
      <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
       {/* Testimonial Text */}
       <p className="text-gray-600 mb-6">
-        "The problem-solving skills I learned at A2SV are invaluable. The mentors push you to be your best and you're surrounded by people who are just as passionate as you are."
+        &quot;The problem-solving skills I learned at A2SV are invaluable. The mentors push you to be your best and you are surrounded by people who are just as passionate as you are.&quot;
       </p>
 
       {/* Bottom Row: Image & Info */}
@@ -229,7 +229,7 @@ export default function LandingPage() {
      <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
       {/* Testimonial Text */}
       <p className="text-gray-600 mb-6">
-        "A2SV is more than a bootcamp. It's a family that supports you long after you've graduated. The network you build here is for life."
+        &quot;A2SV is more than a bootcamp. It is a family that supports you long after you have graduated. The network you build here is for life.&quot;
       </p>
 
       {/* Bottom Row: Image & Info */}

@@ -1,4 +1,3 @@
-import Navbar from "@/components/admin/Admin_Navbar";
 import CreateCycleForm from "@/components/admin/CreateCycleForm";
 
 export default function AdminCreateCyclesPage() {
