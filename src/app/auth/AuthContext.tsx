@@ -1,7 +1,13 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useRouter } from "next/navigation";
 import {
   getAccessToken,
   getRefreshToken,
@@ -10,9 +16,9 @@ import {
   isAccessTokenExpired,
   refreshAccessToken,
   parseJwt,
-} from './authHelpers';
+} from "./authHelpers";
 
-type Role = 'applicant' | 'admin' | 'reviewer' | 'manager';
+type Role = "applicant" | "admin" | "reviewer" | "manager";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -36,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           await refreshAccessToken();
         } catch (err) {
-          console.error('Failed to refresh token:', err);
+          console.error("Failed to refresh token:", err);
           clearTokens();
           return;
         }
@@ -54,16 +60,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const res = await fetch('https://a2sv-application-platform-backend-team10.onrender.com/auth/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "https://a2sv-application-platform-backend-team10.onrender.com/auth/token",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        throw new Error(result.message || 'Login failed');
+        throw new Error(result.message || "Login failed");
       }
 
       const { access, refresh, role } = result.data;
@@ -71,19 +80,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
       setRole(role);
 
-      if (role === 'admin') {
-        router.push('/admin');
+      if (role === "admin") {
+        router.push("/admin");
       } else {
-        router.push('/test');
+        router.push("/test");
       }
-
     } catch (err: unknown) {
       if (err instanceof Error) {
-        console.error('Login error:', err.message);
+        console.error("Login error:", err.message);
         throw err;
       } else {
-        console.error('Login error:', err);
-        throw new Error('An unknown error occurred');
+        console.error("Login error:", err);
+        throw new Error("An unknown error occurred");
       }
     }
   };
@@ -97,6 +105,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
