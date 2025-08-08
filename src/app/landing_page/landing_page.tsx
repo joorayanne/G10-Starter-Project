@@ -150,10 +150,10 @@ export default function LandingPage() {
                 Built by Engineers, for Engineers
               </h2>
               <p className="text-gray-600 mb-6">
-                A2SV is not just a program; it's a community. We're on a mission
-                to identify Africa's most brilliant minds and provide them with
-                resources, mentorship, and opportunities to solve humanity's
-                greatest challenges.
+                A2SV is not just a program; it is a community. We are on a
+                mission to identify Africa&apos;s most brilliant minds and
+                provide them with resources, mentorship, and opportunities to
+                solve humanity&apos;s greatest challenges.
               </p>
             </div>
 

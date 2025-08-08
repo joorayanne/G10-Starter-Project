@@ -35,8 +35,12 @@ const Login: React.FC = () => {
       } else {
         throw new Error(result.detail || 'Login failed');
       }
-    } catch (error: any) {
-      alert(`Login failed: ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(`Login failed: ${error.message}`);
+      } else {
+        alert('Login failed: An unknown error occurred');
+      }
     }
   };
 

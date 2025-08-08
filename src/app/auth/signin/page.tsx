@@ -7,6 +7,7 @@ import { useAuth } from "../AuthContext";
 import logo from '../../../../public/images/logo.png'
 import NavBar from "@/components/common/NavBar";
 
+
 export default function SignInPage() {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
@@ -48,10 +49,23 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     <div className="min-h-screen flex flex-col justify-between">
       <main className="flex-1 flex justify-center pt-24">
         <div className="w-full max-w-md">
-          <div className="flex flex-col items-center text-center mb-6">
+          <div className="flex flex-col items-center text-center mb-2">
             <Image src={logo} width={120} height={24} alt="A2SV Logo" />
             <h2 className="mt-3 text-2xl font-semibold text-gray-800">Sign in to your account</h2>
           </div>
+
+          <div className="text-center mb-3 space-y-12 text-sm">
+              <div className="flex justify-center space-x-2">
+                <Link href="/" className="text-indigo-600 hover:underline block">
+                Back to Home
+              </Link>
+              <span>|</span>
+              <Link href="/signup" className="text-indigo-600 hover:underline block">
+                Create a new applicant account
+              </Link>
+              </div>
+            </div>
+
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -89,7 +103,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           </form>
         </div>
       </main>
-
       
     </div>
   );
