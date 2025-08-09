@@ -16,7 +16,11 @@ const navLinks = [
   { name: "Analytics", href: "/admin/analytics" },
 ];
 
-export default function AdminNavbar() {
+interface NavbarProps {
+  currentPage?: string; // Optional prop to override the active page
+}
+
+export default function AdminNavbar({ currentPage }: NavbarProps) {
   const pathname = usePathname();
 
   const { profileData } = useProfile();
@@ -24,6 +28,7 @@ export default function AdminNavbar() {
 
 
   return (
+
     <nav className="w-full bg-white border-b border-gray-200 px-4 md:px-10 py-2">
       <div className="flex items-center justify-between">
         {/* Logo */}
@@ -48,11 +53,13 @@ export default function AdminNavbar() {
           ))}
         </div>
 
+
         {/* Desktop Profile Menu */}
         <div className="hidden md:flex items-center space-x-4 text-[16px] text-gray-700">
           <Link
             href="/profile"
             className="hover:underline text-indigo-600"
+
           >
             Your Profile
           </Link>
@@ -109,6 +116,3 @@ export default function AdminNavbar() {
     </nav>
   );
 }
-
-
-

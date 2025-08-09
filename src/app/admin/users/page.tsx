@@ -297,12 +297,11 @@ import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
 
 
-
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit] = useState(5); // Remove setLimit since it's unused
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("");
 
@@ -408,7 +407,16 @@ const UserManagement = () => {
       setUsers((prev) => prev.filter((user) => user.id !== userId));
       setTotalCount((prev) => prev - 1);
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : "Error deleting user");
+
+      // Type guard to safely access message
+      let errorMessage = "Error deleting user";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === "object" && err !== null && "message" in err) {
+        errorMessage = (err as { message: string }).message;
+      }
+      alert(errorMessage);
+
     }
   };
 

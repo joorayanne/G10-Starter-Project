@@ -1,4 +1,3 @@
-
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
@@ -26,14 +25,7 @@ export default function RootLayout({
           backgroundColor: "#F3F4F6",
         }}
       >
-
-      
-
-        <Providers>
-          {children}
-          
-        </Providers>
-
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

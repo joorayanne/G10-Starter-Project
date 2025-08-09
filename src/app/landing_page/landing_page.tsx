@@ -23,8 +23,8 @@ export default function LandingPage() {
               Forge Your Future in Tech
             </h1>
             <p className="text-lg mb-6">
-              Join an elite community of Africa’s brightest minds, and get
-              fast-tracked to a software engineering career at the world’s
+              Join an elite community of Africa&apos;’s brightest minds, and get
+              fast-tracked to a software engineering career at the world&apos;’s
               leading tech companies.
             </p>
             <button className="px-6 py-3 bg-[#4F46E5] text-white rounded-md hover:bg-[#4338CA] transition">
@@ -150,10 +150,12 @@ export default function LandingPage() {
                 Built by Engineers, for Engineers
               </h2>
               <p className="text-gray-600 mb-6">
-                A2SV is not just a program; it is a community. We are on a
-                mission to identify Africa&apos;s most brilliant minds and
-                provide them with resources, mentorship, and opportunities to
-                solve humanity&apos;s greatest challenges.
+
+                A2SV is not just a program; it is a community. We are on a mission
+                to identify Africa&apos;s most brilliant minds and provide them with
+                resources, mentorship, and opportunities to solve humanity&apos;s
+
+                greatest challenges.
               </p>
             </div>
 
@@ -177,14 +179,17 @@ export default function LandingPage() {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Alumni Card Example */}
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
+              {/* Testimonial Text */}
               <p className="text-gray-600 mb-6">
-                "A2SV completely changed the trajectory of my career. The
-                training is intense, but of the community and the opportunities
-                are unparalleled. I'm now at my dream company, and I owe it all
-                to A2SV."
+                &quot;A2SV completely changed the trajectory of my career. The training is intense, but the community and the opportunities are unparalleled. I&apos;m now at my dream company, and I owe it all to A2SV.&quot;
               </p>
-              <div className="flex items-center ">
+
+              {/* Bottom Row: Image & Info */}
+              <div className="flex items-center">
+                {/* Profile Image */}
+
                 <Image
                   src="/images/mosh.png"
                   alt="Sara Kebede"
@@ -194,24 +199,21 @@ export default function LandingPage() {
                 />
 
                 {/* Name & Role */}
-                <div className="ml-3">
+
+                <div className="ml-2">
                   <h3 className="font-semibold text-lg">Abel Tadesse</h3>
-                  <span className="text-sm text-gray-500">
-                    Software Engineer @ Google
-                  </span>
+                  <span className="text-sm text-gray-500">Software Engineer @ Google</span>
+
                 </div>
               </div>
             </div>
 
             {/* Repeat Cards for Other Alumni... */}
 
-
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
               {/* Testimonial Text */}
               <p className="text-gray-600 mb-6">
-                "The problem-solving skills I learned at A2SV are invaluable.
-                The mentors push you to be your best and you are surrounded by
-                people who are just as passionate as you are."
+                &quot;The problem-solving skills I learned at A2SV are invaluable. The mentors push you to be your best and you&apos;re surrounded by people who are just as passionate as you are.&quot;
               </p>
 
               {/* Bottom Row: Image & Info */}
@@ -226,26 +228,21 @@ export default function LandingPage() {
                 />
 
                 {/* Name & Role */}
-                <div className="ml-3">
+                <div className="ml-2">
                   <h3 className="font-semibold text-lg">Bethlehem Tadesse</h3>
-                  <span className="text-sm text-gray-500">
-                    Software Engineer, Amazon
-                  </span>
+                  <span className="text-sm text-gray-500">Software Engineer, Amazon</span>
                 </div>
               </div>
             </div>
 
-
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
               {/* Testimonial Text */}
               <p className="text-gray-600 mb-6">
-                "A2SV is more than a bootcamp. It is a family that supports you
-                long after you have graduated. The network you build here is for
-                life."
+                &quot;A2SV is more than a bootcamp. It&apos;’s a family that supports you long after you&apos;’ve graduated. The network you build here is for life.&quot;
               </p>
 
               {/* Bottom Row: Image & Info */}
-              <div className="flex items-center">
+              <div className="flex items-center  ">
                 {/* Profile Image */}
                 <Image
                   src="/images/angela2.svg"
@@ -256,11 +253,9 @@ export default function LandingPage() {
                 />
 
                 {/* Name & Role */}
-                <div className="ml-3">
+                <div className="ml-2">
                   <h3 className="font-semibold text-lg">Caleb Alemayehu</h3>
-                  <span className="text-sm text-gray-500">
-                    Software Engineer, Palantir
-                  </span>
+                  <span className="text-sm text-gray-500">Software Engineer, Palantir</span>
                 </div>
               </div>
             </div>
@@ -269,18 +264,16 @@ export default function LandingPage() {
 
         <section className="bg-[#4338CA] h-64">
           <div className="p-10">
-            <h3 className="font-semibold text-white text-[22px] text-center pt-7 ">
-              Ready to Change your life quickly?
+            <h3 className="font-semibold text-white text-lg text-center pt-7">
+              Ready to Change your life
             </h3>
-            <p className="text-sm pt-2 text-center text-[#C7D2FE]">
-              The next application cycle now open. Take the first step towards
-              <br />
-              your dream career
+            <p className="text-sm text-white text-center">
+              The next application cycle now open. Take the first step towards your dream career
             </p>
-            <div className="flex justify-center mt-5">
+            <div className="flex justify-center mt-6">
               <Link
                 href="#"
-                className="px-5 py-2 bg-white text-[#4F46E5] rounded-md  transition hover:bg-gray-300"
+                className="px-6 py-3 bg-white text-blue-500 rounded-md transition hover:bg-gray-100"
               >
                 Apply Now
               </Link>
