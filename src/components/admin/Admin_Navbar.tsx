@@ -28,6 +28,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
 
+
   // Use currentPage if provided, otherwise fall back to pathname
   const activePath = currentPage || pathname || "/admin";
 
@@ -108,6 +109,6 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
           </div>
         </div>
       )}
-    </nav>
+   </nav>
   );
 }
