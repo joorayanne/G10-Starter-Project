@@ -15,8 +15,9 @@ const NavBar = () => {
         />
       </div>
 
+        
       <nav className="space-x-8">
-        <Link href="#" className="text-gray-700 hover:text-black" qq>
+        <Link href="#" className="text-gray-700 hover:text-black">
           The Journey
         </Link>
         <Link href="#" className="text-gray-700 hover:text-black">

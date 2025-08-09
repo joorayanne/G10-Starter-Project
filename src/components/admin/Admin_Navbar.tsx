@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import logo from '../../../public/images/logo.png'
+import { useProfile } from "@/contexts/ProfileContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-import logo from "../../../public/images/logo.png";
 
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
@@ -17,7 +18,10 @@ const navLinks = [
 
 export default function AdminNavbar() {
   const pathname = usePathname();
+
+  const { profileData } = useProfile();
   const [menuOpen, setMenuOpen] = useState(false);
+
 
   return (
     <nav className="w-full bg-white border-b border-gray-200 px-4 md:px-10 py-2">
@@ -52,7 +56,7 @@ export default function AdminNavbar() {
         {/* Desktop Profile Menu */}
         <div className="hidden md:flex items-center space-x-4 text-[16px] text-gray-700">
           <Link
-            href="/admin/profile"
+            href="/profile"
             className="hover:underline text-indigo-600"
           >
             Your Profile
@@ -63,6 +67,7 @@ export default function AdminNavbar() {
           </Link>
         </div>
       </div>
+
 
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
@@ -83,7 +88,7 @@ export default function AdminNavbar() {
           ))}
           <div className="flex flex-col space-y-2 pt-2 border-t border-gray-200">
             <Link
-              href="/admin/profile"
+              href="/profile"
               className="hover:underline text-indigo-600"
               onClick={() => setMenuOpen(false)}
             >

@@ -1,7 +1,7 @@
-import { AuthProvider } from "./auth/AuthContext";
+
 import { Geist, Geist_Mono } from "next/font/google";
-import { SessionProvider } from "next-auth/react"; 
 import "./globals.css";
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +29,10 @@ export default function RootLayout({
 
       
 
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+        <Providers>
+          {children}
+          
+        </Providers>
 
       </body>
     </html>
