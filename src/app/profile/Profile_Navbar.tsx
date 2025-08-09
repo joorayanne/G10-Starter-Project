@@ -4,21 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import logo from "../../../public/images/logo.png";
-
-interface ProfileNavbarProps {
-  userData?: {
-    full_name: string;
-    email: string;
-    role: string;
-  } | null;
-}
+import { useProfile } from '@/contexts/ProfileContext';
 
 const navLinks = [
   { name: "Dashboard", href: "" },
 ];
 
-export default function ProfileNavbar({ userData }: ProfileNavbarProps) {
+export default function ProfileNavbar() {
   const pathname = usePathname();
+  const { profileData } = useProfile();
 
   return (
     <nav className="flex items-center justify-between w-full px-4 sm:px-8 py-4 bg-white border-b border-gray-200">
@@ -49,7 +43,7 @@ export default function ProfileNavbar({ userData }: ProfileNavbarProps) {
           Your Profile
         </Link>
         <span className="text-gray-400 hidden sm:inline">|</span>
-        <span className="truncate max-w-[80px] sm:max-w-none">{userData?.full_name || 'User name'}</span>
+        <span className="truncate max-w-[80px] sm:max-w-none">{profileData?.full_name || 'User name'}</span>
         <span className="text-gray-400 hidden sm:inline">|</span>
         <Link href="/logout" className="hover:underline text-gray-700">
           Logout
