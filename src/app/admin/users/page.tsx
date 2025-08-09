@@ -1,5 +1,5 @@
 "use client";
-import { getAccessToken } from "../../auth/authHelpers";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { User } from "@/types/users";
 import person from "../../../../public/images/person.jpg";
@@ -12,10 +12,10 @@ const UserManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [searchQuery, setSearchQuery] = useState("");
- 
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
- const [selectedRole, setSelectedRole] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<string>("");
 
 
 
@@ -45,7 +45,7 @@ const UserManagement = () => {
 
       const response = await fetch(url.toString(), {
         headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
+          Authorization: `Bearer ${session?.accessToken}`,
           "Content-Type": "application/json",
         },
       });
@@ -106,7 +106,7 @@ const UserManagement = () => {
       const response = await fetch(`${apiUrl}/admin/users/${userId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
+          Authorization: `Bearer ${session?.accessToken}`,
           "Content-Type": "application/json",
         },
       });
