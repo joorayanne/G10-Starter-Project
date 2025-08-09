@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   getAccessToken,
   isAccessTokenExpired,
   refreshAccessToken,
-} from '../../app/auth/authHelpers'
+} from "../../app/auth/authHelpers";
+
 export default function CreateCycleForm() {
   const initialForm = {
-    name: '',
-    start_date: '',
-    end_date: '',
+    name: "",
+    start_date: "",
+    end_date: "",
   };
 
   const [form, setForm] = useState(initialForm);
@@ -35,32 +36,37 @@ export default function CreateCycleForm() {
         try {
           token = await refreshAccessToken();
         } catch (refreshError) {
-          setError('Session expired. Please log in again.');
+          console.error("Refresh token error:", refreshError); // Log for debugging
+          setError("Session expired. Please log in again.");
           setLoading(false);
           return;
         }
       }
 
-      const res = await fetch("https://a2sv-application-platform-backend-team10.onrender.com/admin/cycles/", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(form)
-      });
+      const res = await fetch(
+        "https://a2sv-application-platform-backend-team10.onrender.com/admin/cycles/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        }
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data?.message || 'Failed to create cycle');
+        setError(data?.message || "Failed to create cycle");
       } else {
-        setMessage('Cycle created successfully!');
-        alert('Cycle created successfully!');
+        setMessage("Cycle created successfully!");
+        alert("Cycle created successfully!");
         setForm(initialForm);
       }
     } catch (err) {
-      setError('An unexpected error occurred.');
+      console.error("Unexpected error:", err); // Log for debugging
+      setError("An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -125,7 +131,7 @@ export default function CreateCycleForm() {
             disabled={loading}
             className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50"
           >
-            {loading ? 'Saving...' : 'Save Cycle'}
+            {loading ? "Saving..." : "Save Cycle"}
           </button>
         </div>
       </form>
