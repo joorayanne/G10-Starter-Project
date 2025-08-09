@@ -1,9 +1,13 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import NavBar from "@/components/common/NavBar";
+import Footer from "@/components/common/footer";
 
 interface EssayData {
   essay_about_you: string;
@@ -13,6 +17,7 @@ interface EssayData {
 }
 
 const Essay: React.FC = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const {
     register,
@@ -21,15 +26,19 @@ const Essay: React.FC = () => {
   } = useForm<EssayData>();
 
   const onSubmit: SubmitHandler<EssayData> = async (essayData) => {
+    if (status === "loading") return; // Prevent submission during session load
+
     try {
+      if (status !== "authenticated" || !session?.accessToken) {
+        console.log("Session status:", status, "Session:", session); // Debug session state
+        throw new Error("Please log in to submit your application.");
+      }
+
+      const token = session.accessToken;
       const personalInfo = JSON.parse(localStorage.getItem("personalInfo") || "{}");
       const codingProfiles = JSON.parse(localStorage.getItem("codingProfiles") || "{}");
-      const token = localStorage.getItem("token");
       const cycleId = localStorage.getItem("activeCycleId");
 
-      if (!token) {
-        throw new Error("No authentication token found. Please log in.");
-      }
       if (!cycleId) {
         throw new Error("No active cycle selected. Please select a cycle.");
       }
@@ -89,12 +98,17 @@ const Essay: React.FC = () => {
 
       alert("Application submitted successfully!");
       localStorage.clear();
-      router.push("/applicant-routes/application-sucess");
+      router.push("/applicant-routes/application-success");
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Error submitting application:", error.message);
         if (error.message.includes("409") || error.message.includes("already submitted")) {
-          alert("You have already submitted an application for this cycle. Please contact support if you need to update it.");
+          alert(
+            "You have already submitted an application for this cycle. Please contact support if you need to update it."
+          );
+        } else if (error.message.includes("401") || error.message.includes("log in")) {
+          alert("Authentication error. Please log in again.");
+          router.push("/signin?callbackUrl=/applicant-routes/essay"); // Redirect with callback
         } else {
           alert(`Submission failed. Please try again. Error: ${error.message}`);
         }
@@ -107,125 +121,120 @@ const Essay: React.FC = () => {
 
   return (
     <>
-      <header className="flex justify-around bg-white shadow-gray-400">
-        <Image
-          className="p-3"
-          src="/images/logo.png"
-          alt="A2SV"
-          width={100}
-          height={100}
-        />
-        <div className="flex justify-between gap-x-7 p-3">
-          <p>John Doe</p>
-          <Link
-            href="/"
-            onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("role");
-            }}
-            className="px-2"
-          >
-            Logout
-          </Link>
-        </div>
-      </header>
-
-      <section className="bg-white shadow-neutral-500 w-1/2 my-10 mx-64">
-        <h1 className="text-center font-bold text-2xl">Application Form</h1>
+      <NavBar />
+      <section className="bg-white shadow-md w-full max-w-2xl mx-auto my-10 p-6 rounded-lg">
+        <h1 className="text-center font-bold text-2xl mb-6">Application Form</h1>
         <Image
           src="/images/Background2.png"
-          alt=""
-          className="my-3 mx-3"
+          alt="Background"
+          className="my-4 mx-auto"
           width={600}
           height={100}
         />
-        <div className="flex justify-evenly my-3">
+        <div className="flex justify-around mb-6">
           <p className="text-blue-600">
-            <span className="inline-flex items-center justify-center bg-gray-400 w-5 h-5 rounded-full mt-1 text-white">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-gray-400 rounded-full text-white mr-2">
               1
-            </span>{" "}
+            </span>
             Personal Info
           </p>
           <p className="text-blue-600">
-            <span className="inline-flex items-center justify-center bg-gray-400 w-5 h-5 rounded-full mt-1 text-white">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-gray-400 rounded-full text-white mr-2">
               2
-            </span>{" "}
+            </span>
             Coding Profiles
           </p>
           <p>
-            <span className="inline-flex items-center justify-center bg-blue-600 w-5 h-5 rounded-full mt-1 text-white">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full text-white mr-2">
               3
-            </span>{" "}
+            </span>
             Essay and Resume
           </p>
         </div>
-        <hr className="text-gray-400 mt-5" />
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-5 mt-5">
-          <h2 className="my-3">Essay and Resume</h2>
+        <hr className="border-gray-300 mb-6" />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <h2 className="text-xl font-semibold mb-4">Essay and Resume</h2>
 
-          <label htmlFor="essay_about_you">Tell us about yourself</label>
-          <textarea
-            id="essay_about_you"
-            rows={4}
-            className="border p-2 w-full my-3"
-            {...register("essay_about_you", { required: "This field is required" })}
-          />
-          {errors.essay_about_you?.message && (
-            <p className="text-red-500 text-sm">{errors.essay_about_you.message}</p>
-          )}
+          <div>
+            <label htmlFor="essay_about_you" className="block text-gray-700 font-medium mb-1">
+              Tell us about yourself
+            </label>
+            <textarea
+              id="essay_about_you"
+              rows={4}
+              className="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register("essay_about_you", { required: "This field is required" })}
+            />
+            {errors.essay_about_you?.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.essay_about_you.message}</p>
+            )}
+          </div>
 
-          <label htmlFor="essay_why_a2sv">Why do you want to join us?</label>
-          <textarea
-            id="essay_why_a2sv"
-            rows={4}
-            className="border p-2 w-full my-3"
-            {...register("essay_why_a2sv", { required: "This field is required" })}
-          />
-          {errors.essay_why_a2sv?.message && (
-            <p className="text-red-500 text-sm">{errors.essay_why_a2sv.message}</p>
-          )}
+          <div>
+            <label htmlFor="essay_why_a2sv" className="block text-gray-700 font-medium mb-1">
+              Why do you want to join us?
+            </label>
+            <textarea
+              id="essay_why_a2sv"
+              rows={4}
+              className="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register("essay_why_a2sv", { required: "This field is required" })}
+            />
+            {errors.essay_why_a2sv?.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.essay_why_a2sv.message}</p>
+            )}
+          </div>
 
-          <label htmlFor="country">Country</label>
-          <input
-            type="text"
-            id="country"
-            className="border-b-1 w-full my-3"
-            {...register("country", { required: "Country is required" })}
-          />
-          {errors.country?.message && (
-            <p className="text-red-500 text-sm">{errors.country.message}</p>
-          )}
+          <div>
+            <label htmlFor="country" className="block text-gray-700 font-medium mb-1">
+              Country
+            </label>
+            <input
+              type="text"
+              id="country"
+              className="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register("country", { required: "Country is required" })}
+            />
+            {errors.country?.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.country.message}</p>
+            )}
+          </div>
 
-          <label htmlFor="resume">Resume</label>
-          <input
-            type="file"
-            id="resume"
-            className="my-3"
-            accept=".pdf,.doc,.docx"
-            {...register("resume", { required: "Please upload your resume" })}
-          />
-          {errors.resume?.message && (
-            <p className="text-red-500 text-sm">{errors.resume.message}</p>
-          )}
+          <div>
+            <label htmlFor="resume" className="block text-gray-700 font-medium mb-1">
+              Resume
+            </label>
+            <input
+              type="file"
+              id="resume"
+              className="border border-gray-300 p-2 w-full rounded-md focus:outline-none"
+              accept=".pdf,.doc,.docx"
+              {...register("resume", { required: "Please upload your resume" })}
+            />
+            {errors.resume?.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.resume.message}</p>
+            )}
+          </div>
 
-          <div className="flex justify-between my-5 bg-gray-50 w-full h-14 rounded-sm border-t-1 border-t-gray-200 border-b-1 border-b-gray-200">
+          <div className="flex justify-between mt-6">
             <button
               onClick={() => router.back()}
               type="button"
-              className="m-3 bg-gray-200 w-20 rounded-md h-8"
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
             >
               Back
             </button>
-            <button type="submit" className="m-3 bg-blue-600 w-40 rounded-md text-white h-8">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+            >
               Submit
             </button>
           </div>
         </form>
       </section>
 
-      <footer className="mt-40 bg-blue-950 h-36 flex items-center justify-center">
-        <p className="text-white text-center my-5">2025 A2SV. All rights reserved</p>
-      </footer>
+      <Footer />
     </>
   );
 };
