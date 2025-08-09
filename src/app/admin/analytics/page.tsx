@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import {
   BarChart,
   Bar,
@@ -37,6 +38,7 @@ const COLORS = ["#4F46E5", "#6366F1", "#A5B4FC"];
 
 const AnalyticsPage: React.FC = () => {
   return (
+    
     <div className="bg-gray-50 min-h-screen">
     
       <main className="px-32 py-10">

@@ -1,6 +1,9 @@
 "use client";
 
 import React from "react";
+
+import Navbar from "@/components/admin/Admin_Navbar";
+
 import { getAccessToken } from "../../auth/authHelpers";
 
 interface FormData {

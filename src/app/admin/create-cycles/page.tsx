@@ -1,3 +1,4 @@
+
 import CreateCycleForm from "@/components/admin/CreateCycleForm";
 
 export default function AdminCreateCyclesPage() {

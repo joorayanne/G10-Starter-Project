@@ -48,7 +48,21 @@ const Essay: React.FC = () => {
       formData.append("country", essayData.country);
       formData.append("cycle_id", cycleId);
 
-      console.log("FormData:", formData);
+      // Check for existing application
+      const statusRes = await fetch(
+        "https://a2sv-application-platform-backend-team10.onrender.com/applications/my-status/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: "no-store",
+        }
+      );
+      const statusData = await statusRes.json();
+      if (statusRes.ok && statusData.success && statusData.data) {
+        throw new Error("You have already submitted an application for this cycle.");
+      }
+
       const response = await fetch(
         "https://a2sv-application-platform-backend-team10.onrender.com/applications/",
         {
@@ -59,8 +73,6 @@ const Essay: React.FC = () => {
           },
         }
       );
-      console.log("Response:", response);
-      console.log("Hey");
 
       const contentType = response.headers.get("content-type");
       const rawText = await response.text();
@@ -77,12 +89,15 @@ const Essay: React.FC = () => {
 
       alert("Application submitted successfully!");
       localStorage.clear();
-      router.push("/success");
+      router.push("/applicant-routes/application-sucess");
     } catch (error: unknown) {
-      // Narrow the type if needed
       if (error instanceof Error) {
         console.error("Error submitting application:", error.message);
-        alert(`Submission failed. Please try again. Error: ${error.message}`);
+        if (error.message.includes("409") || error.message.includes("already submitted")) {
+          alert("You have already submitted an application for this cycle. Please contact support if you need to update it.");
+        } else {
+          alert(`Submission failed. Please try again. Error: ${error.message}`);
+        }
       } else {
         console.error("Unexpected error:", error);
         alert("Submission failed due to an unexpected error. Please try again.");
