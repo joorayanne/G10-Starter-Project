@@ -106,7 +106,7 @@ const sortedData = [...filteredData].sort((a, b) => {
 
   {/* Right Side Navigation */}
   <div className="flex gap-6 items-center text-sm text-gray-700">
-    <Link href="#" className="text-blue-600 font-medium hover:underline">
+    <Link href="/profile" className="text-blue-600 font-medium hover:underline">
       Your Profile
     </Link>
     <span>Reviewer Name</span>
