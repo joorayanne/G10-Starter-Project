@@ -171,6 +171,7 @@ export default function LandingPage() {
         </section>
 
         <section className="py-16 px-6 md:px-20 bg-gray-50">
+
           <h2 className="text-[28px] font-bold text-center mb-10">
             Hear From Our Alumni
           </h2>
@@ -204,11 +205,12 @@ export default function LandingPage() {
 
             {/* Repeat Cards for Other Alumni... */}
 
+
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
               {/* Testimonial Text */}
               <p className="text-gray-600 mb-6">
                 "The problem-solving skills I learned at A2SV are invaluable.
-                The mentors push you to be your best and you're surrounded by
+                The mentors push you to be your best and you are surrounded by
                 people who are just as passionate as you are."
               </p>
 
@@ -233,11 +235,12 @@ export default function LandingPage() {
               </div>
             </div>
 
+
             <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between h-full">
               {/* Testimonial Text */}
               <p className="text-gray-600 mb-6">
-                "A2SV is more than a bootcamp. It's a family that supports you
-                long after you've graduated. The network you build here is for
+                "A2SV is more than a bootcamp. It is a family that supports you
+                long after you have graduated. The network you build here is for
                 life."
               </p>
 

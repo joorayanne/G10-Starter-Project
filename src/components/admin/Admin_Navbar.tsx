@@ -24,12 +24,7 @@ export default function AdminNavbar() {
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href="/admin" className="flex items-center space-x-2">
-          <Image
-            src={logo}
-            width={120}
-            height={24}
-            alt="A2SV Logo"
-          />
+          <Image src={logo} width={120} height={24} alt="A2SV Logo" />
         </Link>
 
         {/* Desktop Nav */}
@@ -62,8 +57,14 @@ export default function AdminNavbar() {
             Logout
           </Link>
         </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden p-2 text-gray-700"
+        >
+          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
       </div>
-
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
         <div className="flex flex-col mt-3 space-y-4 md:hidden">
@@ -102,3 +103,6 @@ export default function AdminNavbar() {
     </nav>
   );
 }
+
+
+
