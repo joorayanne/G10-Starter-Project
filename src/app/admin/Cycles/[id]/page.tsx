@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getAccessToken } from "@/app/auth/authHelpers";
+import { useSession } from "next-auth/react";
 import { Cycle } from "@/types/cycle";
 import UpdateCycleForm from "@/components/admin/UpdateCycleForm";
 
@@ -18,6 +18,7 @@ export default function CycleDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [showToast, setShowToast] = useState("");
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+   const { data: session } = useSession();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,13 +27,13 @@ export default function CycleDetailsPage() {
     description: "",
   });
 
-  const token = getAccessToken();
+
 
   useEffect(() => {
     const fetchCycle = async () => {
       try {
         const res = await axios.get(`${API_BASE}/cycles/${id}/`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer  ${session?.accessToken}` },
         });
         setCycle(res.data.data);
 
@@ -56,7 +57,7 @@ export default function CycleDetailsPage() {
   const handleActivate = async () => {
     try {
       await axios.patch(`${API_BASE}/admin/cycles/${id}/activate/`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${session?.accessToken}` },
       });
       setShowToast("Cycle activated successfully!");
       setTimeout(() => {
@@ -72,7 +73,7 @@ export default function CycleDetailsPage() {
     if (!confirm("Are you sure you want to delete this cycle?")) return;
     try {
       await axios.delete(`${API_BASE}/admin/cycles/${id}/`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${session?.accessToken}` },
       });
       setShowToast("Cycle deleted successfully!");
       setTimeout(() => {
@@ -87,7 +88,7 @@ export default function CycleDetailsPage() {
     e.preventDefault();
     try {
       await axios.put(`${API_BASE}/admin/cycles/${id}/`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${session?.accessToken}` },
       });
       setShowToast("Cycle updated successfully!");
       setShowUpdateForm(false);
