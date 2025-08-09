@@ -8,6 +8,7 @@ import logo from '../../../public/images/logo.png'
 import { useProfile } from "@/contexts/ProfileContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 
+import LogoutButton from "../common/Logout";
 
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
@@ -25,6 +26,10 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
 
   const { profileData } = useProfile();
   const [menuOpen, setMenuOpen] = useState(false);
+
+
+  // Use currentPage if provided, otherwise fall back to pathname
+  const activePath = currentPage || pathname || "/admin";
 
 
   return (
@@ -64,9 +69,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
             Your Profile
           </Link>
           <span className="text-gray-400">|</span>
-          <Link href="/logout" className="hover:underline text-gray-700">
-            Logout
-          </Link>
+          <LogoutButton />
         </div>
         {/* Mobile Menu Button */}
         <button
@@ -103,13 +106,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
             >
               Your Profile
             </Link>
-            <Link
-              href="/logout"
-              className="hover:underline text-gray-700"
-              onClick={() => setMenuOpen(false)}
-            >
-              Logout
-            </Link>
+            <LogoutButton />
           </div>
         </div>
       )}

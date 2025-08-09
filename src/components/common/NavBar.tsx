@@ -27,7 +27,11 @@ const NavBar = () => {
           Testimonials
         </Link>
         <Link
+<<<<<<< HEAD
           href="/signin"
+=======
+          href="signin"
+>>>>>>> 06b52c997b23c99e063183ea3279c952b0a9aac5
           className="px-6 py-2 bg-[#4F46E5] text-white rounded-md hover:bg-[#4338CA] transition"
         >
           Login
