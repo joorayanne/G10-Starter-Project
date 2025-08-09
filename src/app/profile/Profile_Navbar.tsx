@@ -3,20 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
 import logo from "../../../public/images/logo.png";
-import { useProfile } from '@/contexts/ProfileContext';
 
-const navLinks = [
-  { name: "Dashboard", href: "" },
-];
+const navLinks = [{ name: "Dashboard", href: "" }];
 
 export default function ProfileNavbar() {
   const pathname = usePathname();
-  const { profileData } = useProfile();
+  const { data: session, status } = useSession();
 
   return (
     <nav className="flex items-center justify-between w-full px-4 sm:px-8 py-4 bg-white border-b border-gray-200">
-      {/* Logo */}
       <Link href="/profile" className="flex items-center space-x-2">
         <Image src={logo} width={100} height={20} className="sm:w-[120px] sm:h-[24px]" alt="A2SV Logo" />
       </Link>
@@ -37,17 +34,21 @@ export default function ProfileNavbar() {
         ))}
       </div>
 
-      {/* Profile Menu */}
       <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm text-gray-700">
         <Link href="/profile" className="hover:underline text-indigo-600 hidden sm:inline">
           Your Profile
         </Link>
         <span className="text-gray-400 hidden sm:inline">|</span>
-        <span className="truncate max-w-[80px] sm:max-w-none">{profileData?.full_name || 'User name'}</span>
+        <span className="truncate max-w-[80px] sm:max-w-none">
+          {status === "authenticated" ? session?.user?.name || "User" : "User"}
+        </span>
         <span className="text-gray-400 hidden sm:inline">|</span>
-        <Link href="/logout" className="hover:underline text-gray-700">
+        <button
+          onClick={() => signOut({ callbackUrl: "/signin" })}
+          className="hover:underline text-gray-700"
+        >
           Logout
-        </Link>
+        </button>
       </div>
     </nav>
   );
