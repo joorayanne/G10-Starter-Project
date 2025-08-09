@@ -219,7 +219,7 @@ const Welcome = () => {
         </div>
 
         <div className="flex justify-between p-3">
-          <Link href="/" className="px-2">
+          <Link href="/profile" className="px-2">
             Your Profile
           </Link>
           <Link href="/" className="px-2">
