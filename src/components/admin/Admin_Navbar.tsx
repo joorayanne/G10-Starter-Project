@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import logo from '../../../public/images/logo.png'
+import { useProfile } from "@/contexts/ProfileContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-import logo from "../../../public/images/logo.png";
 
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
@@ -21,10 +22,15 @@ interface NavbarProps {
 
 export default function AdminNavbar({ currentPage }: NavbarProps) {
   const pathname = usePathname();
+
+  const { profileData } = useProfile();
   const [menuOpen, setMenuOpen] = useState(false);
 
+<<<<<<< HEAD
   // Use currentPage if provided, otherwise fall back to pathname
   const activePath = currentPage || pathname || "/admin";
+=======
+>>>>>>> a8fc7c57029295e6830f949c0c2a9b4e6158dc3f
 
   return (
 
@@ -61,8 +67,12 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
         {/* Desktop Profile Menu */}
         <div className="hidden md:flex items-center space-x-4 text-[16px] text-gray-700">
           <Link
+<<<<<<< HEAD
 
             href="/admin/profile"
+=======
+            href="/profile"
+>>>>>>> a8fc7c57029295e6830f949c0c2a9b4e6158dc3f
             className="hover:underline text-indigo-600"
 
           >
@@ -74,6 +84,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
           </Link>
         </div>
       </div>
+
 
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
@@ -94,7 +105,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
           ))}
           <div className="flex flex-col space-y-2 pt-2 border-t border-gray-200">
             <Link
-              href="/admin/profile"
+              href="/profile"
               className="hover:underline text-indigo-600"
               onClick={() => setMenuOpen(false)}
             >

@@ -8,6 +8,7 @@ import * as z from 'zod';
 import Image from 'next/image';
 import ProfileNavbar from './Profile_Navbar';
 import Footer from '@/components/common/footer';
+import { useProfile } from '@/contexts/ProfileContext';
 
 const API_BASE_URL = 'https://a2sv-application-platform-backend-team10.onrender.com';
 
@@ -63,17 +64,11 @@ const refreshAccessToken = async () => {
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { profileData, isLoading, error: contextError, updateProfile, refreshProfile } = useProfile();
 
   const [error, setError] = useState('');
   const [profileLoading, setProfileLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState<{
-    full_name: string;
-    email: string;
-    role: string;
-    username?: string; 
-  } | null>(null);
 
   const authFetch = useCallback(async (url: string, options: RequestInit = {}) => {
     let token = getAccessToken();
@@ -112,53 +107,25 @@ export default function ProfilePage() {
     formState: { errors: passwordErrors }
   } = useForm<PasswordForm>({ resolver: zodResolver(passwordSchema) });
 
-  // Load profile
+  // Load profile 
   useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        setIsLoading(true);
-        const res = await authFetch('/profile/me');
-        const result = await res.json();
-        if (!res.ok || !result.success) throw new Error(result.message);
-
-        // Set user data
-        setUserData({
-          full_name: result.data.full_name,
-          email: result.data.email,
-          role: result.data.role,
-          username: result.data.username || `@${result.data.full_name.toLowerCase().replace(/\s+/g, '')}` // Fallback username
-        });
-
-        // Fill form
-        resetProfileForm({
-          full_name: result.data.full_name,
-          email: result.data.email,
-        });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load profile');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     const token = getAccessToken();
     if (!token) {
       router.push('/auth/signin');
-    } else {
-      loadProfile();
+    } else if (profileData) {
+      // Fill form with profile data
+      resetProfileForm({
+        full_name: profileData.full_name,
+        email: profileData.email,
+      });
     }
-  }, [router, authFetch, resetProfileForm]);
+  }, [router, profileData, resetProfileForm]);
 
   const onUpdateProfile = async (data: ProfileForm) => {
     setProfileLoading(true);
     setError('');
     try {
-      const res = await authFetch('/profile/me', {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      });
-      const result = await res.json();
-      if (!res.ok || !result.success) throw new Error(result.message || 'Failed to update profile');
+      await updateProfile(data);
       alert('Profile updated!');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update profile');
@@ -191,7 +158,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ProfileNavbar userData={userData} />
+      <ProfileNavbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Container */}
         <div className="max-w-3xl mx-auto">
@@ -217,14 +184,14 @@ export default function ProfilePage() {
                 />
               </div>
               <div className="ml-6 mb-2">
-                <h2 className="text-2xl font-bold text-gray-900">{userData?.full_name || 'User'}</h2>
-                <p className="text-gray-500">{userData?.username || '@user'}</p>
+                <h2 className="text-2xl font-bold text-gray-900">{profileData?.full_name || 'User'}</h2>
+                <p className="text-gray-500">{profileData?.username || '@user'}</p>
               </div>
             </div>
           </div>
 
           {/* Error Message */}
-          {error && <div className="bg-red-100 text-red-700 p-3 sm:p-4 mb-4 sm:mb-6 rounded text-sm sm:text-base">{error}</div>}
+          {(error || contextError) && <div className="bg-red-100 text-red-700 p-3 sm:p-4 mb-4 sm:mb-6 rounded text-sm sm:text-base">{error || contextError}</div>}
 
           {/* Loading Spinner */}
           {isLoading && (
@@ -266,7 +233,7 @@ export default function ProfilePage() {
                     <input
                       type="text"
                       id="role"
-                      value={userData?.role || ''}
+                      value={profileData?.role || ''}
                       disabled
                       className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 bg-white focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
