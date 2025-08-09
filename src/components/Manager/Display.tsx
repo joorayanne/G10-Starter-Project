@@ -1,4 +1,5 @@
 import React from 'react'
+
 interface DisplayProps {
     title: string;
     amount: number;
@@ -6,7 +7,7 @@ interface DisplayProps {
 
 const Display = ({title , amount} : DisplayProps) => {
   return (
-    <div className=' border bg-white border-gray-100  shadow-md rounded-md max-w-[366px] min-w-70 p-3 max-h-[100px] flex flex-col justify-between  gap-1'>
+    <div className=' border bg-white border-gray-100 min-w-[20vw] shadow-md rounded-md   p-3 max-h-[100px] flex flex-col justify-between  gap-1'>
         <span 
         className='text-gray-500 text-sm font-semibold'
         >
