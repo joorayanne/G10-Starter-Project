@@ -35,7 +35,6 @@ export default function Navbar() {
   //       console.error("Error fetching manager profile:", err);
   //     }
   //   };
-
   //   fetchManager();
   // }, []);
 
