@@ -61,8 +61,6 @@ export const authOptions: NextAuthOptions = {
 
      
       const isExpired = Date.now() > token.accessTokenExpires;
-      console.log(token.accessTokenExpires ,"date")
-      console.log(Date.now() ,"now")
       if (isExpired) {
        
         try {

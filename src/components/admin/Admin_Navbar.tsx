@@ -8,6 +8,7 @@ import logo from '../../../public/images/logo.png'
 import { useProfile } from "@/contexts/ProfileContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 
+import LogoutButton from "../common/Logout";
 
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
@@ -26,11 +27,10 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
   const { profileData } = useProfile();
   const [menuOpen, setMenuOpen] = useState(false);
 
-<<<<<<< HEAD
+
   // Use currentPage if provided, otherwise fall back to pathname
   const activePath = currentPage || pathname || "/admin";
-=======
->>>>>>> a8fc7c57029295e6830f949c0c2a9b4e6158dc3f
+
 
   return (
 
@@ -67,21 +67,14 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
         {/* Desktop Profile Menu */}
         <div className="hidden md:flex items-center space-x-4 text-[16px] text-gray-700">
           <Link
-<<<<<<< HEAD
-
-            href="/admin/profile"
-=======
             href="/profile"
->>>>>>> a8fc7c57029295e6830f949c0c2a9b4e6158dc3f
             className="hover:underline text-indigo-600"
 
           >
             Your Profile
           </Link>
           <span className="text-gray-400">|</span>
-          <Link href="/logout" className="hover:underline text-gray-700">
-            Logout
-          </Link>
+          <LogoutButton />
         </div>
       </div>
 
@@ -111,13 +104,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
             >
               Your Profile
             </Link>
-            <Link
-              href="/logout"
-              className="hover:underline text-gray-700"
-              onClick={() => setMenuOpen(false)}
-            >
-              Logout
-            </Link>
+            <LogoutButton />
           </div>
         </div>
       )}
