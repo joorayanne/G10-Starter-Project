@@ -3,11 +3,34 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+
+interface Applicant {
+  applicant_name: string;
+  school: string;
+  degree: string;
+  github_handle: string;
+  leetcode_handle: string;
+  codeforces_handle: string;
+  essay_about_you: string;
+  essay_why_a2sv: string;
+  resume_url: string;
+}
+
+interface ReviewData {
+  activity_check_notes: string;
+  resume_score: number;
+  essay_why_a2sv_score: number;
+  essay_about_you_score: number;
+  technical_interview_score: number;
+  behavioral_interview_score: number;
+  interview_notes: string;
+}
 
 const RevieweeDetail = () => {
   const { application_id } = useParams();
-  const [applicant, setApplicant] = useState<any>(null);
-  const [reviewData, setReviewData] = useState({
+  const [applicant, setApplicant] = useState<Applicant | null>(null);
+  const [reviewData, setReviewData] = useState<ReviewData>({
     activity_check_notes: "",
     resume_score: 0,
     essay_why_a2sv_score: 0,
@@ -77,9 +100,11 @@ const RevieweeDetail = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-2">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img
+            <Image
               src="/image/aastu-footer-logo.svg"
               alt="A2SV Logo"
+              height={100}
+              width={100}
               className="h-7 w-auto"
             />
             <span className="font-bold text-xl text-[#1A4D8C] tracking-tight">

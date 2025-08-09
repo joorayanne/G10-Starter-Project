@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -42,25 +42,29 @@ export default function CreateCycleForm() {
     try {
       const token = session?.accessToken;
 
-      const res = await fetch("https://a2sv-application-platform-backend-team10.onrender.com/admin/cycles/", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(form)
-      });
+      const res = await fetch(
+        "https://a2sv-application-platform-backend-team10.onrender.com/admin/cycles/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        }
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data?.message || 'Failed to create cycle');
+        setError(data?.message || "Failed to create cycle");
       } else {
         setMessage('✅ Cycle created successfully!');
         setForm(initialForm);
       }
     } catch (err) {
-      setError('An unexpected error occurred.');
+      console.error("Unexpected error:", err); // Log for debugging
+      setError("An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
