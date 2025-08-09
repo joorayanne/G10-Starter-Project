@@ -12,6 +12,7 @@ export default function CycleCard({ cycle, isSelected = false, onSelect }: Cycle
   const statusLabel = isActive ? "Active" : "Closed";
   const startDate = new Date(cycle.start_date).toLocaleDateString();
   const endDate = new Date(cycle.end_date).toLocaleDateString();
+  const description = cycle.description
 
   const handleClick = () => {
     if (onSelect) {
@@ -39,7 +40,7 @@ export default function CycleCard({ cycle, isSelected = false, onSelect }: Cycle
         <h2 className="text-lg font-semibold text-gray-800 mb-1">{cycle.name}</h2>
 
         <p className="text-sm text-gray-600 mb-3">
-          This cycle is currently <span className="font-medium">{statusLabel}</span>
+          {cycle.description}
         </p>
 
         <div className="flex justify-between text-sm text-gray-600">

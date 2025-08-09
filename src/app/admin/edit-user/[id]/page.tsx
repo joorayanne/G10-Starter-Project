@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getAccessToken } from "../../../auth/authHelpers";
+import { useSession } from "next-auth/react";
 interface FormData {
   fullName: string;
   email: string;
@@ -21,19 +21,21 @@ const Page: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const {data: session, status }= useSession() 
 
   useEffect(() => {
     if (!id) return;
 
     const fetchUser = async () => {
       try {
+        const token = session?.accessToken
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
           "https://a2sv-application-platform-backend-team10.onrender.com";
 
         const response = await fetch(`${apiUrl}/admin/users/${id}`, {
           headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
