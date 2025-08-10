@@ -6,6 +6,8 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import NavBar from "@/components/common/NavBar";
+import UserFooter from "@/components/common/user-footer";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -14,6 +16,7 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,13 +51,17 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <NavBar />
-      <main className="flex-1 flex justify-center pt-24">
+      <main className="flex-1 flex justify-center pt-20">
         <div className="w-full max-w-md">
           {/* Logo & Title */}
-          <div className="flex flex-col items-center text-center mb-6">
-            <Image src="/images/logo.png" width={120} height={24} alt="A2SV Logo" />
-            <h2 className="mt-3 text-2xl font-semibold text-gray-800">
+          <div className="flex flex-col items-center text-center mb-3">
+            <Image
+              src="/images/logo.png"
+              width={120}
+              height={20}
+              alt="A2SV Logo"
+            />
+            <h2 className="mt-1 text-2xl font-semibold text-gray-800">
               Sign in to your account
             </h2>
           </div>
@@ -87,13 +94,33 @@ export default function SignInPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <input
+            {/* <input
               type="password"
               placeholder="password123"
               className="w-full px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            />
+            /> */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="password123"
+                className="w-full px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500 pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <EyeIcon className="h-5 w-5 text-gray-500" />
+                )}
+              </button>
+            </div>
 
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center space-x-2">
@@ -115,7 +142,7 @@ export default function SignInPage() {
           </form>
         </div>
       </main>
-      {/* <Footer /> */}
+      <UserFooter />
     </div>
   );
 }
