@@ -17,6 +17,11 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
   const { pathname } = req.nextUrl;
 
+  // if (pathname === "/applicant-routes/register") {
+  //   return NextResponse.next();
+  // }
+  
+
   
   const matchedRoute = Object.keys(protectedRoutes).find((route) =>
     pathname.startsWith(route)
@@ -53,7 +58,7 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/Manager-side/:path*",
-    "/applicant-routes/:path*",
+    // "/applicant-routes/:path*",
     "/Reviewee/:path*",
   ],
 };

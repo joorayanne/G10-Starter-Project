@@ -23,8 +23,8 @@ export default function LandingPage() {
               Forge Your Future in Tech
             </h1>
             <p className="text-lg mb-6">
-              Join an elite community of Africa&apos;’s brightest minds, and get
-              fast-tracked to a software engineering career at the world&apos;’s
+              Join an elite community of Africa&apos;s brightest minds, and get
+              fast-tracked to a software engineering career at the world&apos;s
               leading tech companies.
             </p>
             <button className="px-6 py-3 bg-[#4F46E5] text-white rounded-md hover:bg-[#4338CA] transition">
