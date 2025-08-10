@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Navbar from "@/components/admin/Navbar";
+
 import {
   BarChart,
   Bar,
@@ -38,8 +38,9 @@ const COLORS = ["#4F46E5", "#6366F1", "#A5B4FC"];
 
 const AnalyticsPage: React.FC = () => {
   return (
+    
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="analytics" />
+    
       <main className="px-32 py-10">
         <h1 className="font-bold text-2xl">Application Analytics</h1>
         <p className="text-gray-400 mb-6">

@@ -1,7 +1,10 @@
 "use client";
 
 import React from "react";
-import Navbar from "../../../components/admin/Navbar";
+
+import Navbar from "@/components/admin/Admin_Navbar";
+
+import { getAccessToken } from "../../auth/authHelpers";
 
 interface FormData {
   fullName: string;
@@ -57,7 +60,7 @@ const CreateUser: React.FC = () => {
       const response = await fetch(`${apiUrl}/admin/users`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -96,7 +99,6 @@ const CreateUser: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="users" />
       <main className="px-30">
         <h1 className="font-bold text-3xl pt-7">Create New User</h1>
         <p className="pb-5 text-gray-400">

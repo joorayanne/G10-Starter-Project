@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createContext,
   useContext,
@@ -10,7 +9,7 @@ import {
 import { useRouter } from "next/navigation";
 import {
   getAccessToken,
-  getRefreshToken,
+  // getRefreshToken,
   setTokens,
   clearTokens,
   isAccessTokenExpired,
@@ -82,6 +81,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (role === "admin") {
         router.push("/admin");
+      } else if (role === "applicant") {
+        router.push("/applicant-routes/login");
+      } else if (role === "manager") {
+        router.push("/Manager-side");
+      } else if (role === "reviewer") {
+        router.push("/Reviewee");
       } else {
         router.push("/test");
       }

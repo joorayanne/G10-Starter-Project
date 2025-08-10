@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Navbar from "@/components/admin/Navbar";
-
+import { useSession } from "next-auth/react";
 interface FormData {
   fullName: string;
   email: string;
@@ -22,19 +21,21 @@ const Page: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const {data: session, status }= useSession() 
 
   useEffect(() => {
     if (!id) return;
 
     const fetchUser = async () => {
       try {
+        const token = session?.accessToken
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
           "https://a2sv-application-platform-backend-team10.onrender.com";
 
         const response = await fetch(`${apiUrl}/admin/users/${id}`, {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -108,7 +109,6 @@ const Page: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="users" />
       <main className="px-30">
         <h1 className="font-bold text-3xl pt-7">Edit User</h1>
         <p className="pb-5 text-gray-400">Update user information and role.</p>
