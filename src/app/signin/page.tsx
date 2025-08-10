@@ -2,37 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { signIn, useSession } from "next-auth/react"; // Removed getSession to simplify
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/footer";
 
 export default function SignInPage() {
-  const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-
- 
-  useEffect(() => {
-    
-    if (status === "authenticated" && session?.user?.accessToken) {
-      const role = session.user.role;
-      const redirectPath = callbackUrl || 
-        (role === "admin" ? "/admin" : 
-         role === "applicant" ? "/applicant-routes/welcome" : 
-         role === "manager" ? "/Manager-side" : 
-         role === "reviewer" ? "/Reviewee" : 
-         "/unauthorized");
-      
-      router.push(redirectPath);
-    }
-  }, [status, session, router, callbackUrl]);
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,22 +34,17 @@ export default function SignInPage() {
       return;
     }
 
-    // Use NextAuth's `signIn` with `redirect: true` to let it handle the redirect.
-    // This is the most reliable way to ensure the callbackUrl is respected.
     const result = await signIn("credentials", {
-      redirect: true, 
+      redirect: true, // Let NextAuth handle navigation
       email,
       password,
-      callbackUrl: "/applicant-routes/welcome", // A robust default path
+      callbackUrl, // Redirect target after successful login
     });
 
-    // This code block will only be reached on a failed sign-in, as `redirect: true`
-    // will cause a page reload on success.
     if (result?.error) {
       setError(result.error);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -75,6 +52,7 @@ export default function SignInPage() {
       <NavBar />
       <main className="flex-1 flex justify-center pt-24">
         <div className="w-full max-w-md">
+          {/* Logo & Title */}
           <div className="flex flex-col items-center text-center mb-6">
             <Image src="/images/logo.png" width={120} height={24} alt="A2SV Logo" />
             <h2 className="mt-3 text-2xl font-semibold text-gray-800">
@@ -82,6 +60,7 @@ export default function SignInPage() {
             </h2>
           </div>
 
+          {/* Links */}
           <div className="text-center mb-4 space-y-2 text-sm">
             <div className="flex justify-center space-x-2">
               <Link href="/" className="text-indigo-600 hover:underline block">
@@ -97,6 +76,7 @@ export default function SignInPage() {
             </div>
           </div>
 
+          {/* Form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -121,7 +101,7 @@ export default function SignInPage() {
                 <input type="checkbox" className="form-checkbox" />
                 <span>Remember me</span>
               </label>
-              <Link href="#" className="text-indigo-600">
+              <Link href="/ForgotPassword" className="text-indigo-600">
                 Forgot your password?
               </Link>
             </div>
@@ -131,12 +111,11 @@ export default function SignInPage() {
               className="w-full py-2 bg-indigo-500 text-white rounded font-medium hover:bg-indigo-800 transition"
               disabled={loading}
             >
-              {loading ? "Signing in" : "Sign in"}
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
         </div>
       </main>
-
       <Footer />
     </div>
   );
