@@ -1,6 +1,7 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
+import RevieweeHeader from "./RevieweeHeader";
+import RevieweeFilterSort from "./RevieweeFilterSort";
+import RevieweeGrid from "./RevieweeGrid";
 import { useState, useEffect } from "react";
 
 interface Reviewee_list {
@@ -23,7 +24,7 @@ const Reviewee_list = () => {
   >("all");
   const [sortByDate, setSortByDate] = useState(false);
   const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNDNmOTExMy1lZjM5LTQ4OWItYWJlZi1mOTliMzAxMWU1OWYiLCJleHAiOjE3NTQ2NDM1MDIsInR5cGUiOiJhY2Nlc3MifQ.GxZ88GKNZPQYX4s1sSA43V-i3riQb_HrX6T0L7ww40c";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNDNmOTExMy1lZjM5LTQ4OWItYWJlZi1mOTliMzAxMWU1OWYiLCJleHAiOjE3NTQ2NjQ0NDgsInR5cGUiOiJhY2Nlc3MifQ.NE3m8uQEpMo9uQb8_QBcnsFr9tLTLnIInFsdAjGvobo";
 
   const [revieweeList, setRevieweeList] = useState<Reviewee_list>({
     reviews: [
@@ -80,164 +81,34 @@ const Reviewee_list = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F7F8FA] px-8 py-8">
+    <div className="min-h-screen bg-[#F7F8FA] px-2 sm:px-8 py-4 sm:py-8">
       {/* Header Bar */}
-      <header className="w-full bg-white shadow-sm py-4 px-8 mb-8 flex items-center justify-between">
-        {/* Left Logo */}
-        <div className="flex items-center gap-2">
-          <Image
-            src="/image/logo.png"
-            alt="A2SV Logo"
-            width={800}
-            height={400}
-            className="w-full h-auto"
-          />
-        </div>
-
-        {/* Center Navigation */}
-        <nav className="absolute left-1/2 transform -translate-x-1/2">
-          <Link
-            href="#"
-            className="text-sm text-gray-800 font-semibold underline"
-          >
-            Dashboard
-          </Link>
-        </nav>
-
-        {/* Right Side Navigation */}
-        <div className="flex gap-6 items-center text-sm text-gray-700">
-          <Link href="#" className="text-blue-600 font-medium hover:underline">
-            Your Profile
-          </Link>
-          <span>Reviewer Name</span>
-          <button className="hover:underline">Logout</button>
-        </div>
-      </header>
+      <RevieweeHeader />
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-[#222] mb-2">
+      <div className="max-w-7xl mx-auto mt-10 sm:mt-20">
+        <h1 className="text-2xl font-bold text-[#222] mb-2 text-center sm:text-left">
           Assigned Applications
         </h1>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-6 text-center sm:text-left">
           You have {revieweeList?.total_count} applications waiting for your
           review
         </p>
 
         {/* Filter & Sort Buttons */}
-        <div className="flex flex-wrap gap-2 items-center mb-6">
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-150 ${
-              filter === "all"
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"
-            }`}
-            onClick={() => setFilter("all")}
-          >
-            All
-          </button>
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-150 ${
-              filter === "under-review"
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"
-            }`}
-            onClick={() => setFilter("under-review")}
-          >
-            Under Review
-          </button>
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-150 ${
-              filter === "complete"
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"
-            }`}
-            onClick={() => setFilter("complete")}
-          >
-            Complete
-          </button>
-          <button
-            className="ml-auto px-4 py-2 rounded-full text-sm font-medium border border-gray-300 bg-white text-gray-700 hover:bg-blue-50"
-            onClick={() => setSortByDate(!sortByDate)}
-          >
-            Sort by Submission Date{" "}
-            {sortByDate ? "(Newest First)" : "(Oldest First)"}
-          </button>
-        </div>
+        <RevieweeFilterSort
+          filter={filter}
+          setFilter={setFilter}
+          sortByDate={sortByDate}
+          setSortByDate={setSortByDate}
+        />
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedData.length === 0 && (
-            <div className="col-span-full text-center text-gray-500 py-8">
-              No applications to display.
-            </div>
-          )}
-          {sortedData.map((reviewee) => (
-            <div
-              key={reviewee.application_id}
-              className="bg-white shadow-md rounded-xl p-6 flex flex-col justify-between min-h-[220px]"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                {/* Placeholder avatar */}
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl font-bold">
-                  {reviewee.applicant_name ? reviewee.applicant_name[0] : "?"}
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-[#222]">
-                    {reviewee.applicant_name}
-                  </h2>
-                  <p className="text-xs text-gray-500">
-                    Submitted:{" "}
-                    {new Date(reviewee.submission_date).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mb-4">
-                {/* Status badge */}
-                {reviewee.status === "pending_review" && (
-                  <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">
-                    Under Review
-                  </span>
-                )}
-                {(reviewee.status === "accepted" ||
-                  reviewee.status === "rejected") && (
-                  <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-medium">
-                    Review Complete
-                  </span>
-                )}
-                {reviewee.status === "" && (
-                  <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">
-                    New
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col gap-2 mt-auto">
-                {reviewee.status === "accepted" ||
-                reviewee.status === "rejected" ? (
-                  <Link href={`/Reviewee/${reviewee.application_id}`}>
-                    <button className="w-full bg-gray-100 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
-                      View Details
-                    </button>
-                  </Link>
-                ) : reviewee.status === "pending_review" ? (
-                  <Link href={`/Reviewee/${reviewee.application_id}`}>
-                    <button className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">
-                      Continue Review
-                    </button>
-                  </Link>
-                ) : (
-                  <Link href={`/Reviewee/${reviewee.application_id}`}>
-                    <button className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">
-                      Start Review
-                    </button>
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="w-full">
+          <RevieweeGrid data={sortedData} />
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between mt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between mt-8 gap-4">
           <span className="text-sm text-gray-500">
             Showing 1 to {sortedData.length} of {revieweeList?.total_count}{" "}
             results

@@ -19,8 +19,10 @@ const EvaluatedInfo: React.FC<EvaluatedInfoProps> = ({
 }) => {
   if (status !== "accepted" && status !== "rejected") return null;
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 flex-1">
-      <h2 className="font-semibold mb-4 text-lg">Evaluation Summary</h2>
+    <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 flex-1">
+      <h2 className="font-semibold mb-4 text-lg sm:text-xl">
+        Evaluation Summary
+      </h2>
       <div className="mb-3 text-sm text-gray-700">
         <strong>Status:</strong>{" "}
         <span
