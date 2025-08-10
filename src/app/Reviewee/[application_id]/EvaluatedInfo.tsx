@@ -39,11 +39,11 @@ const EvaluatedInfo: React.FC<EvaluatedInfoProps> = ({
         <strong>Resume Score:</strong> {reviewData.resume_score}
       </div>
       <div className="mb-3">
-        <strong>Essay "Why A2SV" Score:</strong>{" "}
+        <strong>Essay &quot;Why A2SV&quot; Score:</strong>{" "}
         {reviewData.essay_why_a2sv_score}
       </div>
       <div className="mb-3">
-        <strong>Essay "About You" Score:</strong>{" "}
+        <strong>Essay &quot;About You&quot; Score:</strong>{" "}
         {reviewData.essay_about_you_score}
       </div>
       <div className="mb-3">

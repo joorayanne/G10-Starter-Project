@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import RevieweeHeader from "./RevieweeHeader";
 import ApplicantProfile from "./ApplicantProfile";
 import EvaluationForm from "./EvaluationForm";
@@ -8,19 +9,6 @@ import EvaluatedInfo from "./EvaluatedInfo";
 import { z } from "zod";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-
-interface Applicant {
-  applicant_name: string;
-  school: string;
-  degree: string;
-  github_handle: string;
-  leetcode_handle: string;
-  codeforces_handle: string;
-  essay_about_you: string;
-  essay_why_a2sv: string;
-  resume_url: string;
-}
 
 interface ReviewData {
   activity_check_notes: string;
@@ -50,6 +38,7 @@ interface applicantProps {
 }
 
 const RevieweeDetail = () => {
+  const { data: session } = useSession();
   const { application_id } = useParams();
   const [applicant, setApplicant] = useState<applicantProps>({
     applicant_name: "",
@@ -78,7 +67,7 @@ const RevieweeDetail = () => {
   });
 
   // Load from localStorage if available
-  const [reviewData, setReviewData] = useState(() => {
+  const [reviewData, setReviewData] = useState<ReviewData>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(`reviewData-${application_id}`);
       if (saved) {
@@ -123,19 +112,16 @@ const RevieweeDetail = () => {
     }
   }, [reviewData, application_id]);
 
-  // Validation state
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNDNmOTExMy1lZjM5LTQ4OWItYWJlZi1mOTliMzAxMWU1OWYiLCJleHAiOjE3NTQ2NjQ0NDgsInR5cGUiOiJhY2Nlc3MifQ.NE3m8uQEpMo9uQb8_QBcnsFr9tLTLnIInFsdAjGvobo"; // Replace with secure method (env/localStorage/etc.)
 
   useEffect(() => {
     const fetchApplicant = async () => {
+      if (!session?.accessToken) return;
       try {
         const res = await fetch(
           `https://a2sv-application-platform-backend-team10.onrender.com/reviews/${application_id}`,
           {
-            headers: { Authorization: `Bearer ${accessToken}` },
+            headers: { Authorization: `Bearer ${session.accessToken}` },
           }
         );
         const data = await res.json();
@@ -145,7 +131,7 @@ const RevieweeDetail = () => {
       }
     };
     fetchApplicant();
-  }, [application_id]);
+  }, [application_id, session]);
 
   console.log("Applicant Data:", applicant);
 
@@ -178,7 +164,7 @@ const RevieweeDetail = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${session?.accessToken ?? ""}`,
           },
           body: JSON.stringify(reviewData),
         }

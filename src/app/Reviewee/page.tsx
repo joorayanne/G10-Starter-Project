@@ -1,40 +1,32 @@
 "use client";
+
 import RevieweeHeader from "./RevieweeHeader";
 import RevieweeFilterSort from "./RevieweeFilterSort";
 import RevieweeGrid from "./RevieweeGrid";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 interface Reviewee_list {
-  reviews: [
-    {
-      application_id: string;
-      applicant_name: string;
-      status: string;
-      submission_date: Date;
-    }
-  ];
+  reviews: {
+    application_id: string;
+    applicant_name: string;
+    status: string;
+    submission_date: Date;
+  }[];
   total_count: number;
   page: number;
   limit: number;
 }
 
 const Reviewee_list = () => {
+  const { data: session, status } = useSession();
   const [filter, setFilter] = useState<
     "all" | "under-review" | "complete" | "in_progress"
   >("all");
   const [sortByDate, setSortByDate] = useState(false);
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNDNmOTExMy1lZjM5LTQ4OWItYWJlZi1mOTliMzAxMWU1OWYiLCJleHAiOjE3NTQ2NjQ0NDgsInR5cGUiOiJhY2Nlc3MifQ.NE3m8uQEpMo9uQb8_QBcnsFr9tLTLnIInFsdAjGvobo";
 
   const [revieweeList, setRevieweeList] = useState<Reviewee_list>({
-    reviews: [
-      {
-        application_id: "",
-        applicant_name: "",
-        status: "",
-        submission_date: new Date("1970-01-01T00:00:00.000Z"),
-      },
-    ],
+    reviews: [],
     total_count: 0,
     page: 1,
     limit: 10,
@@ -42,15 +34,22 @@ const Reviewee_list = () => {
 
   useEffect(() => {
     const fetchRevieweeList = async () => {
+      if (status !== "authenticated" || !session?.accessToken) return;
+
       try {
         const response = await fetch(
           "https://a2sv-application-platform-backend-team10.onrender.com/reviews/assigned",
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${session.accessToken}`,
             },
           }
         );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
         setRevieweeList(data.data);
       } catch (error) {
@@ -59,11 +58,8 @@ const Reviewee_list = () => {
     };
 
     fetchRevieweeList();
-  }, [accessToken]);
+  }, [session, status]);
 
-  console.log(revieweeList);
-
-  // Filtering
   const rawData = revieweeList?.reviews ?? [];
 
   const filteredData = rawData.filter((reviewee) => {
@@ -80,11 +76,22 @@ const Reviewee_list = () => {
     return sortByDate ? dateB - dateA : dateA - dateB;
   });
 
+  if (status === "loading") {
+    return <div className="p-6">Loading authentication...</div>;
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="p-6 text-red-500">
+        You must be logged in to view this page.
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F7F8FA] px-2 sm:px-8 py-4 sm:py-8">
-      {/* Header Bar */}
       <RevieweeHeader />
-      {/* Main Content */}
+
       <div className="max-w-7xl mx-auto mt-10 sm:mt-20">
         <h1 className="text-2xl font-bold text-[#222] mb-2 text-center sm:text-left">
           Assigned Applications
@@ -94,7 +101,6 @@ const Reviewee_list = () => {
           review
         </p>
 
-        {/* Filter & Sort Buttons */}
         <RevieweeFilterSort
           filter={filter}
           setFilter={setFilter}
@@ -102,12 +108,10 @@ const Reviewee_list = () => {
           setSortByDate={setSortByDate}
         />
 
-        {/* Cards Grid */}
         <div className="w-full">
           <RevieweeGrid data={sortedData} />
         </div>
 
-        {/* Pagination */}
         <div className="flex flex-col sm:flex-row items-center justify-between mt-8 gap-4">
           <span className="text-sm text-gray-500">
             Showing 1 to {sortedData.length} of {revieweeList?.total_count}{" "}
@@ -136,4 +140,5 @@ const Reviewee_list = () => {
     </div>
   );
 };
+
 export default Reviewee_list;

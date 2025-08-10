@@ -21,8 +21,8 @@ const Manage = () => {
   const params = useParams();
   const id = params?.id;
 
-  const [application, setApplication] = useState<Application_id|null>(null);
-  const [feedback, setFeedback] = useState<Feedback |null>(null);
+  const [application, setApplication] = useState<Application_id | null>(null);
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
 
   useEffect(() => {
     if (!id || typeof id !== "string") return;
@@ -41,7 +41,7 @@ const Manage = () => {
         );
 
         const appData: APIResponse = await res.json();
-        
+
         setApplication(appData.data.application);
         setFeedback(appData.data.review);
       } catch (err) {
@@ -68,7 +68,9 @@ const Manage = () => {
       {feedback ? (
         <ReviewerFeedback feedback={feedback} />
       ) : (
-        <div className="font-semibold text-lg">No recorded reviewers feedback yet.</div>
+        <div className="font-semibold text-lg">
+          No recorded reviewers feedback yet.
+        </div>
       )}
     </div>
   );

@@ -66,7 +66,7 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
           )}
         </label>
         <label className="flex-1 text-sm font-medium text-gray-700">
-          Essay "Why A2SV" Score:
+          Essay &quote;Why A2SV&quote; Score:
           <input
             type="number"
             name="essay_why_a2sv_score"
@@ -88,7 +88,7 @@ const EvaluationForm: React.FC<EvaluationFormProps> = ({
       </div>
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-3">
         <label className="flex-1 text-sm font-medium text-gray-700">
-          Essay "About You" Score:
+          Essay &quote;About You&quote; Score:
           <input
             type="number"
             name="essay_about_you_score"
