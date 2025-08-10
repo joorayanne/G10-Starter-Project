@@ -93,7 +93,7 @@ export default function CycleDetailsPage() {
     if (!session) return;
     try {
       await axios.put(`${API_BASE}/admin/cycles/${id}/`, formData, {
-        headers: { Authorization: `Bearer ${session?.accessToken}` },
+        headers: { Authorization: `Bearer ${session.accessToken}` },
       });
       setShowToast("Cycle updated successfully!");
       setShowUpdateForm(false);

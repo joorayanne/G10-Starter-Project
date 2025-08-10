@@ -80,14 +80,10 @@ export default function SignInPage() {
                 Back to Home
               </Link>
               <span>|</span>
-<<<<<<< HEAD
               <Link
                 href="/signup"
                 className="text-indigo-600 hover:underline block"
               >
-=======
-              <Link href="/applicant-routes/register" className="text-indigo-600 hover:underline block">
->>>>>>> 06b52c997b23c99e063183ea3279c952b0a9aac5
                 Create a new applicant account
               </Link>
             </div>
