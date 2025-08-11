@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "@/components/common/footer";
 
 interface ApplicationStatus {
   id: string;
@@ -86,10 +87,10 @@ const ApplicationSucess = () => {
           <Link href="/" className="px-2">
             Your Profile
           </Link>
-          <Link href="/" className="px-2">
+          <p  className="px-2">
             Applicant Name
-          </Link>
-          <Link href="/" className="px-2">
+          </p>
+          <Link href="/applicant-routes/logout" className="px-2">
             Logout
           </Link>
         </div>
@@ -220,6 +221,15 @@ const ApplicationSucess = () => {
           </div>
         </div>
       </section>
+      <footer>
+        <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
+          <p className="text-gray-400 text-sm">
+            © 2023 A2SV. All rights reserved.
+          </p>
+        </div>
+      </footer>
+
+      {/* Optional: Add a footer component if needed */}
     </>
   );
 };

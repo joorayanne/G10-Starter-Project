@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import Footer from '@/components/common/footer';
 
 interface CodingProfileData {
     codeforces_handle: string;
@@ -33,8 +34,8 @@ const CodingProfiles: React.FC = () => {
             <header className='flex justify-around bg-white shadow-gray-400'>
                 <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100}/>
                 <div className='flex justify-between gap-x-7 p-3'>
-                    <p>John Doe</p>
-                    <Link href='/' className='px-2'>Logout</Link>
+                    <p>Applicant</p>
+                    <Link href='/applicant-routes/logout' className='px-2'>Logout</Link>
                 </div>
             </header>
 
@@ -89,9 +90,13 @@ const CodingProfiles: React.FC = () => {
                 </form>
             </section>
 
-            <footer className='mt-40 bg-blue-950 h-36 flex items-center justify-center'>
-                <p className='text-white text-center my-5'>2025 A2SV. All rights reserved</p>
-            </footer>
+           <footer>
+            <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
+            <p className="text-gray-400 text-sm">
+                © 2023 A2SV. All rights reserved.
+            </p>
+            </div>
+        </footer>
         </>
     );
 }
