@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { Cycle } from '@/types/cycle';
-
 export default async function AdminDashboardPage() {
  
   const cyclesRes = await fetch('https://a2sv-application-platform-backend-team10.onrender.com/cycles/', {
-    cache: 'no-store',
+    cache: 'no-store',  
   });
   const cyclesData = await cyclesRes.json();
   const cycles: Cycle[] = cyclesData.data?.cycles || [];

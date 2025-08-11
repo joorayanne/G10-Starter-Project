@@ -139,6 +139,7 @@ export default function ProfilePage() {
           new_password: data.new_password,
         }),
       });
+
       const result = await res.json();
       if (!res.ok || !result.success) throw new Error(result.message || "Failed to change password");
       alert("Password changed successfully!");
@@ -177,10 +178,10 @@ export default function ProfilePage() {
             <div className="flex items-end px-8 -mt-16">
               <div className="h-32 w-32 rounded-full border-4 border-white overflow-hidden shadow-lg">
                 <Image
-                  src="/images/profile_image.svg"
-                  alt="Profile"
-                  width={128}
-                  height={128}
+                  src="/images/code_image.svg"
+                  alt="Cover"
+                  width={800}
+                  height={192}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -203,7 +204,9 @@ export default function ProfilePage() {
           {!profileLoading && profileData && (
             <form className="bg-white rounded-lg shadow-[0px_8px_10px_-6px_rgba(0,0,0,0.1),0px_20px_25px_-5px_rgba(0,0,0,0.1)] p-8 space-y-8">
               <div className="space-y-6">
-                <h3 className="text-lg font-medium text-gray-900">Profile Information</h3>
+                <h3 className="text-lg font-medium text-gray-900">
+                  Profile Information
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">
@@ -242,16 +245,18 @@ export default function ProfilePage() {
                       id="role"
                       value={session?.user?.role || ""}
                       disabled
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 bg-white focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 bg-gray-100 focus:outline-none sm:text-sm"
                     />
-                    <p className="text-sm text-gray-500 mt-1">Your role cannot be changed</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Your role cannot be changed.
+                    </p>
                   </div>
                 </div>
                 <div className="bg-gray-50 px-6 py-3 rounded-md flex justify-end">
                   <button
                     type="button"
                     onClick={handleProfileSubmit(onUpdateProfile)}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
                     disabled={profileLoading}
                   >
                     {profileLoading ? "Saving..." : "Save Changes"}
@@ -260,7 +265,9 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-6">
-                <h3 className="text-lg font-medium text-gray-900">Change Password</h3>
+                <h3 className="text-lg font-medium text-gray-900">
+                  Change Password
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <label
@@ -319,7 +326,7 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={handlePasswordSubmit(onChangePassword)}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
                     disabled={passwordLoading}
                   >
                     {passwordLoading ? "Updating..." : "Change Password"}

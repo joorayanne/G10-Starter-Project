@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+
 interface FormData {
   fullName: string;
   email: string;
@@ -13,6 +14,7 @@ interface FormData {
 const Page: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
+  const { data: session } = useSession();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
@@ -21,21 +23,19 @@ const Page: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const {data: session, status }= useSession() 
 
   useEffect(() => {
     if (!id) return;
 
     const fetchUser = async () => {
       try {
-        const token = session?.accessToken
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
           "https://a2sv-application-platform-backend-team10.onrender.com";
 
         const response = await fetch(`${apiUrl}/admin/users/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             "Content-Type": "application/json",
           },
         });
@@ -83,7 +83,7 @@ const Page: React.FC = () => {
       const response = await fetch(`${apiUrl}/admin/users/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${session?.accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

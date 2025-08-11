@@ -39,12 +39,7 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href="/admin" className="flex items-center space-x-2">
-          <Image
-            src={logo}
-            width={120}
-            height={24}
-            alt="A2SV Logo"
-          />
+          <Image src={logo} width={120} height={24} alt="A2SV Logo" />
         </Link>
 
         {/* Desktop Nav */}
@@ -77,6 +72,13 @@ export default function AdminNavbar({ currentPage }: NavbarProps) {
           <span className="text-gray-400">|</span>
           <LogoutButton />
         </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden p-2 text-gray-700"
+        >
+          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
       </div>
 
 
