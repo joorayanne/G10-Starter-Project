@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getAccessToken } from "@/app/auth/authHelpers";
+import React, { use, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface Props {
   applicantId: string;
@@ -23,10 +23,10 @@ const ManagerActions = ({ applicantId }: Props) => {
   const [reviewers, setReviewers] = useState<Reviewer[]>([]);
   const [selectedReviewer, setSelectedReviewer] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const token = useSession().data?.accessToken;
 
   useEffect(() => {
     const fetchReviewers = async () => {
-      const token = getAccessToken();
       if (!token) return;
 
       try {
@@ -60,7 +60,7 @@ const ManagerActions = ({ applicantId }: Props) => {
   }, []);
 
   const handleAssignReviewer = async () => {
-    const token = getAccessToken();
+    const token = useSession().data?.accessToken;
     if (!token) {
       alert("No access token found. Please log in again.");
       return;
@@ -87,72 +87,72 @@ const ManagerActions = ({ applicantId }: Props) => {
         }
       );
 
-    const result = await res.json();
+      const result = await res.json();
 
-    if (res.ok) {
-      const reviewer = reviewers.find(r => r.id === selectedReviewer);
-      alert(`✅ Reviewer "${reviewer?.full_name}" assigned successfully!`);
-    } else {
-      alert(`❌ Failed to assign reviewer: ${result.message}`);
+      if (res.ok) {
+        const reviewer = reviewers.find((r) => r.id === selectedReviewer);
+        alert(`✅ Reviewer "${reviewer?.full_name}" assigned successfully!`);
+      } else {
+        alert(`❌ Failed to assign reviewer: ${result.message}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong while assigning reviewer.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong while assigning reviewer.");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const handleFinalDecision = async (decision: "accepted" | "rejected") => {
-  const token = getAccessToken();
-  if (!token) {
-    alert("No access token found. Please log in again.");
-    return;
-  }
-
-  const confirmed = window.confirm(`Are you sure you want to ${decision} this application?`);
-  if (!confirmed) return;
-
-  const notes = prompt("Please enter decision notes:", "");
-
-  if (notes === null || notes.trim() === "") {
-    alert("Decision notes are required.");
-    return;
-  }
-
-  setLoading(true);
-  try {
-    const res = await fetch(
-      `https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/${applicantId}/decide`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          status: decision,
-          decision_notes: notes,
-        }),
-      }
-    );
-
-    const result = await res.json();
-
-    if (res.ok) {
-      alert(`✅ Application ${decision} successfully.`);
-    } else {
-      alert(`❌ Failed to ${decision}: ${result.message}`);
+    const token = useSession().data?.accessToken;
+    if (!token) {
+      alert("No access token found. Please log in again.");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong while submitting the final decision.");
-  } finally {
-    setLoading(false);
-  }
-};
 
+    const confirmed = window.confirm(
+      `Are you sure you want to ${decision} this application?`
+    );
+    if (!confirmed) return;
+
+    const notes = prompt("Please enter decision notes:", "");
+
+    if (notes === null || notes.trim() === "") {
+      alert("Decision notes are required.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/${applicantId}/decide`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: decision,
+            decision_notes: notes,
+          }),
+        }
+      );
+
+      const result = await res.json();
+
+      if (res.ok) {
+        alert(`✅ Application ${decision} successfully.`);
+      } else {
+        alert(`❌ Failed to ${decision}: ${result.message}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong while submitting the final decision.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-lg w-full max-w-sm">
@@ -187,7 +187,7 @@ const ManagerActions = ({ applicantId }: Props) => {
         </p>
         <div className="flex gap-2">
           <button
-             onClick={() => handleFinalDecision("rejected")}
+            onClick={() => handleFinalDecision("rejected")}
             className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 disabled:opacity-50"
             disabled={loading}
           >

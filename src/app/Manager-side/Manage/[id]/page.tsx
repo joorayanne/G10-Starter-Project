@@ -6,7 +6,7 @@ import ManagerActions from "../../../../components/Manager/Manage/MangerAction";
 import ReviewerFeedback from "../../../../components/Manager/Manage/ReviewerFeedback";
 import ApplicantProfile from "../../../../components/Manager/Manage/ApplicantProfile";
 import PageTitle from "@/components/Manager/PageTitle";
-import { getAccessToken } from "@/app/auth/authHelpers";
+import { useSession } from "next-auth/react";
 
 import { Application_id, Feedback } from "@/types/Manger";
 
@@ -23,12 +23,14 @@ const Manage = () => {
 
   const [application, setApplication] = useState<Application_id | null>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+ 
 
   useEffect(() => {
     if (!id || typeof id !== "string") return;
 
     const fetchData = async () => {
-      const token = getAccessToken();
+      const { data: session } = useSession();
+      const token = session?.accessToken;
 
       try {
         const res = await fetch(

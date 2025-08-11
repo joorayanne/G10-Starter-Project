@@ -63,21 +63,14 @@ export const authOptions: NextAuthOptions = {
             "https://a2sv-application-platform-backend-team10.onrender.com/auth/token/refresh",
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token.refreshToken}`,
-              },
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ refresh: token.refreshToken }),
             }
           );
 
           const data = await res.json();
-          console.log("Refresh token response:", { status: res.status, data }); // Log for debugging
-
-          if (!res.ok || !data.success) {
-            throw new Error(
-              `Failed to refresh token: ${data.message || "Unknown error"}`
-            );
-          }
+          if (!res.ok || !data.success)
+            throw new Error("Failed to refresh token");
 
           const newAccessToken = data.data.access;
           const newDecodedToken = jwtDecode<{ exp: number }>(newAccessToken);
@@ -86,6 +79,7 @@ export const authOptions: NextAuthOptions = {
           token.accessTokenExpires = newDecodedToken.exp * 1000;
         } catch (err) {
           console.error("Failed to refresh access token", err);
+
           return { ...token, error: "RefreshAccessTokenError" };
         }
       }
@@ -104,9 +98,16 @@ export const authOptions: NextAuthOptions = {
     },
 
     async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      try {
+        const parsedUrl = new URL(url, baseUrl);
+        const role = parsedUrl.searchParams.get("role");
+        
+        if (role === "admin") return `${baseUrl}/admin`;
+        if (role === "user") return `${baseUrl}/Manager-side`;
+        return `${baseUrl}/${role}`;
+      } catch {
+        return baseUrl;
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
