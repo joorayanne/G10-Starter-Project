@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Tags from "./tags";
 import { useRouter } from "next/navigation";
-import { getAccessToken } from "../../app/auth/authHelpers";
+import { useSession } from "next-auth/react";
 import { Application , ReviewerResponse } from "@/types/Manger";
 
 
@@ -12,10 +12,11 @@ const AllApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
+   const { data: session } = useSession();
   useEffect(() => {
   const fetchApplications = async () => {
-    const token = getAccessToken();
+   
+    const token = session?.accessToken;
 
     if (!token) {
       router.push("/auth/signin");
@@ -61,7 +62,7 @@ const AllApplications = () => {
     } else if (value === "view-detail") {
       router.push(`/Manager-side/Manage/${appId}`);
     } else if (value === "assign-reviewer") {
-      const token = getAccessToken();
+      const token = useSession()?.data?.accessToken;
 
       try {
         const res = await fetch(
