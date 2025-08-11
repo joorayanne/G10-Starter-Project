@@ -11,14 +11,16 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
         const res = await fetch(
           "https://a2sv-application-platform-backend-team10.onrender.com/auth/token",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
+              email: credentials.email,
+              password: credentials.password,
             }),
           }
         );
@@ -26,16 +28,12 @@ export const authOptions: NextAuthOptions = {
         const result = await res.json();
         console.log("BACKEND API RESPONSE FOR ROLE:", result.data);
 
-        if (!res.ok || !result.success) {
-          return null;
-        }
-
-        const { access, refresh, role } = result.data;
+        const { id, access, refresh, role } = result.data;
         const decodedAccessToken = jwtDecode<{ exp: number }>(access);
         const accessTokenExpires = decodedAccessToken.exp * 1000;
 
         return {
-          id: result.data.id,
+          id,
           accessToken: access,
           refreshToken: refresh,
           role,
@@ -50,14 +48,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-        token.role = user.role;
-        token.accessTokenExpires = user.accessTokenExpires;
-        return token;
+        return {
+          ...token,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+          role: user.role,
+          accessTokenExpires: user.accessTokenExpires,
+        };
       }
 
-      const isExpired = Date.now() > token.accessTokenExpires;
+      const isExpired = Date.now() > (token.accessTokenExpires as number);
       if (isExpired) {
         try {
           const res = await fetch(
@@ -76,11 +76,13 @@ export const authOptions: NextAuthOptions = {
           const newAccessToken = data.data.access;
           const newDecodedToken = jwtDecode<{ exp: number }>(newAccessToken);
 
-          token.accessToken = newAccessToken;
-          token.accessTokenExpires = newDecodedToken.exp * 1000;
+          return {
+            ...token,
+            accessToken: newAccessToken,
+            accessTokenExpires: newDecodedToken.exp * 1000,
+          };
         } catch (err) {
           console.error("Failed to refresh access token", err);
-
           return { ...token, error: "RefreshAccessTokenError" };
         }
       }
@@ -90,11 +92,9 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role;
+        session.user.role = token.role as string;
       }
-      session.accessToken = token.accessToken;
-      session.error = token.error;
-
+      session.accessToken = token.accessToken as string;
       return session;
     },
 

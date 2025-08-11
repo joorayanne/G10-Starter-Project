@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/footer";
+import Logout from "@/components/common/Logout";
 
 interface EssayData {
   essay_about_you: string;
@@ -121,7 +122,13 @@ const Essay: React.FC = () => {
 
   return (
     <>
-      <NavBar />
+      <header className='flex justify-around bg-white shadow-gray-400'>
+                <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100} />
+                <div className='flex justify-between gap-x-7 p-3'>
+                    <p>Applicant</p>
+                    <Link href='/applicant-routes/logout' className='px-2'>Logout</Link>
+                </div>
+            </header>
       <section className="bg-white shadow-md w-full max-w-2xl mx-auto my-10 p-6 rounded-lg">
         <h1 className="text-center font-bold text-2xl mb-6">Application Form</h1>
         <Image
@@ -234,7 +241,13 @@ const Essay: React.FC = () => {
         </form>
       </section>
 
-      <Footer />
+      <footer>
+        <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
+          <p className="text-gray-400 text-sm">
+            © 2023 A2SV. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </>
   );
 };

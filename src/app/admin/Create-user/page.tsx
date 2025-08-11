@@ -180,6 +180,7 @@ const CreateUser: React.FC = () => {
                 className="mt-1 p-1.5 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="reviewer">Reviewer</option>
+                <option value="applicant">Applicant</option>
                 <option value="admin">Admin</option>
                 <option value="manager">Manager</option>
               </select>
