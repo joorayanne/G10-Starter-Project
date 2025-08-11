@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Navbar from "@/components/admin/Navbar";
-import { getAccessToken } from "../../../auth/authHelpers";
+import { useSession } from "next-auth/react";
+
 interface FormData {
   fullName: string;
   email: string;
@@ -14,6 +14,7 @@ interface FormData {
 const Page: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
+  const { data: session } = useSession();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
@@ -34,7 +35,7 @@ const Page: React.FC = () => {
 
         const response = await fetch(`${apiUrl}/admin/users/${id}`, {
           headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
+            Authorization: `Bearer ${session?.accessToken}`,
             "Content-Type": "application/json",
           },
         });
@@ -82,7 +83,7 @@ const Page: React.FC = () => {
       const response = await fetch(`${apiUrl}/admin/users/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`,
+          Authorization: `Bearer ${session?.accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -108,7 +109,6 @@ const Page: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="users" />
       <main className="px-30">
         <h1 className="font-bold text-3xl pt-7">Edit User</h1>
         <p className="pb-5 text-gray-400">Update user information and role.</p>

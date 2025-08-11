@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import Navbar from "../../../components/admin/Navbar";
-import { getAccessToken } from "../../auth/authHelpers";
+import { useSession } from "next-auth/react";
 
 interface FormData {
   fullName: string;
@@ -12,6 +11,7 @@ interface FormData {
 }
 
 const CreateUser: React.FC = () => {
+  const { data: session } = useSession();
   const [formData, setFormData] = React.useState<FormData>({
     fullName: "",
     email: "",
@@ -58,7 +58,7 @@ const CreateUser: React.FC = () => {
       const response = await fetch(`${apiUrl}/admin/users`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
+          Authorization: `Bearer ${session?.accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -97,7 +97,6 @@ const CreateUser: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar currentPage="users" />
       <main className="px-30">
         <h1 className="font-bold text-3xl pt-7">Create New User</h1>
         <p className="pb-5 text-gray-400">

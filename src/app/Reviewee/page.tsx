@@ -1,38 +1,32 @@
 "use client";
-import Link from "next/link";
+
+import RevieweeHeader from "./RevieweeHeader";
+import RevieweeFilterSort from "./RevieweeFilterSort";
+import RevieweeGrid from "./RevieweeGrid";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 interface Reviewee_list {
-  reviews: [
-    {
-      application_id: string;
-      applicant_name: string;
-      status: string;
-      submission_date: Date;
-    }
-  ];
+  reviews: {
+    application_id: string;
+    applicant_name: string;
+    status: string;
+    submission_date: Date;
+  }[];
   total_count: number;
   page: number;
   limit: number;
 }
 
 const Reviewee_list = () => {
-  const [filter, setFilter] = useState<"all" | "under-review" | "complete">(
-    "all"
-  );
+  const { data: session, status } = useSession();
+  const [filter, setFilter] = useState<
+    "all" | "under-review" | "complete" | "in_progress"
+  >("all");
   const [sortByDate, setSortByDate] = useState(false);
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWU4NTdmOS0xZGRhLTQ2OTAtYTE0MS03NDU4NmRiMjNhYTEiLCJleHAiOjE3NTQ1NTY2MjAsInR5cGUiOiJhY2Nlc3MifQ.ysKLlpdJ4UjKfFb1Nj-e065GgfFN2ZAjUiSvJBUF9zA";
 
   const [revieweeList, setRevieweeList] = useState<Reviewee_list>({
-    reviews: [
-      {
-        application_id: "",
-        applicant_name: "",
-        status: "",
-        submission_date: new Date("1970-01-01T00:00:00.000Z"),
-      },
-    ],
+    reviews: [],
     total_count: 0,
     page: 1,
     limit: 10,
@@ -40,15 +34,22 @@ const Reviewee_list = () => {
 
   useEffect(() => {
     const fetchRevieweeList = async () => {
+      if (status !== "authenticated" || !session?.accessToken) return;
+
       try {
         const response = await fetch(
           "https://a2sv-application-platform-backend-team10.onrender.com/reviews/assigned",
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${session.accessToken}`,
             },
           }
         );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
         setRevieweeList(data.data);
       } catch (error) {
@@ -57,74 +58,87 @@ const Reviewee_list = () => {
     };
 
     fetchRevieweeList();
-  }, [accessToken]);
+  }, [session, status]);
 
-  
-  console.log(revieweeList);
-  
+  const rawData = revieweeList?.reviews ?? [];
 
-  // Filtering
-const rawData = revieweeList?.reviews ?? [];
+  const filteredData = rawData.filter((reviewee) => {
+    if (filter === "all") return true;
+    if (filter === "under-review") return reviewee.status === "pending_review";
+    if (filter === "complete")
+      return reviewee.status === "accepted" || reviewee.status === "rejected";
+    return true;
+  });
 
-const filteredData = rawData.filter((reviewee) => {
-  if (filter === 'all') return true;
-  if (filter === 'under-review') return reviewee.status === 'pending_review';
-  if (filter === 'complete') return reviewee.status === 'accepted' || reviewee.status === 'rejected';
-  return true;
-});
+  const sortedData = [...filteredData].sort((a, b) => {
+    const dateA = new Date(a.submission_date).getTime();
+    const dateB = new Date(b.submission_date).getTime();
+    return sortByDate ? dateB - dateA : dateA - dateB;
+  });
 
-const sortedData = [...filteredData].sort((a, b) => {
-  const dateA = new Date(a.submission_date).getTime();
-  const dateB = new Date(b.submission_date).getTime();
-  return sortByDate ? dateB - dateA : dateA - dateB;
-});
+  if (status === "loading") {
+    return <div className="p-6">Loading authentication...</div>;
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="p-6 text-red-500">
+        You must be logged in to view this page.
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <h1>Assigned Applications</h1>
-      <p>
-        You have {revieweeList?.total_count} applications waiting for your
-        review
-      </p>
+    <div className="min-h-screen bg-[#F7F8FA] px-2 sm:px-8 py-4 sm:py-8">
+      <RevieweeHeader />
 
-      {/* Filter & Sort Buttons */}
-      <div className="flex gap-3 my-4">
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("under-review")}>Under Review</button>
-        <button onClick={() => setFilter("complete")}>Complete</button>
-        <button onClick={() => setSortByDate(!sortByDate)}>
-          Sort by Submission Date{" "}
-          {sortByDate ? "(Newest First)" : "(Oldest First)"}
-        </button>
-      </div>
+      <div className="max-w-7xl mx-auto mt-10 sm:mt-20">
+        <h1 className="text-2xl font-bold text-[#222] mb-2 text-center sm:text-left">
+          Assigned Applications
+        </h1>
+        <p className="text-gray-600 mb-6 text-center sm:text-left">
+          You have {revieweeList?.total_count} applications waiting for your
+          review
+        </p>
 
-      {/* Render List */}
-      <div>
-        {sortedData.length === 0 && <p>No applications to display.</p>}
-        {sortedData.map((reviewee) => (
-          <div
-            key={reviewee.application_id}
-            className="border p-4 mb-4 rounded"
-          >
-            <h2>{reviewee.applicant_name}</h2>
-            <p>Application ID: {reviewee.application_id}</p>
-            <p>
-              Submission Date:{" "}
-              {new Date(reviewee.submission_date).toLocaleString()}
-            </p>
-            <p>Status: {reviewee.status}</p>
-            <Link href={`/Reviewee/${reviewee.application_id}`}>
-              {reviewee.status === "accepted" ||
-              reviewee.status === "rejected" ? (
-                <p className="text-blue-600">View Detail</p>
-              ) : (
-                <p className="text-green-600">Continue Review</p>
-              )}
-            </Link>
+        <RevieweeFilterSort
+          filter={filter}
+          setFilter={setFilter}
+          sortByDate={sortByDate}
+          setSortByDate={setSortByDate}
+        />
+
+        <div className="w-full">
+          <RevieweeGrid data={sortedData} />
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center justify-between mt-8 gap-4">
+          <span className="text-sm text-gray-500">
+            Showing 1 to {sortedData.length} of {revieweeList?.total_count}{" "}
+            results
+          </span>
+          <div className="flex items-center gap-2">
+            <button className="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-blue-50">
+              {"<"}
+            </button>
+            <button className="px-3 py-1 rounded border border-blue-600 bg-blue-600 text-white font-semibold">
+              1
+            </button>
+            <button className="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-blue-50">
+              2
+            </button>
+            <span className="px-2 text-gray-500">...</span>
+            <button className="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-blue-50">
+              7
+            </button>
+            <button className="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-blue-50">
+              {">"}
+            </button>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
 };
+
 export default Reviewee_list;

@@ -1,32 +1,127 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import RevieweeHeader from "./RevieweeHeader";
+import ApplicantProfile from "./ApplicantProfile";
+import EvaluationForm from "./EvaluationForm";
+import EvaluatedInfo from "./EvaluatedInfo";
+import { z } from "zod";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
+interface ReviewData {
+  activity_check_notes: string;
+  resume_score: number;
+  essay_why_a2sv_score: number;
+  essay_about_you_score: number;
+  technical_interview_score: number;
+  behavioral_interview_score: number;
+  interview_notes: string;
+}
+
+interface applicantProps {
+  applicant_name: string;
+  codeforces_handle: string;
+  country: string;
+  degree: string;
+  essay_about_you: string;
+  essay_why_a2sv: string;
+  id: string;
+  leetcode_handle: string;
+  resume_url: string | File;
+  school: string;
+  status: "pending" | "accepted" | "rejected" | "pending_review";
+  student_id: string;
+  submitted_at: string;
+  updated_at: string;
+}
+
 const RevieweeDetail = () => {
+  const { data: session } = useSession();
   const { application_id } = useParams();
-  const [applicant, setApplicant] = useState<any>(null);
-  const [reviewData, setReviewData] = useState({
-    activity_check_notes: "",
-    resume_score: 0,
-    essay_why_a2sv_score: 0,
-    essay_about_you_score: 0,
-    technical_interview_score: 0,
-    behavioral_interview_score: 0,
-    interview_notes: "",
+  const [applicant, setApplicant] = useState<applicantProps>({
+    applicant_name: "",
+    codeforces_handle: "",
+    country: "",
+    degree: "",
+    essay_about_you: "",
+    essay_why_a2sv: "",
+    id: "",
+    leetcode_handle: "",
+    resume_url: "",
+    school: "",
+    status: "pending",
+    student_id: "",
+    submitted_at: "",
+    updated_at: "",
+  });
+  const reviewSchema = z.object({
+    activity_check_notes: z.string().min(1, "Required"),
+    resume_score: z.number().min(0).max(10),
+    essay_why_a2sv_score: z.number().min(0).max(10),
+    essay_about_you_score: z.number().min(0).max(10),
+    technical_interview_score: z.number().min(0).max(10),
+    behavioral_interview_score: z.number().min(0).max(10),
+    interview_notes: z.string().min(1, "Required"),
   });
 
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWU4NTdmOS0xZGRhLTQ2OTAtYTE0MS03NDU4NmRiMjNhYTEiLCJleHAiOjE3NTQ1NTY2MjAsInR5cGUiOiJhY2Nlc3MifQ.ysKLlpdJ4UjKfFb1Nj-e065GgfFN2ZAjUiSvJBUF9zA"; // Replace with secure method (env/localStorage/etc.)
+  // Load from localStorage if available
+  const [reviewData, setReviewData] = useState<ReviewData>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`reviewData-${application_id}`);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // Convert string numbers to numbers for scores
+          return {
+            ...parsed,
+            resume_score: Number(parsed.resume_score ?? 0),
+            essay_why_a2sv_score: Number(parsed.essay_why_a2sv_score ?? 0),
+            essay_about_you_score: Number(parsed.essay_about_you_score ?? 0),
+            technical_interview_score: Number(
+              parsed.technical_interview_score ?? 0
+            ),
+            behavioral_interview_score: Number(
+              parsed.behavioral_interview_score ?? 0
+            ),
+          };
+        } catch {
+          // fallback to default
+        }
+      }
+    }
+    return {
+      activity_check_notes: "",
+      resume_score: 0,
+      essay_why_a2sv_score: 0,
+      essay_about_you_score: 0,
+      technical_interview_score: 0,
+      behavioral_interview_score: 0,
+      interview_notes: "",
+    };
+  });
 
-  
+  // Save to localStorage on change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        `reviewData-${application_id}`,
+        JSON.stringify(reviewData)
+      );
+    }
+  }, [reviewData, application_id]);
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   useEffect(() => {
     const fetchApplicant = async () => {
+      if (!session?.accessToken) return;
       try {
         const res = await fetch(
           `https://a2sv-application-platform-backend-team10.onrender.com/reviews/${application_id}`,
           {
-            headers: { Authorization: `Bearer ${accessToken}` },
+            headers: { Authorization: `Bearer ${session.accessToken}` },
           }
         );
         const data = await res.json();
@@ -36,19 +131,32 @@ const RevieweeDetail = () => {
       }
     };
     fetchApplicant();
-  }, [application_id]);
+  }, [application_id, session]);
 
   console.log("Applicant Data:", applicant);
 
-  
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setReviewData({ ...reviewData, [e.target.name]: e.target.value });
+    const value =
+      e.target.type === "number" ? Number(e.target.value) : e.target.value;
+    setReviewData({ ...reviewData, [e.target.name]: value });
   };
 
-
   const handleSubmit = async () => {
+    // Validate before submit lala
+    const result = reviewSchema.safeParse(reviewData);
+    if (!result.success) {
+      const fieldErrors: { [key: string]: string } = {};
+      result.error.issues.forEach((err) => {
+        if (err.path[0]) fieldErrors[String(err.path[0])] = err.message;
+      });
+      setErrors(fieldErrors);
+      alert("Please fix validation errors before submitting.");
+      return;
+    } else {
+      setErrors({});
+    }
     try {
       const res = await fetch(
         `https://a2sv-application-platform-backend-team10.onrender.com/reviews/${application_id}`,
@@ -56,11 +164,10 @@ const RevieweeDetail = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${session?.accessToken ?? ""}`,
           },
           body: JSON.stringify(reviewData),
         }
-
       );
       const result = await res.json();
       console.log("Review submitted:", result);
@@ -73,151 +180,46 @@ const RevieweeDetail = () => {
 
   if (!applicant) return <p>Loading...</p>;
 
+  // Conditional rendering based on applicant.status
+  const isEvaluated =
+    applicant.status === "accepted" || applicant.status === "rejected";
+
   return (
-    <div className="flex flex-col gap-4 p-8">
-      <Link
-        href="/Reviewee"
-        className="mb-4 text-indigo-600 hover:underline self-start"
-      >
-        &larr; Back to Dashboard
-      </Link>
-      <h1 className="text-xl font-bold">Review: {applicant.applicant_name}</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Applicant Profile */}
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="font-semibold mb-2">Applicant Profile</h2>
-          <p>
-            <strong>School:</strong> {applicant.school}
-          </p>
-          <p>
-            <strong>Degree Program:</strong> {applicant.degree}
-          </p>
-        
-          <p>
-            <strong>LeetCode:</strong>{" "}
-            <a
-              className="text-blue-500"
-              href={applicant.leetcode_handle}
-              target="_blank"
-            >
-              LeetCode
-            </a>
-          </p>
-          <p>
-            <strong>Codeforces:</strong>{" "}
-            <a
-              className="text-blue-500"
-              href={applicant.codeforces_handle}
-              target="_blank"
-            >
-              Codeforces
-            </a>
-          </p>
-          <p className="mt-3">
-            <strong>Essay 1:</strong> {applicant.essay_about_you}
-          </p>
-          <p>
-            <strong>Essay 2:</strong> {applicant.essay_why_a2sv}
-          </p>
-          <p className="mt-2">
-            <strong>Resume:</strong>{" "}
-            <a
-              href={applicant.resume_url}
-              className="text-blue-600 underline"
-              target="_blank"
-            >
-              View Resume.pdf
-            </a>
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#F7F8FA] flex flex-col">
+      {/* Header Bar */}
+      <RevieweeHeader />
 
-        {/* Evaluation Form */}
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="font-semibold mb-2">Evaluation Form</h2>
-
-          <label className="block mb-2">
-            Activity Check Notes:
-            <textarea
-              name="activity_check_notes"
-              value={reviewData.activity_check_notes}
-              onChange={handleChange}
-              className="w-full border rounded p-2 mt-1"
-            />
-          </label>
-
-          <div className="flex gap-2">
-            <label className="flex-1">
-              Resume Score:
-              <input
-                type="number"
-                name="resume_score"
-                value={reviewData.resume_score}
-                onChange={handleChange}
-                className="w-full border rounded p-2 mt-1"
-              />
-            </label>
-
-            <label className="flex-1">
-              Essay "Why A2SV" Score:
-              <input
-                type="number"
-                name="essay_why_a2sv_score"
-                value={reviewData.essay_why_a2sv_score}
-                onChange={handleChange}
-                className="w-full border rounded p-2 mt-1"
-              />
-            </label>
-          </div>
-
-          <label className="block mt-2">
-            Essay "About You" Score:
-            <input
-              type="number"
-              name="essay_about_you_score"
-              value={reviewData.essay_about_you_score}
-              onChange={handleChange}
-              className="w-full border rounded p-2 mt-1"
-            />
-          </label>
-
-          <label className="block mt-2">
-            Technical Interview Score:
-            <input
-              type="number"
-              name="technical_interview_score"
-              value={reviewData.technical_interview_score}
-              onChange={handleChange}
-              className="w-full border rounded p-2 mt-1"
-            />
-          </label>
-
-          <label className="block mt-2">
-            Behavioral Interview Score:
-            <input
-              type="number"
-              name="behavioral_interview_score"
-              value={reviewData.behavioral_interview_score}
-              onChange={handleChange}
-              className="w-full border rounded p-2 mt-1"
-            />
-          </label>
-
-          <label className="block mt-2">
-            Interview Notes:
-            <textarea
-              name="interview_notes"
-              value={reviewData.interview_notes}
-              onChange={handleChange}
-              className="w-full border rounded p-2 mt-1"
-            />
-          </label>
-
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-indigo-600 text-white py-2 mt-4 rounded hover:bg-indigo-700"
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col items-center bg-[#F7F8FA] py-4 sm:py-8 px-2 sm:px-0">
+        <div className="w-full max-w-6xl">
+          <Link
+            href="/Reviewee"
+            className="mb-2 text-xs text-indigo-600 hover:underline inline-block"
           >
-            Save & Submit Review
-          </button>
+            &larr; Back to Dashboard
+          </Link>
+          <h1 className="text-2xl font-bold mb-6 text-center sm:text-left">
+            Review: {applicant.applicant_name}
+          </h1>
+          <div className="flex flex-col md:grid md:grid-cols-2 gap-4 sm:gap-8 border-2 border-dotted border-blue-300 rounded-xl p-2 sm:p-6 bg-white shadow-lg">
+            {/* Applicant Profile */}
+            <ApplicantProfile applicant={applicant} />
+
+            {/* Conditional: EvaluatedInfo or EvaluationForm */}
+            {isEvaluated ? (
+              <EvaluatedInfo
+                reviewData={reviewData}
+                status={applicant.status}
+              />
+            ) : (
+              <EvaluationForm
+                reviewData={reviewData}
+                errors={errors}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
