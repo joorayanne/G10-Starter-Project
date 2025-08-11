@@ -40,7 +40,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    router.push("/auth/signin");
+    router.push("/signin");
   };
 
   const isDashboard = pathname === "/Manager-side";

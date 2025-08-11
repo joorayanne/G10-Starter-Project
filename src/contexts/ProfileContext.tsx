@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
@@ -9,7 +9,6 @@ interface ProfileData {
   username?: string;
 }
 
-
 interface ProfileContextType {
   profileData: ProfileData | null;
   isLoading: boolean;
@@ -19,10 +18,8 @@ interface ProfileContextType {
   clearProfile: () => void;
 }
 
-
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
-// Provider component
 interface ProfileProviderProps {
   children: ReactNode;
 }
@@ -36,10 +33,9 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
   const getAccessToken = () => localStorage.getItem('access');
   const getRefreshToken = () => localStorage.getItem('refresh');
-  
+
   const parseJwt = (token: string) => {
     try {
-      if (!token || typeof token !== 'string') return null;
       const parts = token.split('.');
       if (parts.length !== 3) return null;
       return JSON.parse(atob(parts[1]));
@@ -97,7 +93,6 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
     return result.data;
   };
 
-  // Refresh profile data
   const refreshProfile = async () => {
     try {
       setIsLoading(true);
@@ -112,21 +107,16 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
     }
   };
 
-  // Update profile data
   const updateProfile = async (data: Partial<ProfileData>) => {
     try {
       setIsLoading(true);
       setError(null);
-      
       const res = await authFetch('/profile/me', {
         method: 'PUT',
         body: JSON.stringify(data),
       });
-      
       const result = await res.json();
       if (!res.ok || !result.success) throw new Error(result.message || 'Failed to update profile');
-      
-      // Refresh profile data after update
       await refreshProfile();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update profile');
@@ -136,7 +126,6 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
     }
   };
 
-  // Clear profile data (for logout)
   const clearProfile = () => {
     setProfileData(null);
     setError(null);
@@ -144,33 +133,24 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   };
 
   useEffect(() => {
-    const token = getAccessToken();
-    if (token) {
+    if (getAccessToken()) {
       refreshProfile();
     }
   }, []);
 
-  const value: ProfileContextType = {
-    profileData,
-    isLoading,
-    error,
-    updateProfile,
-    refreshProfile,
-    clearProfile,
-  };
-
   return (
-    <ProfileContext.Provider value={value}>
+    <ProfileContext.Provider
+      value={{ profileData, isLoading, error, updateProfile, refreshProfile, clearProfile }}
+    >
       {children}
     </ProfileContext.Provider>
   );
 };
 
-// Custom hook to use the profile context
 export const useProfile = () => {
   const context = useContext(ProfileContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useProfile must be used within a ProfileProvider');
   }
   return context;
-}; 
+};

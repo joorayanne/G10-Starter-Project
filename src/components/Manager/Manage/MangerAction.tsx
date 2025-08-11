@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getAccessToken } from "@/app/auth/authHelpers";
+import { useSession } from "next-auth/react";
 
 interface Props {
   applicantId: string;
@@ -23,10 +23,11 @@ const ManagerActions = ({ applicantId }: Props) => {
   const [reviewers, setReviewers] = useState<Reviewer[]>([]);
   const [selectedReviewer, setSelectedReviewer] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const token = useSession().data?.accessToken ;
 
   useEffect(() => {
     const fetchReviewers = async () => {
-      const token = getAccessToken();
+      
       if (!token) return;
 
       try {

@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Tags from "./tags";
 import { useRouter } from "next/navigation";
-import { getAccessToken } from "../../app/auth/authHelpers";
 import { Application , ReviewerResponse } from "@/types/Manger";
+import { useSession } from "next-auth/react";
 
 
 
@@ -12,10 +12,11 @@ const AllApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const token = useSession().data?.accessToken ;
 
   useEffect(() => {
   const fetchApplications = async () => {
-    const token = getAccessToken();
+    
 
     if (!token) {
       router.push("/auth/signin");
