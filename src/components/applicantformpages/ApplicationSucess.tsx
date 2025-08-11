@@ -68,7 +68,7 @@ const ApplicationSucess = () => {
   }, []);
 
   return (
-    <>
+    <div className="pb-40">
       <header className="flex justify-around bg-white shadow-gray-400">
         <div className="flex justify-between gap-x-36">
           <Image
@@ -96,7 +96,7 @@ const ApplicationSucess = () => {
         </div>
       </header>
 
-      <section className="mx-20 my-6">
+      <section className="mx-20 my-6 mb-80">
         <h1 className="text-4xl font-bold">Your Application Progress</h1>
         <p className="font-extralight">You are on your way! Here is a summary of your application progress</p>
       </section>
@@ -221,16 +221,10 @@ const ApplicationSucess = () => {
           </div>
         </div>
       </section>
-      <footer>
-        <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
-          <p className="text-gray-400 text-sm">
-            © 2023 A2SV. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Optional: Add a footer component if needed */}
-    </>
+    </div>
   );
 };
 

@@ -30,7 +30,7 @@ const CodingProfiles: React.FC = () => {
     };
 
     return (
-        <>
+        <div className='pb-40'>
             <header className='flex justify-around bg-white shadow-gray-400'>
                 <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100}/>
                 <div className='flex justify-between gap-x-7 p-3'>
@@ -39,7 +39,7 @@ const CodingProfiles: React.FC = () => {
                 </div>
             </header>
 
-            <section className='bg-white shadow-neutral-500 w-1/2 my-10 mx-64'>
+            <section className='bg-white shadow-neutral-500 w-1/2 my-10 mx-64 mb-80'>
                 <h1 className='text-center font-bold text-2xl'>Application Form</h1>
                 <Image src="/images/Background1.png" alt="" className='my-3 mx-3' width={600} height={100}/>
                 <div className='flex justify-evenly my-3'>
@@ -90,14 +90,8 @@ const CodingProfiles: React.FC = () => {
                 </form>
             </section>
 
-           <footer>
-            <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
-            <p className="text-gray-400 text-sm">
-                © 2023 A2SV. All rights reserved.
-            </p>
-            </div>
-        </footer>
-        </>
+          <Footer />
+        </div>
     );
 }
 

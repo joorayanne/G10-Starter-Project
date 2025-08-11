@@ -25,7 +25,7 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div className="bg-gradient-to-r from-purple-300 to-indigo-500 text-white rounded-xl p-6 shadow">
           <p className="text-sm mb-2">Total Users</p>
-          <h2 className="text-3xl font-bold">{users.length}</h2>
+          <h2 className="text-3xl font-bold">{usersData.data?.total_count || 0}</h2>
         </div>
 
         <div className="bg-gradient-to-r from-green-300 to-emerald-600 text-white rounded-xl p-6 shadow">

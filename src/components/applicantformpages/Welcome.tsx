@@ -81,8 +81,8 @@ const Welcome = () => {
   }, []);
 
   return (
-    <>
-      <header className="flex justify-around bg-white shadow-gray-400">
+    <div className= "">
+      <header className="flex justify-around bg-white shadow-gray-400  ">
         <div className="flex justify-between gap-x-36">
           <Image
             className="p-3"
@@ -109,12 +109,12 @@ const Welcome = () => {
         </div>
       </header>
 
-      <section className="mx-20 my-6">
+      <section className="mx-20 my-6 mb-10 ">
         <h1 className="text-4xl font-bold">Welcome {fullName}!</h1>
         <p className="font-extralight">Your journey to a global tech career starts now</p>
       </section>
 
-      <section className="mx-20 my-6">
+      <section className="mx-20 my-6 mb-70">
         <div className="flex gap-x-40">
           <div className="w-3/5 bg-[linear-gradient(to_right,_#7455EF,_#893EEC)] rounded-lg h-48">
             {activeCycle ? (
@@ -224,16 +224,10 @@ const Welcome = () => {
         </div>
       </section>
 
-      <footer>
-        <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
-          <p className="text-gray-400 text-sm">
-            © 2023 A2SV. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     
     
-    </>
+    </div>
   );
 };
 

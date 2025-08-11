@@ -104,7 +104,7 @@ const ManagerActions = ({ applicantId }: Props) => {
   };
 
   const handleFinalDecision = async (decision: "accepted" | "rejected") => {
-    const token = useSession().data?.accessToken;
+    
     if (!token) {
       alert("No access token found. Please log in again.");
       return;

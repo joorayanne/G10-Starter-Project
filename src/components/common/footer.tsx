@@ -3,7 +3,7 @@ import logo from "../../../public/images/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1D2B3A] text-white">
+    <footer className="bg-[#1D2B3A] text-white w-full ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-9 pb-2">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Logo and Tagline */}

@@ -5,10 +5,10 @@ import AllApplications from "../../components/Manager/AllApplications";
 import TeamPerformance from "../../components/Manager/TeamPerformance";
 
 const data = [
-  ["Total Applications", 204],
-  ["Under Review", 750],
-  ["Interview Stage", 250],
-  ["Accepted", 82],
+  ["Total Applications", 8],
+  ["Under Review", 4],
+  ["Interview Stage", 0],
+  ["Accepted", 2],
 ];
 
 const ManagerDashboard = () => {

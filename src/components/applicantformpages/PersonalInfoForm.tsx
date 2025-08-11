@@ -30,16 +30,16 @@ const PersonalInfoForm: React.FC = () => {
     };
 
     return (
-        <>
+        <div className='mb-40'>
             <header className='flex justify-around bg-white shadow-gray-400'>
                 <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100} />
                 <div className='flex justify-between gap-x-7 p-3'>
                     <p>Applicant</p>
-                    <Link href='/applicant-routes/logout' className='px-2'>Logout</Link>
+                    <Logout />
                 </div>
             </header>
 
-            <section className='bg-white shadow-neutral-500 w-1/2 my-10 mx-64'>
+            <section className='bg-white shadow-neutral-500 w-1/2 my-10 mx-64 pb-40 mb-50'>
                 <h1 className='text-center font-bold text-2xl'>Application Form</h1>
                 <Image src="/images/Background.png" alt="" className='my-3 mx-3' width={600} height={100}  />
                 <div className='flex justify-evenly my-3'>
@@ -85,19 +85,13 @@ const PersonalInfoForm: React.FC = () => {
 
                     <div className='flex justify-between my-5 bg-gray-50 w-full h-14 rounded-sm border-t-1 border-t-gray-200 border-b-1 border-b-gray-200'>
                         <button onClick={() => router.back()} type="button" className='m-3 bg-gray-200 w-20 rounded-md h-8'>Back</button>
-                        <button type='submit' className='m-3 bg-blue-600 w-40 rounded-md text-white h-8'>Next: Config Profiles</button>
+                        <button type='submit' className='m-3 bg-blue-600 w-40 rounded-md text-white h-8'>Next: Coding Profiles</button>
                     </div>
                 </form>
             </section>
 
-          <footer>
-            <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
-            <p className="text-gray-400 text-sm">
-                © 2023 A2SV. All rights reserved.
-            </p>
-            </div>
-        </footer>
-        </>
+          <Footer />
+        </div>
     );
 }
 

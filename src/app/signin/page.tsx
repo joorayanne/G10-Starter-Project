@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import NavBar from "@/components/common/NavBar";
 import UserFooter from "@/components/common/user-footer";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
@@ -36,13 +35,12 @@ export default function SignInPage() {
       return;
     }
 
-  const result = await signIn("credentials", {
-    redirect: true,
-    email,
-    password,
-    callbackUrl 
-  });
-
+    const result = await signIn("credentials", {
+      redirect: true,
+      email,
+      password,
+      callbackUrl,
+    });
 
     if (result?.error) {
       setError(result.error);
@@ -51,32 +49,33 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
-      <main className="flex-1 flex justify-center pt-20">
-        <div className="w-full max-w-md">
+    <div className="min-h-screen flex flex-col justify-between ">
+      <main className="flex-1 flex justify-center pt-10 sm:pt-20 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-sm sm:max-w-md">
           {/* Logo & Title */}
-          <div className="flex flex-col items-center text-center mb-3">
+          <div className="flex flex-col items-center text-center mb-4 sm:mb-6">
             <Image
               src="/images/logo.png"
               width={120}
               height={20}
               alt="A2SV Logo"
+              className="w-24 sm:w-28 h-auto"
             />
-            <h2 className="mt-1 text-2xl font-semibold text-gray-800">
+            <h2 className="mt-2 text-xl sm:text-2xl font-semibold text-gray-800">
               Sign in to your account
             </h2>
           </div>
 
           {/* Links */}
-          <div className="text-center mb-4 space-y-2 text-sm">
-            <div className="flex justify-center space-x-2">
-              <Link href="/" className="text-indigo-600 hover:underline block">
+          <div className="text-center mb-4 space-y-2 text-xs sm:text-sm">
+            <div className="flex flex-wrap justify-center gap-2">
+              <Link href="/" className="text-indigo-600 hover:underline">
                 Back to Home
               </Link>
               <span>|</span>
               <Link
                 href="/applicant-routes/register"
-                className="text-indigo-600 hover:underline block"
+                className="text-indigo-600 hover:underline"
               >
                 Create a new applicant account
               </Link>
@@ -84,29 +83,22 @@ export default function SignInPage() {
           </div>
 
           {/* Form */}
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <input
               type="email"
               placeholder="user@example.com"
-              className="w-full px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 sm:px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            {/* <input
-              type="password"
-              placeholder="password123"
-              className="w-full px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            /> */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="password123"
-                className="w-full px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500 pr-10"
+                className="w-full px-3 sm:px-4 py-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500 pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -123,7 +115,7 @@ export default function SignInPage() {
               </button>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm gap-2">
               <label className="flex items-center space-x-2">
                 <input type="checkbox" className="form-checkbox" />
                 <span>Remember me</span>
@@ -135,7 +127,7 @@ export default function SignInPage() {
 
             <button
               type="submit"
-              className="w-full py-2 bg-indigo-500 text-white rounded font-medium hover:bg-indigo-800 transition"
+              className="w-full py-2 bg-indigo-500 text-white rounded font-medium hover:bg-indigo-800 transition text-sm sm:text-base"
               disabled={loading}
             >
               {loading ? "Signing in..." : "Sign in"}
@@ -147,4 +139,3 @@ export default function SignInPage() {
     </div>
   );
 }
-

@@ -121,7 +121,7 @@ const Essay: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="pb-40">
       <header className='flex justify-around bg-white shadow-gray-400'>
                 <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100} />
                 <div className='flex justify-between gap-x-7 p-3'>
@@ -129,7 +129,7 @@ const Essay: React.FC = () => {
                     <Link href='/applicant-routes/logout' className='px-2'>Logout</Link>
                 </div>
             </header>
-      <section className="bg-white shadow-md w-full max-w-2xl mx-auto my-10 p-6 rounded-lg">
+      <section className="bg-white shadow-md w-full max-w-2xl mx-auto my-10 p-6 rounded-lg mb-80">
         <h1 className="text-center font-bold text-2xl mb-6">Application Form</h1>
         <Image
           src="/images/Background2.png"
@@ -241,14 +241,8 @@ const Essay: React.FC = () => {
         </form>
       </section>
 
-      <footer>
-        <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
-          <p className="text-gray-400 text-sm">
-            © 2023 A2SV. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </>
+      <Footer />
+    </div>
   );
 };
 
