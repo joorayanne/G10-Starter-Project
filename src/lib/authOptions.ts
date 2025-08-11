@@ -63,14 +63,21 @@ export const authOptions: NextAuthOptions = {
             "https://a2sv-application-platform-backend-team10.onrender.com/auth/token/refresh",
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ refresh: token.refreshToken }),
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.refreshToken}`,
+              },
             }
           );
 
           const data = await res.json();
-          if (!res.ok || !data.success)
-            throw new Error("Failed to refresh token");
+          console.log("Refresh token response:", { status: res.status, data }); // Log for debugging
+
+          if (!res.ok || !data.success) {
+            throw new Error(
+              `Failed to refresh token: ${data.message || "Unknown error"}`
+            );
+          }
 
           const newAccessToken = data.data.access;
           const newDecodedToken = jwtDecode<{ exp: number }>(newAccessToken);
@@ -79,7 +86,6 @@ export const authOptions: NextAuthOptions = {
           token.accessTokenExpires = newDecodedToken.exp * 1000;
         } catch (err) {
           console.error("Failed to refresh access token", err);
-
           return { ...token, error: "RefreshAccessTokenError" };
         }
       }
