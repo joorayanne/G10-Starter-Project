@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         const result = await res.json();
-        if (!res.ok || !result.success) return null;
+        console.log("BACKEND API RESPONSE FOR ROLE:", result.data);
 
         const { id, access, refresh, role } = result.data;
         const decodedAccessToken = jwtDecode<{ exp: number }>(access);
@@ -98,17 +98,9 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
 
-    async redirect({ url, baseUrl }) {
-      try {
-        const parsedUrl = new URL(url, baseUrl);
-        const role = parsedUrl.searchParams.get("role")
-        if (role === "admin") return `${baseUrl}/admin`;
-        if (role === "manager") return `${baseUrl}/Manager-side`;
-        return `${baseUrl}/${role}`;
-      } catch {
-        return baseUrl;
-      }
-    },
+    
+    
+   
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

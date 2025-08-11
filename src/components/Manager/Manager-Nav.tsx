@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import logo from "../../../public/images/logo.png"
+import Logout from "../common/Logout";
 
 
 
@@ -82,12 +83,7 @@ export default function Navbar() {
         </Link>
         
         
-        <button
-          onClick={handleLogout}
-          className="text-gray-500 hover:text-red-500"
-        >
-          Logout
-        </button>
+        <Logout />
       </div>
     </nav>
   );
