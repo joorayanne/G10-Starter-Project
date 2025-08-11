@@ -14,7 +14,7 @@ export default function ProfileNavbar() {
   return (
     <nav className="flex items-center justify-between w-full px-4 sm:px-8 py-4 bg-white border-b border-gray-200">
       <Link href="/profile" className="flex items-center space-x-2">
-        <Image src="/images/logo.png" width={100} height={20} className="sm:w-[120px] sm:h-[24px]" alt="A2SV Logo" />
+        <Image src="/images/logo.png" width={120} height={24} className="sm:w-[120px] sm:h-[24px]" alt="A2SV Logo" />
       </Link>
 
       <div className="hidden sm:flex items-center space-x-6">
