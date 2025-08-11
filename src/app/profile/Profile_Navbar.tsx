@@ -6,17 +6,14 @@ import Image from "next/image";
 import logo from "../../../public/images/logo.png";
 import { useProfile } from "@/contexts/ProfileContext";
 
-const navLinks = [
-  { name: "Dashboard", href: "" },
-];
+const navLinks = [{ name: "Dashboard", href: "" }];
 
 export default function ProfileNavbar() {
   const pathname = usePathname();
-  const { profileData } = useProfile();
+  const { data: session, status } = useSession();
 
   return (
     <nav className="flex items-center justify-between w-full px-4 sm:px-8 py-4 bg-white border-b border-gray-200">
-      {/* Logo */}
       <Link href="/profile" className="flex items-center space-x-2">
         <Image
           src={logo}
@@ -45,7 +42,6 @@ export default function ProfileNavbar() {
         ))}
       </div>
 
-      {/* Profile Menu */}
       <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm text-gray-700">
         <Link
           href="/profile"
@@ -58,9 +54,12 @@ export default function ProfileNavbar() {
           {profileData?.full_name || "User name"}
         </span>
         <span className="text-gray-400 hidden sm:inline">|</span>
-        <Link href="/logout" className="hover:underline text-gray-700">
+        <button
+          onClick={() => signOut({ callbackUrl: "/signin" })}
+          className="hover:underline text-gray-700"
+        >
           Logout
-        </Link>
+        </button>
       </div>
     </nav>
   );

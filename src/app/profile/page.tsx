@@ -12,9 +12,12 @@ import { useProfile } from "@/contexts/ProfileContext";
 import { useSession } from "next-auth/react";
 
 const API_BASE_URL = "https://a2sv-application-platform-backend-team10.onrender.com";
+const API_BASE_URL = "https://a2sv-application-platform-backend-team10.onrender.com";
 
 // Zod Schemas
 const profileSchema = z.object({
+  full_name: z.string().min(2, "Full name is required"),
+  email: z.string().email("Invalid email address"),
   full_name: z.string().min(2, "Full name is required"),
   email: z.string().email("Invalid email address"),
 });
@@ -73,6 +76,7 @@ export default function ProfilePage() {
     handleSubmit: handleProfileSubmit,
     reset: resetProfileForm,
     formState: { errors: profileErrors },
+    formState: { errors: profileErrors },
   } = useForm<ProfileForm>({ resolver: zodResolver(profileSchema) });
 
   const {
@@ -80,14 +84,15 @@ export default function ProfilePage() {
     handleSubmit: handlePasswordSubmit,
     reset: resetPasswordForm,
     formState: { errors: passwordErrors },
+    formState: { errors: passwordErrors },
   } = useForm<PasswordForm>({ resolver: zodResolver(passwordSchema) });
 
   // Load profile data into form
   useEffect(() => {
     if (profileData) {
       resetProfileForm({
-        full_name: profileData.full_name,
-        email: profileData.email,
+        full_name: result.data.full_name,
+        email: result.data.email,
       });
     }
   }, [profileData, resetProfileForm]);
@@ -95,10 +100,12 @@ export default function ProfilePage() {
   const onUpdateProfile = async (data: ProfileForm) => {
     setProfileLoading(true);
     setError("");
+    setError("");
     try {
       await updateProfile(data);
       alert("Profile updated!");
     } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update profile");
       setError(err instanceof Error ? err.message : "Failed to update profile");
     } finally {
       setProfileLoading(false);
@@ -108,7 +115,10 @@ export default function ProfilePage() {
   const onChangePassword = async (data: PasswordForm) => {
     setPasswordLoading(true);
     setError("");
+    setError("");
     try {
+      const res = await authFetch("/profile/me/change-password", {
+        method: "PATCH",
       const res = await authFetch("/profile/me/change-password", {
         method: "PATCH",
         body: JSON.stringify({
@@ -119,20 +129,31 @@ export default function ProfilePage() {
       const result = await res.json();
       if (!res.ok || !result.success) throw new Error(result.message || "Failed to change password");
       alert("Password changed successfully!");
+      if (!res.ok || !result.success) throw new Error(result.message || "Failed to change password");
+      alert("Password changed successfully!");
       resetPasswordForm();
     } catch (err) {
+      setError(err instanceof Error ? err.message : "Password change failed");
       setError(err instanceof Error ? err.message : "Password change failed");
     } finally {
       setPasswordLoading(false);
     }
   };
 
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <span className="ml-3 text-gray-600 text-base">Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <ProfileNavbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-3xl mx-auto">
-          {/* Hero Section */}
           <div className="relative mb-16">
             <div className="h-48 w-full rounded-lg bg-gray-200 overflow-hidden shadow">
               <Image
@@ -183,6 +204,9 @@ export default function ProfilePage() {
                     <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">
                       Full Name
                     </label>
+                    <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">
+                      Full Name
+                    </label>
                     <input
                       type="text"
                       id="full_name"
@@ -192,8 +216,14 @@ export default function ProfilePage() {
                     {profileErrors.full_name && (
                       <p className="mt-1 text-sm text-red-600">{profileErrors.full_name.message}</p>
                     )}
+                    {profileErrors.full_name && (
+                      <p className="mt-1 text-sm text-red-600">{profileErrors.full_name.message}</p>
+                    )}
                   </div>
                   <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                       Email
                     </label>
@@ -206,8 +236,14 @@ export default function ProfilePage() {
                     {profileErrors.email && (
                       <p className="mt-1 text-sm text-red-600">{profileErrors.email.message}</p>
                     )}
+                    {profileErrors.email && (
+                      <p className="mt-1 text-sm text-red-600">{profileErrors.email.message}</p>
+                    )}
                   </div>
                   <div>
+                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                      Role
+                    </label>
                     <label htmlFor="role" className="block text-sm font-medium text-gray-700">
                       Role
                     </label>
@@ -229,11 +265,11 @@ export default function ProfilePage() {
                     disabled={profileLoading}
                   >
                     {profileLoading ? "Saving..." : "Save Changes"}
+                    {profileLoading ? "Saving..." : "Save Changes"}
                   </button>
                 </div>
               </div>
 
-              {/* Password Change */}
               <div className="space-y-6">
                 <h3 className="text-lg font-medium text-gray-900">Change Password</h3>
                 <div className="space-y-4">
@@ -255,12 +291,18 @@ export default function ProfilePage() {
                     <label htmlFor="new_password" className="block text-sm font-medium text-gray-700">
                       New Password
                     </label>
+                    <label htmlFor="new_password" className="block text-sm font-medium text-gray-700">
+                      New Password
+                    </label>
                     <input
                       type="password"
                       id="new_password"
                       {...registerPassword("new_password")}
                       className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                     />
+                    {passwordErrors.new_password && (
+                      <p className="mt-1 text-sm text-red-600">{passwordErrors.new_password.message}</p>
+                    )}
                     {passwordErrors.new_password && (
                       <p className="mt-1 text-sm text-red-600">{passwordErrors.new_password.message}</p>
                     )}
@@ -287,6 +329,7 @@ export default function ProfilePage() {
                     className="px-4 py-2 text-white bg-indigo-600 rounded-md"
                     disabled={passwordLoading}
                   >
+                    {passwordLoading ? "Updating..." : "Change Password"}
                     {passwordLoading ? "Updating..." : "Change Password"}
                   </button>
                 </div>
