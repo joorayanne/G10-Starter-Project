@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import logo from '../../../public/images/logo.png'
-import { useProfile } from "@/contexts/ProfileContext";
+import { useProfile } from "../../../";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 import LogoutButton from "../common/Logout";
