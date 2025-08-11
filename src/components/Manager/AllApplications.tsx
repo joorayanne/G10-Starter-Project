@@ -1,21 +1,61 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tags from "./tags";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Application , ReviewerResponse } from "@/types/Manger";
-
-
+import { Application, ReviewerResponse } from "@/types/Manger";
 
 const AllApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+
   const router = useRouter();
-   const { data: session } = useSession();
+  const { data: session } = useSession();
+
   useEffect(() => {
-  const fetchApplications = async () => {
-   
+    const fetchApplications = async () => {
+      const token = session?.accessToken;
+
+      if (!token) {
+        router.push("/signin");
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          "https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const json = await res.json();
+
+        if (json.success) {
+          setApplications(json.data.applications);
+          console.log("Fetched applications:", json.data.applications);
+        } else {
+          console.error("Failed to fetch applications:", json.message);
+        }
+      } catch (err) {
+        console.error("Error fetching applications:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApplications();
+  }, [router, session]);
+
+  const handleSelectChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    appId: string
+  ) => {
+    const value = e.target.value;
     const token = session?.accessToken;
 
     if (!token) {
@@ -23,47 +63,11 @@ const AllApplications = () => {
       return;
     }
 
-    try {
-      const res = await fetch(
-        "https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const json = await res.json();
-
-      if (json.success) {
-        setApplications(json.data.applications);
-        console.log("Fetched applications:", json.data.applications); 
-      } else {
-        console.error("Failed to fetch applications:", json.message);
-      }
-    } catch (err) {
-      console.error("Error fetching applications:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchApplications();
-}, [router]);
-
-  const handleSelectChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    appId: string
-  ) => {
-    const value = e.target.value;
-
     if (value === "review") {
       router.push(`/Reviewee/${appId}`);
     } else if (value === "view-detail") {
       router.push(`/Manager-side/Manage/${appId}`);
     } else if (value === "assign-reviewer") {
-      const token = useSession()?.data?.accessToken;
-
       try {
         const res = await fetch(
           "https://a2sv-application-platform-backend-team10.onrender.com/manager/reviewers",
@@ -76,61 +80,84 @@ const AllApplications = () => {
 
         const reviewersJson: ReviewerResponse = await res.json();
 
-          if (reviewersJson.success) {
-            const reviewerList = reviewersJson.data.reviewers;
-            const reviewerNames = reviewerList.map((r) => r.full_name).join(", ");
-            const selectedName = prompt(
-              `Choose a reviewer by name:\n${reviewerNames}`
-            );
+        if (reviewersJson.success) {
+          const reviewerList = reviewersJson.data.reviewers;
+          const reviewerNames = reviewerList.map((r) => r.full_name).join(", ");
+          const selectedName = prompt(
+            `Choose a reviewer by name:\n${reviewerNames}`
+          );
 
-            const selectedReviewer = reviewerList.find(
-              (r) => r.full_name === selectedName
-            );
+          const selectedReviewer = reviewerList.find(
+            (r) => r.full_name === selectedName
+          );
 
-            if (!selectedReviewer) {
-              alert("Invalid reviewer selected.");
-              return;
-            }
-
-            const assignRes = await fetch(
-              `https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/${appId}/assign-reviewer`,
-              {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ reviewer_id: selectedReviewer.id }),
-              }
-            );
-
-            const assignResult = await assignRes.json();
-
-            if (assignResult.success) {
-              alert("✅ Reviewer assigned successfully!");
-              location.reload();
-            } else {
-              alert("❌ Failed to assign reviewer.");
-            }
-          } else {
-            alert("⚠️ Failed to fetch reviewers.");
+          if (!selectedReviewer) {
+            alert("Invalid reviewer selected.");
+            return;
           }
-        } catch (err) {
-          console.error("⚠️ Error assigning reviewer:", err);
-          alert("⚠️ Error assigning reviewer.");
+
+          const assignRes = await fetch(
+            `https://a2sv-application-platform-backend-team10.onrender.com/manager/applications/${appId}/assign-reviewer`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ reviewer_id: selectedReviewer.id }),
+            }
+          );
+
+          const assignResult = await assignRes.json();
+
+          if (assignResult.success) {
+            alert("✅ Reviewer assigned successfully!");
+            location.reload();
+          } else {
+            alert("❌ Failed to assign reviewer.");
+          }
+        } else {
+          alert("⚠️ Failed to fetch reviewers.");
         }
+      } catch (err) {
+        console.error("⚠️ Error assigning reviewer:", err);
+        alert("⚠️ Error assigning reviewer.");
+      }
     }
   };
 
   if (loading)
     return <p className="text-center text-gray-500">Loading applications...</p>;
 
+  // Filter applications by status, unless "all" is selected
+  const filteredApplications =
+    filterStatus === "all"
+      ? applications
+      : applications.filter(
+          (app) => app.status.toLowerCase() === filterStatus.toLowerCase()
+        );
+
+
+  // Collect unique statuses for filter dropdown
+  const uniqueStatuses = Array.from(
+    new Set(applications.map((app) => app.status))
+  );
+
   return (
     <div className="bg-white min-w-[40vw] md:max-w-[60vw] border border-gray-100 shadow-lg rounded-md p-5">
-      <div className="md:flex py-2 justify-between">
+      <div className="md:flex py-2 justify-between items-center">
         <p className="text-2xl font-bold mb-4">All Applications</p>
-        <select className="border border-gray-300 bg-gray-200 rounded-md h-7 md:mr-8">
+        <select
+          className="border border-gray-300 bg-gray-200 rounded-md h-7 md:mr-8"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
           <option value="all">Filter by Status</option>
+          {uniqueStatuses.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -147,7 +174,7 @@ const AllApplications = () => {
         <p className="text-gray-400 font-semibold md:text-sm text-xs">Status</p>
         <span></span>
 
-        {applications.map((app) => (
+        {filteredApplications.map((app) => (
           <React.Fragment key={app.id}>
             <p className="text-gray-800 font-semibold text-sm">{app.id}</p>
             <p className="text-gray-400 font-semibold">{app.applicant_name}</p>

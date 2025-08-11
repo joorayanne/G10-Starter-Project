@@ -419,7 +419,7 @@ const EditUserPage: React.FC = () => {
           <div className="flex justify-end space-x-4 mt-6">
             <button
               type="button"
-              onClick={() => router.push("/users")} // Assuming "/users" is your management page
+              onClick={() => router.push("/admin/users")} // Assuming "/users" is your management page
               className="rounded-md text-gray-700 bg-white px-4 py-2 border border-gray-300 hover:bg-gray-50 transition-colors"
             >
               Cancel

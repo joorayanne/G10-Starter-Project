@@ -23,14 +23,15 @@ const Manage = () => {
 
   const [application, setApplication] = useState<Application_id | null>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const { data: session } = useSession();
+  const token = session?.accessToken;
  
 
   useEffect(() => {
     if (!id || typeof id !== "string") return;
 
     const fetchData = async () => {
-      const { data: session } = useSession();
-      const token = session?.accessToken;
+      
 
       try {
         const res = await fetch(
