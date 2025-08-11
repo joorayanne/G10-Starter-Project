@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import logo from '../../../public/images/logo.png';
+import LogoutButton from "@/components/common/Logout";
 
 const RevieweeHeader: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header className="w-full bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 md:px-8">
+   
+      <div className="w-full py-2 md:py-3 px-6 md:px-20 flex items-center justify-around bg-[#F3F4F6] shadow-md">
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center ">
           <Image
-            src="/image/logo.png"
+            src={logo}
             alt="A2SV Logo"
-            width={40}
-            height={40}
+            width={120}
+            height={24}
             className="h-7 w-auto"
           />
         </div>
         {/* Hamburger Icon (Mobile) */}
-        <button
+        
+        {/* <button
           className="md:hidden flex flex-col justify-center items-center w-8 h-8 focus:outline-none"
           aria-label="Toggle menu"
           onClick={() => setMenuOpen((open) => !open)}
@@ -38,8 +41,9 @@ const RevieweeHeader: React.FC = () => {
               menuOpen ? "-rotate-45 -translate-y-2" : ""
             }`}
           ></span>
-        </button>
-        {/* Navigation & Profile */}
+        </button> */}
+        
+
         <nav
           className={`flex-col md:flex-row md:flex items-start md:items-center gap-2 md:gap-6 absolute   md:static top-16 w-full md:w-auto bg-white md:bg-transparent shadow md:shadow-none z-20 transition-all duration-200 ${
             menuOpen ? "flex" : "hidden"
@@ -47,25 +51,21 @@ const RevieweeHeader: React.FC = () => {
         >
           <Link
             href="/Reviewee"
-            className="text-xs font-medium text-[#222] border-b-2 border-indigo-400 pb-0.5 block md:inline"
+            className=" font-medium text-[#222] border-b-2 border-indigo-400 pb-0.5 block md:inline"
           >
             Dashboard
           </Link>
           <Link
             href="#"
-            className="text-xs text-indigo-600 hover:underline block md:inline"
+            className=" text-indigo-600 hover:underline block md:inline"
           >
             Your Profile
           </Link>
-          <span className="text-xs text-gray-700 block md:inline">
-            Jane Reviewer
-          </span>
-          <button className="text-xs text-gray-500 hover:text-red-500 transition block md:inline">
-            Logout
-          </button>
+          <LogoutButton className="text-gray-700 block md:inline hover:underline"/>
         </nav>
+        
       </div>
-    </header>
+    
   );
 };
 

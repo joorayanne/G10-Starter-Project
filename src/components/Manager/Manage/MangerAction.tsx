@@ -60,7 +60,7 @@ const ManagerActions = ({ applicantId }: Props) => {
   }, []);
 
   const handleAssignReviewer = async () => {
-    const token = useSession().data?.accessToken;
+
     if (!token) {
       alert("No access token found. Please log in again.");
       return;

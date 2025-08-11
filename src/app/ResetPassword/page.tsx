@@ -1,12 +1,12 @@
 // app/auth/forgot-password/page.tsx
 "use client";
 
-import ForgotPasswordForm from "./forgotpw";
+import SetNewPasswordForm from "./resetpw";
 
 export default function ForgotPasswordPage() {
   return (
     
-        <ForgotPasswordForm />
+        <SetNewPasswordForm />
 
   );
 }

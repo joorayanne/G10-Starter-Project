@@ -58,7 +58,9 @@ const RevieweeHeader: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 md:px-8">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <Image src="/image/logo.png" alt="A2SV Logo" className="h-7 w-auto" />
+          <Image src="/image/logo.png"
+          width={120}
+          height={24} alt="A2SV Logo" className="h-7 w-auto" />
         </div>
         {/* Hamburger Icon (Mobile) */}
         <button

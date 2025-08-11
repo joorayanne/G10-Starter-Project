@@ -1,20 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
+import logo from '../../../public/images/logo.png'
 
-const navLinks = [{ name: "Dashboard", href: "" }];
+const navLinks = [{ name: "Dashboard", href: "#" }];
 
 export default function ProfileNavbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session, status } = useSession();
 
   return (
     <nav className="flex items-center justify-between w-full px-4 sm:px-8 py-4 bg-white border-b border-gray-200">
       <Link href="/profile" className="flex items-center space-x-2">
-        <Image src="/images/logo.png" width={100} height={20} className="sm:w-[120px] sm:h-[24px]" alt="A2SV Logo" />
+        <Image
+          src={logo}
+          width={120}
+          height={24}
+          className="sm:w-[120px] sm:h-[24px]"
+          alt="A2SV Logo"
+        />
       </Link>
 
       <div className="hidden sm:flex items-center space-x-6">
@@ -22,8 +30,12 @@ export default function ProfileNavbar() {
           <Link
             key={link.name}
             href={link.href}
+            onClick={(e) => {
+              e.preventDefault();
+              router.back();
+            }}
             className={`text-sm font-medium ${
-              pathname === link.href
+              pathname === "/dashboard" 
                 ? "text-black border-b-2 border-black pb-1"
                 : "text-gray-600 hover:text-black"
             }`}

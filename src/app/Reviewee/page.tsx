@@ -90,8 +90,6 @@ const Reviewee_list = () => {
 
   return (
     <div className="min-h-screen bg-[#F7F8FA] px-2 sm:px-8 py-4 sm:py-8">
-      <RevieweeHeader />
-
       <div className="max-w-7xl mx-auto mt-10 sm:mt-20">
         <h1 className="text-2xl font-bold text-[#222] mb-2 text-center sm:text-left">
           Assigned Applications
