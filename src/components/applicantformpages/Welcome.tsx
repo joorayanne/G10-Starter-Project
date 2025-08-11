@@ -4,6 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Cycle } from "@/types/cycle";
+import { useSession } from "next-auth/react";
+import Footer from "@/components/common/footer";
+import Logout from "@/components/common/Logout";
+import { User } from "@/types/users";
 
 interface ActiveCycleResponse {
   success: boolean;
@@ -17,18 +21,21 @@ interface ActiveCycleResponse {
 }
 
 const Welcome = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [activeCycle, setActiveCycle] = useState<Cycle | null>(null);
 
+  // Safely cast the session user to your User interface
+  const user = session?.user as User | undefined;
+  const fullName = user?.full_name || "Applicant";
+
   useEffect(() => {
-    let isMounted = true; // Flag to prevent state updates after unmount
+    let isMounted = true;
 
     const fetchAndSetActiveCycle = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token available:", !!token);
 
       try {
-        // Fetch active cycles
         const res = await fetch(
           "https://a2sv-application-platform-backend-team10.onrender.com/cycles/active/",
           {
@@ -36,22 +43,17 @@ const Welcome = () => {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }
         );
-        console.log("Fetch response status (active cycles):", res.status);
+
         if (!res.ok) {
-          const errorText = await res.text();
-          console.error("Active cycles fetch error details:", errorText);
-          throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data: ActiveCycleResponse = await res.json();
-        console.log("Fetch response data (active cycles):", JSON.stringify(data, null, 2));
 
         if (data.success && Array.isArray(data.data.cycles) && data.data.cycles.length > 0) {
-          const activeCycleFromList = data.data.cycles[0]; // Use the first active cycle
+          const activeCycleFromList = data.data.cycles[0];
           const cycleId = activeCycleFromList.id.toString();
           localStorage.setItem("activeCycleId", cycleId);
-          console.log("Default active cycle set:", cycleId);
 
-          // Fetch detailed cycle data
           const cycleRes = await fetch(
             `https://a2sv-application-platform-backend-team10.onrender.com/cycles/${activeCycleFromList.id}/`,
             {
@@ -61,66 +63,22 @@ const Welcome = () => {
           );
           if (cycleRes.ok) {
             const cycleData = await cycleRes.json();
-            console.log("Fetch response data (detailed cycle):", JSON.stringify(cycleData, null, 2));
             if (cycleData.success && cycleData.data && isMounted) {
               setActiveCycle(cycleData.data);
-            } else {
-              console.log("No valid detailed cycle data:", cycleData.message);
             }
-          } else {
-            const errorText = await cycleRes.text();
-            console.error("Detailed cycle fetch error:", errorText);
-          }
-        } else {
-          console.log("No active cycles available:", data.message);
-        }
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error("Fetch error (active cycles):", error.message);
-        } else {
-          console.error("Unexpected error (active cycles):", error);
-        }
-      }
-
-      // Fallback to stored cycleId if no active cycle was set and it exists
-      const savedCycleId = localStorage.getItem("activeCycleId");
-      if (savedCycleId && !activeCycle && isMounted) {
-        console.log("Falling back to saved cycleId:", savedCycleId);
-        try {
-          const res = await fetch(
-            `https://a2sv-application-platform-backend-team10.onrender.com/cycles/${savedCycleId}/`,
-            {
-              cache: "no-store",
-              headers: token ? { Authorization: `Bearer ${token}` } : {},
-            }
-          );
-          console.log("Fetch response status (saved cycle):", res.status);
-          if (!res.ok) {
-            const errorText = await res.text();
-            console.error("Saved cycle fetch error details:", errorText);
-            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-          }
-          const data = await res.json();
-          console.log("Fetch response data (saved cycle):", JSON.stringify(data, null, 2));
-          if (data.success && data.data && isMounted) {
-            setActiveCycle(data.data);
-          }
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error("Fetch error (saved cycle):", error.message);
-          } else {
-            console.error("Unexpected error (saved cycle):", error);
           }
         }
+      } catch (error) {
+        console.error("Failed to fetch active cycles or cycle details:", error);
       }
     };
 
     fetchAndSetActiveCycle();
 
     return () => {
-      isMounted = false; // Cleanup to prevent state updates after unmount
+      isMounted = false;
     };
-  }, [activeCycle]); // Added activeCycle to dependency array with safeguard
+  }, []);
 
   return (
     <>
@@ -143,17 +101,17 @@ const Welcome = () => {
             Your Profile
           </Link>
           <Link href="/" className="px-2">
-            Applicant Name
+            {fullName}
           </Link>
-          <Link href="/" className="px-2">
+          <Link href="/applicant-routes/logout" className="px-2">
             Logout
           </Link>
         </div>
       </header>
 
       <section className="mx-20 my-6">
-        <h1 className="text-4xl font-bold">Welcome John!</h1>
-        <p className="font-extralight">Your journey to global tech career starts now</p>
+        <h1 className="text-4xl font-bold">Welcome {fullName}!</h1>
+        <p className="font-extralight">Your journey to a global tech career starts now</p>
       </section>
 
       <section className="mx-20 my-6">
@@ -201,8 +159,8 @@ const Welcome = () => {
               <Link href="/profile" className="mx-10 text-blue-500 font-bold">Go to Profile</Link>
             </div>
 
-            <div className="bg-white shadow-neutral-600 rounded-md w-72 mb-3 ">
-              <h2 className="ml-5 mt-5 mb-3 font-bold">Application CheckList</h2>
+            <div className="bg-white shadow-neutral-600 rounded-md w-72 mb-3">
+              <h2 className="ml-5 mt-5 mb-3 font-bold">Application Checklist</h2>
               <ul className="ml-7 font-extralight">
                 <li className="flex m-3">
                   <Image
@@ -211,7 +169,7 @@ const Welcome = () => {
                     src="/images/Vector.png"
                     alt="check"
                     className="size-4.5 mt-1 mr-1"
-                  />{" "}
+                  />
                   Create an account
                 </li>
                 <li className="flex m-3">
@@ -221,7 +179,7 @@ const Welcome = () => {
                     src="/images/Vector.png"
                     alt="check"
                     className="size-4.5 mt-1 mr-1"
-                  />{" "}
+                  />
                   Fill personal information
                 </li>
                 <li className="flex m-3">
@@ -231,7 +189,7 @@ const Welcome = () => {
                     src="/images/Vector.png"
                     alt="check"
                     className="size-4.5 mt-1 mr-1"
-                  />{" "}
+                  />
                   Submit coding profile
                 </li>
                 <li className="flex m-3">
@@ -241,7 +199,7 @@ const Welcome = () => {
                     src="/images/Vector.png"
                     alt="check"
                     className="size-4.5 mt-1 mr-1"
-                  />{" "}
+                  />
                   Write Essays
                 </li>
                 <li className="flex m-3">
@@ -251,7 +209,7 @@ const Welcome = () => {
                     src="/images/Vector.png"
                     alt="check"
                     className="size-4.5 mt-1 mr-1"
-                  />{" "}
+                  />
                   Upload Resume
                 </li>
               </ul>
@@ -265,6 +223,16 @@ const Welcome = () => {
           </div>
         </div>
       </section>
+
+      <footer>
+        <div className="mt-20 h-20 border-t border-gray-700 pt-4 text-center bg-[#1D2B3A]" >
+          <p className="text-gray-400 text-sm">
+            © 2023 A2SV. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    
+    
     </>
   );
 };
