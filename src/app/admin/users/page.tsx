@@ -295,6 +295,7 @@ import { User } from "@/types/users";
 import person from "../../../../public/images/person.jpg";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
+import Link from "next/link";
 
 
 const UserManagement = () => {
@@ -448,11 +449,11 @@ const UserManagement = () => {
               Administer and manage all users on the platform.
             </p>
           </div>
-          <a href="/CreateUser">
+          <Link href="admin/Create-user">
             <button className="bg-blue-600 text-white border rounded-lg hover:bg-blue-700 px-4 py-2 transition-colors">
               Create New User
             </button>
-          </a>
+          </Link>
         </div>
 
         <div className="mb-4 flex flex-col sm:flex-row gap-4">

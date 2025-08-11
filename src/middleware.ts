@@ -44,6 +44,13 @@ export async function middleware(req: NextRequest) {
   const userRole = token.role as string; 
   const allowedRoles = protectedRoutes[matchedRoute];
 
+  console.log("--- MIDDLEWARE CHECK ---");
+  console.log("Pathname:", pathname);
+  console.log("User's Role from Token:", userRole);
+  console.log("Allowed Roles for this Path:", allowedRoles);
+  console.log("Is Role Allowed?", allowedRoles.includes(userRole));
+  console.log("----------------------");
+
   if (!userRole || !allowedRoles.includes(userRole)) {
     
     return NextResponse.redirect(new URL("/unauthorized", req.url));

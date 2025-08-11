@@ -19,7 +19,7 @@ const AllApplications = () => {
     const token = session?.accessToken;
 
     if (!token) {
-      router.push("/auth/signin");
+      router.push("/signin");
       return;
     }
 
