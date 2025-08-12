@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/common/footer';
 import Logout from '@/components/common/Logout';
+import { useSession } from "next-auth/react";
+import { User } from "@/types/users";
 
 
 interface PersonalInfoData {
@@ -16,6 +18,9 @@ interface PersonalInfoData {
 }
 
 const PersonalInfoForm: React.FC = () => {
+    const { data: session } = useSession();
+      const user = session?.user as User | undefined;
+      const fullName = user?.full_name || "Applicant";
     const router = useRouter();
     const {
         register,
@@ -30,14 +35,33 @@ const PersonalInfoForm: React.FC = () => {
     };
 
     return (
-        <div className='mb-40'>
-            <header className='flex justify-around bg-white shadow-gray-400'>
-                <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100} />
-                <div className='flex justify-between gap-x-7 p-3'>
-                    <p>Applicant</p>
-                    <Logout />
-                </div>
-            </header>
+        <div >
+            <header className="flex justify-around bg-white shadow-gray-400  ">
+                    <div className="flex justify-between gap-x-36">
+                      <Image
+                        className="p-3"
+                        src="/images/logo.png"
+                        alt="A2SV"
+                        width={100}
+                        height={100}
+                      />
+                      <Link href="/" className="pt-4">
+                        Dashboard
+                      </Link>
+                    </div>
+            
+                    <div className="flex justify-between p-3">
+                      <Link href="/profile" className="px-2">
+                        Your Profile
+                      </Link>
+                      <Link href="/" className="px-2">
+                        {fullName}
+                      </Link>
+                      <Link href="/applicant-routes/logout" className="px-2">
+                        Logout
+                      </Link>
+                    </div>
+                  </header>
 
             <section className='bg-white shadow-neutral-500 w-1/2 my-10 mx-64 pb-40 mb-50'>
                 <h1 className='text-center font-bold text-2xl'>Application Form</h1>

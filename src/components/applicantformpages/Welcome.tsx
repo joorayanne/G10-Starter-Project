@@ -4,9 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Cycle } from "@/types/cycle";
-import { useSession } from "next-auth/react";
 import Footer from "@/components/common/footer";
 import Logout from "@/components/common/Logout";
+import { useSession } from "next-auth/react";
 import { User } from "@/types/users";
 
 interface ActiveCycleResponse {
@@ -21,11 +21,11 @@ interface ActiveCycleResponse {
 }
 
 const Welcome = () => {
-  const { data: session } = useSession();
   const router = useRouter();
   const [activeCycle, setActiveCycle] = useState<Cycle | null>(null);
-
+  
   // Safely cast the session user to your User interface
+  const { data: session } = useSession();
   const user = session?.user as User | undefined;
   const fullName = user?.full_name || "Applicant";
 

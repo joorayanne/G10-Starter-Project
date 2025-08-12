@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/footer";
 import Logout from "@/components/common/Logout";
+import { User } from "@/types/users";
 
 interface EssayData {
   essay_about_you: string;
@@ -19,6 +20,9 @@ interface EssayData {
 
 const Essay: React.FC = () => {
   const { data: session, status } = useSession();
+  
+  const user = session?.user as User | undefined;
+  const fullName = user?.full_name || "Applicant";
   const router = useRouter();
   const {
     register,
@@ -121,13 +125,32 @@ const Essay: React.FC = () => {
   };
 
   return (
-    <div className="pb-40">
-      <header className='flex justify-around bg-white shadow-gray-400'>
-                <Image className='p-3' src="/images/logo.png" alt="A2SV" width={100} height={100} />
-                <div className='flex justify-between gap-x-7 p-3'>
-                    <p>Applicant</p>
-                    <Link href='/applicant-routes/logout' className='px-2'>Logout</Link>
-                </div>
+    <div >
+      <header className="flex justify-around bg-white shadow-gray-400  ">
+              <div className="flex justify-between gap-x-36">
+                <Image
+                  className="p-3"
+                  src="/images/logo.png"
+                  alt="A2SV"
+                  width={100}
+                  height={100}
+                />
+                <Link href="/" className="pt-4">
+                  Dashboard
+                </Link>
+              </div>
+      
+              <div className="flex justify-between p-3">
+                <Link href="/profile" className="px-2">
+                  Your Profile
+                </Link>
+                <Link href="/" className="px-2">
+                  {fullName}
+                </Link>
+                <Link href="/applicant-routes/logout" className="px-2">
+                  Logout
+                </Link>
+              </div>
             </header>
       <section className="bg-white shadow-md w-full max-w-2xl mx-auto my-10 p-6 rounded-lg mb-80">
         <h1 className="text-center font-bold text-2xl mb-6">Application Form</h1>
