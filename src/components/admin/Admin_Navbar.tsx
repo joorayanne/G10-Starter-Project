@@ -13,7 +13,7 @@ import LogoutButton from "../common/Logout";
 const navLinks = [
   { name: "Dashboard", href: "/admin" },
   { name: "Users", href: "/admin/users" },
-  { name: "Cycles", href: "/admin/cycles" },
+  { name: "Cycles", href: "/admin/Cycles" },
   { name: "Analytics", href: "/admin/analytics" },
 ];
 
