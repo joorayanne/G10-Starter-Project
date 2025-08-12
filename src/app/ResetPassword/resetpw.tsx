@@ -67,10 +67,19 @@ const SetNewPasswordForm = () => {
       if (result.success) {
         router.push("/signin");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setIsSuccess(false);
+      function isErrorWithMessage(err: unknown): err is { message: string } {
+        return (
+          typeof err === "object" &&
+          err !== null &&
+          "message" in err &&
+          typeof (err as { message?: unknown }).message === "string"
+        );
+      }
+
       setApiMessage(
-        error.message === "Failed to fetch"
+        isErrorWithMessage(error) && error.message === "Failed to fetch"
           ? "Failed to connect to the server. Please try again later."
           : "An error occurred. Please try again."
       );
