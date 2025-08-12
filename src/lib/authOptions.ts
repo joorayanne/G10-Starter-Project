@@ -26,6 +26,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         const result = await res.json();
+
         console.log("BACKEND API RESPONSE FOR ROLE:", result.data);
 
         const { id, access, refresh, role } = result.data;
