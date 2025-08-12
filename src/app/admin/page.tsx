@@ -51,7 +51,7 @@ export default async function AdminDashboardPage() {
         <div className="bg-white rounded-xl p-6 shadow">
           <h3 className="text-lg font-semibold mb-2">Manage Cycles</h3>
           <p className="mb-4 text-sm text-gray-600">Create and manage application cycles.</p>
-          <Link href="/admin/cycles">
+          <Link href="/admin/Cycles">
             <p className="px-1 py-2 text-indigo-600 font-bold  rounded hover:text-indigo-900 text-sm">Go to Cycles →</p>
           </Link>
         </div>
