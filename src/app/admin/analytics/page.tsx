@@ -135,8 +135,6 @@ const AnalyticsPage: React.FC = () => {
           </ResponsiveContainer>
         </div>
       </main>
-
-    
     </div>
   );
 };

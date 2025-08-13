@@ -52,7 +52,7 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <main className="flex-1 flex justify-center pt-20">
+      <main className="flex-1 flex justify-center pt-16">
         <div className="w-full max-w-md">
           {/* Logo & Title */}
           <div className="flex flex-col items-center text-center mb-3">
