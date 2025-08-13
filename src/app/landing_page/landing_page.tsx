@@ -34,7 +34,6 @@ export default function LandingPage() {
             </a>
           </div>
         </section>
-
         {/* Trusted By Logos */}
         <section className="flex justify-center items-center gap-10 py-6 bg-[#F3F4F6]">
           <Image
@@ -52,7 +51,6 @@ export default function LandingPage() {
             className="object-contain"
           />
         </section>
-
         {/* Journey Section */}
         <section className="py-12 px-5 md:px-20 bg-white">
           <h2 className="text-3xl font-bold text-center">
@@ -145,10 +143,10 @@ export default function LandingPage() {
         </section>
 
         <section className="py-16 px-6 md:px-20 bg-[#F3F4F6]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mx-50 my-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-7xl mx-auto">
             {/* Left Text Content */}
             <div>
-              <h2 className="text-[28px] md:text-4xl font-bold mb-4">
+              <h2 className="text-2xl md:text-4xl font-bold mb-4">
                 Built by Engineers, for Engineers
               </h2>
               <p className="text-gray-600 mb-6">
@@ -164,14 +162,13 @@ export default function LandingPage() {
               <Image
                 src="/images/team_meeting.svg"
                 alt="Engineers Illustration"
-                width={500}
-                height={400}
+                width={400} // slightly smaller on mobile
+                height={320}
                 className="object-contain"
               />
             </div>
           </div>
         </section>
-
         <section className="py-16 px-6 md:px-20 bg-gray-50">
           <h2 className="text-[28px] font-bold text-center mb-10">
             Hear From Our Alumni
@@ -273,7 +270,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
         <section className="bg-[#4338CA] h-64">
           <div className="p-10">
             <h3 className="font-semibold text-white text-2xl text-center pt-5">
