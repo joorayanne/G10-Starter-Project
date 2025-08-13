@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/common/footer";
+import { useSession } from "next-auth/react";
+import { User } from "@/types/users";
 
 interface ApplicationStatus {
   id: string;
@@ -19,6 +21,9 @@ interface StatusResponse {
 }
 
 const ApplicationSucess = () => {
+  const { data: session } = useSession();
+    const user = session?.user as User | undefined;
+    const fullName = user?.full_name || "Applicant";
   const [submittedDate, setSubmittedDate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -68,33 +73,33 @@ const ApplicationSucess = () => {
   }, []);
 
   return (
-    <div className="pb-40">
-      <header className="flex justify-around bg-white shadow-gray-400">
-        <div className="flex justify-between gap-x-36">
-          <Image
-            className="p-3"
-            src="/images/logo.png"
-            alt="A2SV"
-            width={100}
-            height={100}
-          />
-          <Link href="/" className="pt-4">
-            Dashboard
-          </Link>
-        </div>
-
-        <div className="flex justify-between p-3">
-          <Link href="/" className="px-2">
-            Your Profile
-          </Link>
-          <p  className="px-2">
-            Applicant Name
-          </p>
-          <Link href="/applicant-routes/logout" className="px-2">
-            Logout
-          </Link>
-        </div>
-      </header>
+    <div >
+      <header className="flex justify-around bg-white shadow-gray-400  ">
+              <div className="flex justify-between gap-x-36">
+                <Image
+                  className="p-3"
+                  src="/images/logo.png"
+                  alt="A2SV"
+                  width={100}
+                  height={100}
+                />
+                <Link href="/" className="pt-4">
+                  Dashboard
+                </Link>
+              </div>
+      
+              <div className="flex justify-between p-3">
+                <Link href="/profile" className="px-2">
+                  Your Profile
+                </Link>
+                <Link href="/" className="px-2">
+                  {fullName}
+                </Link>
+                <Link href="/applicant-routes/logout" className="px-2">
+                  Logout
+                </Link>
+              </div>
+            </header>
 
       <section className="mx-20 my-6 mb-80">
         <h1 className="text-4xl font-bold">Your Application Progress</h1>
